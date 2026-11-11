@@ -1,4 +1,5 @@
 <!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.trc{border:1px solid var(--line);padding:20px;margin-bottom:16px;border-radius:2px}.trc h3{margin:0 0 6px}.trc ul{margin:10px 0 0;padding-inline-start:20px}.trc .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.gm textarea{min-height:90px}
 </style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
 /* ===== إعدادات Firebase: الصقها هنا (نفس الإعدادات في الملفات الثلاثة) ===== */
 window.FIREBASE_CONFIG = {
@@ -316,6 +317,12 @@ footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px soli
       <div><label for="bkPhone">الموبايل</label><input id="bkPhone" type="tel" inputmode="numeric" dir="ltr" style="text-align:right" placeholder="01XXXXXXXXX"></div>
       <div><label for="bkSrc">المصدر</label><select id="bkSrc"><option value="phone">مكالمة</option><option value="walkin">حضور مباشر</option><option value="site">الموقع</option></select></div>
       <div class="chk"><input id="bkPaid" type="checkbox"><label for="bkPaid">تم الدفع</label></div>
+      <div class="wide gm" id="gmHead"><h3>مباراة الملعب</h3></div>
+      <div class="gm"><label for="bkVis">نوع المباراة</label><select id="bkVis"><option value="private">خاصة (تظهر محجوزة فقط)</option><option value="public">عامة (يراها الزوار)</option></select></div>
+      <div class="gm"><label for="bkTA">الفريق الأول</label><input id="bkTA" type="text" maxlength="40"></div>
+      <div class="gm"><label for="bkTB">الفريق الثاني</label><input id="bkTB" type="text" maxlength="40"></div>
+      <div class="gm"><label for="bkPA">لاعبو الفريق الأول (اسم في كل سطر)</label><textarea id="bkPA" rows="4"></textarea></div>
+      <div class="gm"><label for="bkPB">لاعبو الفريق الثاني (اسم في كل سطر)</label><textarea id="bkPB" rows="4"></textarea></div>
       <div><label>الإجمالي</label><div class="num" style="font-size:1.4rem;font-weight:600" id="bkTotal">0 جنيه</div></div>
       <div class="wide" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center"><button class="btn" type="submit">حفظ الحجز</button><span class="err" id="bkErr" role="alert"></span></div>
     </form>
@@ -808,8 +815,11 @@ async function onBooking(ev){
   if(i.qty>CAP[i.res])return errOn('#bkErr','أقصى عدد لهذه الخدمة '+CAP[i.res]+'.');
   var c=conflict(i);
   if(c)return errOn('#bkErr','يوجد حجز متعارض يوم '+dlabel(c.date)+' الساعة '+hf(c.hour)+'.');
+  if(i.res==='pitch'&&window.bkCheck){var cm=await window.bkCheck(i);if(cm)return errOn('#bkErr',cm)}
   try{
-    await save('bookings',rid(),{res:i.res,date:i.date,start:i.start,dur:i.dur,qty:i.qty,name:name,phone:phone,src:$('#bkSrc').value,paid:$('#bkPaid').checked,total:total(i.res,i.start,i.dur,i.qty),status:'active',created:Date.now()});
+    var nb=rid();
+    await save('bookings',nb,{res:i.res,date:i.date,start:i.start,dur:i.dur,qty:i.qty,name:name,phone:phone,src:$('#bkSrc').value,paid:$('#bkPaid').checked,total:total(i.res,i.start,i.dur,i.qty),status:'active',created:Date.now()});
+    if(i.res==='pitch'&&window.bkPublish)await window.bkPublish(nb,i);
     $('#bkName').value='';$('#bkPhone').value='';$('#bkPaid').checked=false;
     errOn('#bkErr','');
   }catch(e){errOn('#bkErr','تعذر حفظ الحجز. حاول مرة أخرى.')}
@@ -860,12 +870,12 @@ document.addEventListener('click',async function(e){
   try{
     if(d.act==='del'){
       var key='del|'+d.col+'|'+id;
-      if(S.armed===key){S.armed=null;await S.db.collection(d.col).doc(id).delete()}
+      if(S.armed===key){S.armed=null;if(d.col==='bookings'&&window.bkFree)await window.bkFree(id);await S.db.collection(d.col).doc(id).delete()}
       else{S.armed=key;renderAll();setTimeout(function(){if(S.armed===key){S.armed=null;renderAll()}},3500)}
       return;
     }
     if(d.act==='paid')await S.db.collection('bookings').doc(id).update({paid:true});
-    if(d.act==='cancel')await S.db.collection('bookings').doc(id).update({status:'cancelled'});
+    if(d.act==='cancel'){if(window.bkFree)await window.bkFree(id);await S.db.collection('bookings').doc(id).update({status:'cancelled'})}
     if(d.act==='toggle'){var m=S.maint.filter(function(x){return x.id===id})[0];if(m)await S.db.collection('maint').doc(id).update({status:m.status==='done'?'open':'done'})}
   }catch(err){}
 });
@@ -1090,7 +1100,7 @@ function gate(t,p){$('#gateT').textContent=t;$('#gateP').textContent=p;$('#gate'
   names.forEach(function(n){
     var first=true;
     db.collection(n).onSnapshot(function(snap){
-      S[n]=snap.docs.map(function(d){return Object.assign({id:d.id},d.data())});
+      S[n]=snap.docs.map(function(d){return Object.assign({id:d.id},d.data())}).filter(function(x){return !(n==='bookings'&&x.items)});
       if(first){first=false;done()}else if(S.ready)renderAll();
     },function(){if(first){first=false;done()}});
   });
@@ -1187,6 +1197,45 @@ function gate(t,p){$('#gateT').textContent=t;$('#gateP').textContent=p;$('#gate'
     d.collection('points').onSnapshot(function(sn){PT=sn.docs.map(function(x){return Object.assign({id:x.id},x.data())});renderPl()},noop);
     d.collection('tournaments').onSnapshot(function(sn){T=sn.docs.map(function(x){return Object.assign({id:x.id},x.data())});watch();renderTr()},noop);
   });
+})();
+</script>
+<script>
+/* ربط حجوزات الأدمن بجدول الزوار: الساعات والمباريات العامة */
+(function(){
+  var c=window.claude;if(!c||!c.use)return;
+  var $=function(s){return document.querySelector(s)};
+  var pad=function(n){return String(n).padStart(2,'0')},dkey=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+  var db=null;
+  c.use('db').then(function(d){db=d});
+  function nrm(date,h){var p=date.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]+Math.floor(h/24));return{date:dkey(d),hour:h%24}}
+  function ls(v){return String(v||'').split(/[\n,،]+/).map(function(x){return x.trim().slice(0,30)}).filter(Boolean).slice(0,12)}
+  function toggle(){var on=$('#bkRes').value==='pitch';document.querySelectorAll('.gm').forEach(function(e){e.hidden=!on})}
+  $('#bkRes').addEventListener('change',toggle);
+  setInterval(toggle,800);
+  window.bkCheck=async function(i){
+    if(!db)return '';
+    for(var k=0;k<i.dur;k++){
+      var n=nrm(i.date,i.start+k),d=await db.collection('slots').doc('p_'+n.date+'_'+n.hour).get();
+      if(d.exists&&d.data()&&d.data().bid)return 'الساعة '+n.hour+':00 يوم '+n.date+' محجوزة بالفعل من الموقع.';
+    }
+    return '';
+  };
+  window.bkPublish=async function(bid,i){
+    var g={vis:$('#bkVis').value==='public'?'public':'private',teamA:$('#bkTA').value.trim().slice(0,40),teamB:$('#bkTB').value.trim().slice(0,40),playersA:ls($('#bkPA').value),playersB:ls($('#bkPB').value)};
+    for(var k=0;k<i.dur;k++){
+      var n=nrm(i.date,i.start+k);
+      await db.collection('slots').doc('p_'+n.date+'_'+n.hour).set({res:'pitch',date:n.date,hour:n.hour,bid:bid});
+    }
+    await db.collection('bookings').doc(bid).update(g);
+    if(g.vis==='public')await db.collection('games').doc(bid).set({bid:bid,uid:'admin',date:i.date,start:i.start,dur:i.dur,teamA:g.teamA,teamB:g.teamB,playersA:g.playersA,playersB:g.playersB});
+    ['#bkTA','#bkTB','#bkPA','#bkPB'].forEach(function(s){$(s).value=''});$('#bkVis').value='private';
+  };
+  window.bkFree=async function(id){
+    if(!db)return;
+    var sn=await db.collection('slots').where('bid','==',id).get();
+    await Promise.all(sn.docs.map(function(d){return d.ref.delete()}));
+    await db.collection('games').doc(id).delete().catch(function(){});
+  };
 })();
 </script>
 </body></html>

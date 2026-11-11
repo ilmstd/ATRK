@@ -67,6 +67,7 @@ window.FIREBASE_CONFIG = {
   DR.update=function(d){
     return (arguments.length===1&&d&&typeof d==='object'&&!Array.isArray(d))?upd.call(this,flat(d,'',{})):upd.apply(this,arguments);
   };
+  DR.acquire=function(){return Promise.resolve({acquired:true})};
   var ready=new Promise(function(res){
     var first=true;
     auth.onAuthStateChanged(function(u){
@@ -326,6 +327,25 @@ footer b{color:var(--fg);font-weight:600}
 .tour h3{margin:0}
 .tour-r{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:8px;font-size:.95rem}
 .tour-r span,.muted-t{color:var(--muted);font-size:.9rem}
+#gameStep textarea{min-height:96px}
+#schDays{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+#schDays::-webkit-scrollbar{display:none}
+#schDays .chip{flex:none;min-height:52px}
+.sched{margin-top:24px;border-top:1px solid var(--fg)}
+.sched details{border-bottom:1px solid var(--line)}
+.sched summary{display:flex;align-items:center;gap:12px;padding:14px 0;cursor:pointer;list-style:none}
+.sched summary::-webkit-details-marker{display:none}
+.sched .hr{width:96px;flex:none;font-weight:500;font-variant-numeric:tabular-nums}
+.sched .tt{flex:1;min-width:0;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sched .bd{flex:none;font-size:.8rem;padding:2px 10px;border:1px solid var(--line);border-radius:2px}
+.sched .bd.free{border-color:var(--fg)}
+.sched .past{opacity:.5}
+.sched .dt{padding:0 0 18px;color:var(--muted);display:grid;gap:10px}
+.sched .vs{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;color:var(--fg)}
+.sched .vs h4{margin:0 0 6px;font-size:1rem}
+.sched .vs ul{margin:0;padding-inline-start:18px;color:var(--muted);font-size:.9rem}
+.sched .vs .x{align-self:center;color:var(--muted);font-weight:600}
+.sched .dt .btn{justify-self:start}
 .ok-t{color:var(--fg);font-weight:500;min-height:1.6em;margin-top:10px;font-size:.92rem}
 .bk{list-style:none;margin:0;padding:0}
 .bk li{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
@@ -341,6 +361,7 @@ footer b{color:var(--fg);font-weight:600}
       <a href="#home" data-nav="home">الملعب</a>
       <a href="#cafe" data-nav="cafe">النت كافيه</a>
       <a href="#book" data-nav="book">احجز أونلاين</a>
+      <a href="#schedule" data-nav="schedule">جدول الملعب</a>
       <a href="#league" data-nav="league">البطولات</a>
       <a href="#contact" data-nav="contact">تواصل معنا</a>
       <a href="#admin" data-nav="admin" id="navAdmin" hidden>الحجوزات</a>
@@ -626,8 +647,18 @@ footer b{color:var(--fg);font-weight:600}
           <div class="step" id="qtyStep" hidden><h3>عدد الأجهزة</h3>
             <div class="stepper"><button type="button" id="qMinus" aria-label="أقل">&minus;</button><output id="qOut" class="num">1</output><button type="button" id="qPlus" aria-label="أكثر">+</button></div>
           </div>
+          <div class="step" id="gameStep" hidden>
+            <h3>5. نوع المباراة <small>للملعب فقط</small></h3>
+            <div class="row"><button type="button" class="chip" data-vis="private" aria-pressed="true">خاصة<span>تظهر محجوزة فقط</span></button><button type="button" class="chip" data-vis="public" aria-pressed="false">عامة<span>يراها الزوار في الجدول</span></button></div>
+            <div class="fields" style="margin-top:16px">
+              <div><label for="gTeamA">الفريق الأول</label><input id="gTeamA" type="text" maxlength="40"></div>
+              <div><label for="gTeamB">الفريق الثاني</label><input id="gTeamB" type="text" maxlength="40"></div>
+              <div><label for="gPlA">لاعبو الفريق الأول</label><textarea id="gPlA" rows="4" placeholder="اسم في كل سطر"></textarea></div>
+              <div><label for="gPlB">لاعبو الفريق الثاني</label><textarea id="gPlB" rows="4" placeholder="اسم في كل سطر"></textarea></div>
+            </div>
+          </div>
           <div class="step">
-            <h3>5. بياناتك</h3>
+            <h3>6. بياناتك</h3>
             <div class="fields">
               <div><label for="name">الاسم الكامل</label><input id="name" type="text" autocomplete="name" placeholder="اسمك"></div>
               <div><label for="phone">رقم الموبايل</label><input id="phone" type="tel" inputmode="numeric" autocomplete="tel" dir="ltr" style="text-align:right" placeholder="01XXXXXXXXX"></div>
@@ -641,6 +672,18 @@ footer b{color:var(--fg);font-weight:600}
 </div>
 
 <!-- ================= CONTACT ================= -->
+<div class="view" data-view="schedule" hidden>
+  <section>
+    <div class="in">
+      <div class="kicker">جدول الملعب</div>
+      <h2>كل ساعة، متاحة أو محجوزة.</h2>
+      <p class="lead">اختر اليوم واضغط على أي ساعة لتشوف تفاصيلها.</p>
+      <div class="row" id="schDays" style="margin-top:24px"></div>
+      <div class="sched" id="sched"></div>
+    </div>
+  </section>
+</div>
+
 <div class="view" data-view="league" hidden>
   <section>
     <div class="in">
@@ -829,6 +872,7 @@ function info(){
   return {res:S.res,date:S.date,start:S.start,dur:S.dur,qty:S.res==='pitch'?1:S.qty,total:total(S.res,S.start==null?0:S.start,S.dur,S.qty)};
 }
 function renderSummary(){
+  var gs=$('#gameStep');if(gs)gs.hidden=S.res!=='pitch';
   var box=$('#sum');
   if(S.done){box.innerHTML=doneHtml();return}
   var rows='';
@@ -914,6 +958,7 @@ function renderAdmin(){
 async function cancelBooking(uid,bid){
   var b=S.bookings.concat(S.mine).filter(function(x){return x.bid===bid&&x.uid===uid})[0];
   if(!b||!S.db)return;
+  S.db.collection('games').doc(bid).delete().catch(function(){});
   await Promise.all((b.slots||[]).map(function(id){return S.db.collection('slots').doc(id).delete().catch(function(){})}));
   try{var o={};o[bid]={status:'cancelled'};await S.db.collection('bookings').doc(uid).update({items:o})}catch(e){}
 }
@@ -946,6 +991,9 @@ async function claim(res,date,start,dur,qty,bid){
     throw e;
   }
 }
+function lines(v){return String(v||'').split(/[\n,،]+/).map(function(x){return x.trim().slice(0,30)}).filter(Boolean).slice(0,12)}
+function readGame(){return{vis:S.vis==='public'?'public':'private',teamA:($('#gTeamA').value||'').trim().slice(0,40),teamB:($('#gTeamB').value||'').trim().slice(0,40),playersA:lines($('#gPlA').value),playersB:lines($('#gPlB').value)}}
+document.addEventListener('click',function(e){var v=e.target.closest('[data-vis]');if(!v)return;S.vis=v.dataset.vis;$$('[data-vis]').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.vis===S.vis)})});
 async function submit(ev){
   ev.preventDefault();
   if(S.busy)return;
@@ -964,7 +1012,9 @@ async function submit(ev){
       var cur=await ref.get();
       var items=(cur.exists&&cur.data()&&cur.data().items)||{};
       items[bid]={res:i.res,date:i.date,start:i.start,dur:i.dur,qty:i.qty,total:i.total,name:name,phone:phone,slots:ids,status:'active',created:Date.now()};
+      if(i.res==='pitch')Object.assign(items[bid],readGame());
       await ref.set({items:items});
+      if(i.res==='pitch'&&items[bid].vis==='public'){try{var gm=items[bid];await S.db.collection('games').doc(bid).set({bid:bid,uid:S.uid,date:i.date,start:i.start,dur:i.dur,teamA:gm.teamA,teamB:gm.teamB,playersA:gm.playersA,playersB:gm.playersB})}catch(e3){}}
     }catch(e2){
       await Promise.all(ids.map(function(id){return S.db.collection('slots').doc(id).delete().catch(function(){})}));
       throw e2;
@@ -973,7 +1023,7 @@ async function submit(ev){
     S.start=null;
   }catch(e){
     S.busy=false;
-    if(e&&e.taken){S.start=null;renderHours();renderSummary();setErr('هذا الموعد حُجز للتو. من فضلك اختر موعدًا آخر.');return}
+    if(e&&(e.taken||e.code==='permission-denied')){S.start=null;renderHours();renderSummary();setErr('هذا الموعد حُجز للتو. من فضلك اختر موعدًا آخر.');return}
     if(e&&e.code==='invalid_argument'){S.mode='request';renderSummary();setErr('الحجز الأونلاين غير متاح لهذا الحساب. استخدم «تجهيز طلب الحجز» بدلًا منه.');return}
     renderSummary();setErr('حدثت مشكلة أثناء حفظ الحجز. حاول مرة أخرى.');return;
   }
@@ -1024,6 +1074,7 @@ function renderAccount(){
     var canCx=!cx&&startMs(x)-now>=6*3600000;
     var st=cx?'<span class="st-x">ملغي</span>':past?'<span>منتهي</span>':'<span class="st-ok">مؤكد</span>';
     var btn=canCx?' <button type="button" class="btn btn-line btn-sm" data-mycancel="'+esc(x.bid)+'">'+(armed?'اضغط مرة أخرى للتأكيد':'إلغاء الحجز')+'</button>':'';
+    if(x.res==='pitch'&&!cx&&!past)btn=' <button type="button" class="btn btn-line btn-sm" onclick="fbGameUI(\''+esc(x.bid)+'\')">تفاصيل المباراة</button>'+btn;
     return '<li><div><strong>'+esc(RES[x.res]?RES[x.res].name:x.res)+(x.qty>1?' × '+x.qty:'')+'</strong><small class="num">'+esc(dateLabel(x.date))+' · '+range(x.start,x.dur)+'</small><small>الكود <span class="ltr num">'+esc(x.bid)+'</span> · '+esc(x.total)+' جنيه</small></div><div>'+st+btn+'</div></li>';
   }).join('')+'</ul><p class="fine">الإلغاء بدون رسوم قبل الموعد بـ 6 ساعات على الأقل. بعدها تواصل معنا هاتفيًا.</p>'
   :'<p class="empty">لا توجد حجوزات بعد.</p>';
@@ -1102,7 +1153,7 @@ async function cancelMine(bid){
 }
 
 /* ---------- routing ---------- */
-var VIEWS=['home','cafe','book','league','contact','account','admin','manage'];
+var VIEWS=['home','cafe','book','schedule','league','contact','account','admin','manage'];
 function route(scroll){
   var v=location.hash.replace('#','')||'home';
   if(VIEWS.indexOf(v)<0)v='home';
@@ -1290,6 +1341,36 @@ renderAll();route(false);
     var r=e.target.closest('[data-reg]'),u=e.target.closest('[data-unreg]');
     if(r)reg(r.dataset.reg);else if(u)unreg(u.dataset.unreg);
   });
+  window.fbGameUI=async function(bid){
+    if(!db||!uid||document.getElementById('fbGame'))return;
+    var sn=await db.collection('bookings').doc(uid).get(),it=((sn.exists&&sn.data().items)||{})[bid];
+    if(!it)return;
+    var w=document.createElement('div');w.id='fbGame';
+    w.style.cssText='position:fixed;inset:0;z-index:1000;background:var(--bg);color:var(--fg);overflow:auto;padding:24px;direction:rtl;line-height:1.8';
+    var F='width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:2px;background:transparent;color:inherit;font:inherit;margin:4px 0 14px;box-sizing:border-box';
+    var B='min-height:46px;padding:0 20px;border-radius:2px;font:inherit;cursor:pointer;';
+    w.innerHTML='<div style="max-width:480px;margin:0 auto"><h2 style="margin:0 0 4px">تفاصيل المباراة</h2><p class="muted-t" style="margin:0 0 20px">'+esc(fmtD(it.date))+'</p>'+
+      '<label>نوع المباراة</label><select id="gmV" style="'+F+'"><option value="private">خاصة (تظهر محجوزة فقط)</option><option value="public">عامة (يراها الزوار في الجدول)</option></select>'+
+      '<label>الفريق الأول</label><input id="gmA" maxlength="40" style="'+F+'" value="'+esc(it.teamA||'')+'">'+
+      '<label>الفريق الثاني</label><input id="gmB" maxlength="40" style="'+F+'" value="'+esc(it.teamB||'')+'">'+
+      '<label>لاعبو الفريق الأول (اسم في كل سطر)</label><textarea id="gmPA" rows="5" style="'+F+'">'+esc((it.playersA||[]).join('\n'))+'</textarea>'+
+      '<label>لاعبو الفريق الثاني (اسم في كل سطر)</label><textarea id="gmPB" rows="5" style="'+F+'">'+esc((it.playersB||[]).join('\n'))+'</textarea>'+
+      '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button id="gmS" style="'+B+'border:0;background:var(--fg);color:var(--bg)">حفظ</button><button id="gmX" style="'+B+'border:1px solid var(--line);background:none;color:inherit">إغلاق</button><span id="gmM" role="status"></span></div></div>';
+    document.body.appendChild(w);
+    w.querySelector('#gmV').value=it.vis==='public'?'public':'private';
+    var ls=function(v){return String(v||'').split(/[\n,،]+/).map(function(x){return x.trim().slice(0,30)}).filter(Boolean).slice(0,12)};
+    w.querySelector('#gmX').onclick=function(){w.remove()};
+    w.querySelector('#gmS').onclick=async function(){
+      var d={teamA:w.querySelector('#gmA').value.trim().slice(0,40),teamB:w.querySelector('#gmB').value.trim().slice(0,40),playersA:ls(w.querySelector('#gmPA').value),playersB:ls(w.querySelector('#gmPB').value)},vis=w.querySelector('#gmV').value;
+      var u={};Object.keys(d).forEach(function(k){u['items.'+bid+'.'+k]=d[k]});u['items.'+bid+'.vis']=vis;
+      try{
+        await db.collection('bookings').doc(uid).update(u);
+        if(vis==='public')await db.collection('games').doc(bid).set(Object.assign({bid:bid,uid:uid,date:it.date,start:it.start,dur:it.dur},d));
+        else await db.collection('games').doc(bid).delete().catch(function(){});
+        w.remove();
+      }catch(e){w.querySelector('#gmM').textContent='تعذر الحفظ. حاول مرة أخرى.'}
+    };
+  };
   Promise.all([c.use('db'),c.use('user')]).then(async function(r){
     db=r[0];if(!db)return;
     try{uid=await r[1].id()}catch(e){}
@@ -1301,6 +1382,67 @@ renderAll();route(false);
       db.collection('profiles').doc(uid).onSnapshot(function(sn){prof=sn.exists?sn.data():null},function(){});
       db.collection('points').doc(uid).onSnapshot(function(sn){L.me=sn.exists?sn.data():null;window.dispatchEvent(new Event('lg-update'))},function(){});
     }
+  });
+})();
+</script>
+<script>
+/* جدول الملعب للزوار */
+(function(){
+  var c=window.claude;if(!c||!c.use)return;
+  var $=function(s){return document.querySelector(s)};
+  var esc=function(t){return String(t==null?'':t).replace(/[&<>"']/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})};
+  var pad=function(n){return String(n).padStart(2,'0')},dkey=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+  var hf=function(h){var x=h%24;return (x%12||12)+':00 '+(x>=12?'م':'ص')};
+  var band=function(h){return h>=6&&h<16?'A':h>=16&&h<23?'B':'C'};
+  var TODAY=dkey(new Date()),sel=TODAY,SLH={},G={},R={A:250,B:400,C:350},OPEN={};
+  function days(){
+    var out='',d0=new Date();
+    for(var i=0;i<14;i++){
+      var d=new Date(d0.getFullYear(),d0.getMonth(),d0.getDate()+i),k=dkey(d);
+      out+='<button type="button" class="chip" data-sd="'+k+'" aria-pressed="'+(k===sel)+'">'+(i===0?'اليوم':d.toLocaleDateString('ar-EG',{weekday:'long'}))+'<span>'+d.toLocaleDateString('ar-EG',{day:'numeric',month:'long'})+'</span></button>';
+    }
+    $('#schDays').innerHTML=out;
+  }
+  function names(a){return a&&a.length?'<ul>'+a.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul>':'<span>لم تُضف أسماء</span>'}
+  function render(){
+    var box=$('#sched');if(!box)return;
+    var now=new Date(),out='';
+    for(var h=0;h<24;h++){
+      var past=sel<TODAY||(sel===TODAY&&h<=now.getHours()),bid=SLH[sel+'|'+h],g=bid&&G[bid],key=sel+'|'+h;
+      var bd,tt,dt;
+      if(!bid){
+        bd=past?'<span class="bd">انتهت</span>':'<span class="bd free">متاح</span>';
+        tt='السعر '+R[band(h)]+' جنيه للساعة';
+        dt=past?'<span>انتهت هذه الساعة.</span>':'<span>الساعة متاحة للحجز. السعر '+R[band(h)]+' جنيه للساعة كاملة.</span><a class="btn btn-primary btn-sm" href="#book">احجز هذه الساعة</a>';
+      }else if(g){
+        bd='<span class="bd">'+(past?'انتهت':'محجوز · عامة')+'</span>';
+        tt=(g.teamA||'فريق')+' ضد '+(g.teamB||'فريق');
+        dt='<span>المباراة: '+hf(g.start)+' – '+hf(g.start+g.dur)+'</span><div class="vs"><div><h4>'+esc(g.teamA||'الفريق الأول')+'</h4>'+names(g.playersA)+'</div><span class="x">ضد</span><div><h4>'+esc(g.teamB||'الفريق الثاني')+'</h4>'+names(g.playersB)+'</div></div>';
+      }else{
+        bd='<span class="bd">'+(past?'انتهت':'محجوز')+'</span>';
+        tt='مباراة خاصة';
+        dt='<span>هذه الساعة محجوزة لمباراة خاصة، ولا تُعرض تفاصيلها.</span>';
+      }
+      out+='<details data-k="'+key+'"'+(OPEN[key]?' open':'')+(past?' class="past"':'')+'><summary><span class="hr">'+hf(h)+'</span><span class="tt">'+esc(tt)+'</span>'+bd+'</summary><div class="dt">'+dt+'</div></details>';
+    }
+    box.innerHTML=out;
+  }
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-sd]');if(b){sel=b.dataset.sd;days();render()}});
+  document.addEventListener('toggle',function(e){var d=e.target;if(d&&d.dataset&&d.dataset.k)OPEN[d.dataset.k]=d.open},true);
+  days();render();
+  c.use('db').then(function(db){
+    if(!db)return;
+    var noop=function(){};
+    db.collection('slots').where('date','>=',TODAY).onSnapshot(function(sn){
+      SLH={};sn.docs.forEach(function(d){var v=d.data();if(v&&v.res==='pitch'&&v.bid)SLH[v.date+'|'+v.hour]=v.bid});render();
+    },noop);
+    db.collection('games').where('date','>=',TODAY).onSnapshot(function(sn){
+      G={};sn.docs.forEach(function(d){G[d.id]=d.data()});render();
+    },noop);
+    db.collection('settings').doc('main').onSnapshot(function(sn){
+      var o=sn.exists&&sn.data();if(!o)return;
+      ['A','B','C'].forEach(function(k){if(+o['pitch'+k]>0)R[k]=+o['pitch'+k]});render();
+    },noop);
   });
 })();
 </script>
