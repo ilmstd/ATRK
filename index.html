@@ -1,4 +1,95 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
+/* ===== إعدادات Firebase: الصقها هنا (نفس الإعدادات في الملفات الثلاثة) ===== */
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDERNheJlGJdUojoiBfktg5OyJAU-wxZJU",
+  authDomain: "abotrekamgmt.firebaseapp.com",
+  projectId: "abotrekamgmt",
+  storageBucket: "abotrekamgmt.firebasestorage.app",
+  messagingSenderId: "1044419679462",
+  appId: "1:1044419679462:web:c78116fd483aa1108e1727",
+  measurementId: "G-Q5PS65G4SQ"
+};
+/* ===== نهاية الإعدادات ===== */
+</script><script>
+/* يربط الصفحة بـ Firebase ويعرض نافذة الدخول. لا تعدّل هنا. */
+(function(){
+  var cfg=window.FIREBASE_CONFIG;
+  window.fbSignOut=function(){
+    if(window.firebase&&firebase.apps.length)return firebase.auth().signOut().then(function(){location.href='index.html'});
+  };
+  if(!window.firebase||!cfg||!cfg.apiKey||/YOUR_/.test(cfg.apiKey)){
+    console.warn('Firebase غير مهيّأ. عدّل إعدادات Firebase في أعلى الملف');return;
+  }
+  firebase.initializeApp(cfg);
+  var auth=firebase.auth(),db=firebase.firestore(),me=null,admin=false;
+  var ERR={'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة.','auth/wrong-password':'البريد أو كلمة المرور غير صحيحة.','auth/user-not-found':'لا يوجد حساب بهذا البريد.','auth/invalid-email':'البريد الإلكتروني غير صحيح.','auth/email-already-in-use':'هذا البريد مسجّل بالفعل. سجّل الدخول.','auth/weak-password':'كلمة المرور 6 أحرف على الأقل.','auth/too-many-requests':'محاولات كثيرة. انتظر قليلًا.','auth/network-request-failed':'تعذر الاتصال بالإنترنت.'};
+  window.fbAuthUI=function(o){
+    o=o||{};if(document.getElementById('fbAuth'))return;
+    var up=false,w=document.createElement('div');w.id='fbAuth';
+    w.style.cssText='position:fixed;inset:0;z-index:1000;background:var(--bg);color:var(--fg);display:grid;place-items:center;padding:24px;overflow:auto;direction:rtl;font-family:inherit;line-height:1.8';
+    var F='width:100%;min-height:46px;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:transparent;color:inherit;font:inherit;margin:4px 0 14px;box-sizing:border-box;direction:ltr;text-align:right';
+    var B='background:none;border:0;padding:0;color:var(--muted);font:inherit;font-size:.88rem;text-decoration:underline;cursor:pointer;margin-top:14px;display:block';
+    function draw(){
+      w.innerHTML='<div style="width:100%;max-width:400px"><h2 style="margin:0 0 24px;font-size:1.5rem">'+(up?'إنشاء حساب':'تسجيل الدخول')+'</h2>'+
+        (up?'<label>الاسم الكامل</label><input id="fbN" style="'+F+';direction:rtl" autocomplete="name"><label>رقم الموبايل</label><input id="fbPh" inputmode="numeric" placeholder="01XXXXXXXXX" style="'+F+'" autocomplete="tel">':'')+
+        '<label>البريد الإلكتروني</label><input id="fbE" type="email" style="'+F+'" autocomplete="email">'+
+        '<label>كلمة المرور</label><input id="fbP" type="password" style="'+F+'" autocomplete="'+(up?'new-password':'current-password')+'">'+
+        '<button id="fbGo" style="width:100%;min-height:48px;border:0;border-radius:2px;background:var(--fg);color:var(--bg);font:inherit;font-weight:500;cursor:pointer">'+(up?'إنشاء الحساب':'دخول')+'</button>'+
+        '<div id="fbM" role="alert" style="min-height:1.6em;margin-top:12px;font-size:.92rem;color:var(--bad,#b3321f)"></div>'+
+        (o.signup?'<button id="fbT" style="'+B+'">'+(up?'عندي حساب. تسجيل الدخول':'ليس لدي حساب. إنشاء حساب')+'</button>':'')+
+        (up?'':'<button id="fbR" style="'+B+'">نسيت كلمة المرور</button>')+
+        (o.required?'':'<button id="fbX" style="'+B+'">إغلاق</button>')+'</div>';
+      var $=function(i){return w.querySelector(i)},say=function(t){$('#fbM').textContent=t},bad=function(e){say(ERR[e&&e.code]||'حدث خطأ. حاول مرة أخرى.');$('#fbGo').disabled=false};
+      if($('#fbT'))$('#fbT').onclick=function(){up=!up;draw()};
+      if($('#fbX'))$('#fbX').onclick=function(){w.remove()};
+      if($('#fbR'))$('#fbR').onclick=function(){var e=$('#fbE').value.trim();if(!e)return say('اكتب بريدك أولًا.');auth.sendPasswordResetEmail(e).then(function(){say('أرسلنا رابط إعادة تعيين كلمة المرور لبريدك.')},bad)};
+      $('#fbGo').onclick=function(){
+        var e=$('#fbE').value.trim(),p=$('#fbP').value;
+        if(!e||!p)return say('اكتب البريد وكلمة المرور.');
+        if(!up){$('#fbGo').disabled=true;return auth.signInWithEmailAndPassword(e,p).then(function(){location.reload()},bad)}
+        var n=$('#fbN').value.trim(),ph=$('#fbPh').value.replace(/[\s-]/g,'');
+        if(n.length<2)return say('اكتب اسمك.');
+        if(!/^01[0125]\d{8}$/.test(ph))return say('أدخل رقم موبايل من 11 رقمًا يبدأ بـ 01.');
+        $('#fbGo').disabled=true;
+        auth.createUserWithEmailAndPassword(e,p).then(function(c){return db.collection('profiles').doc(c.user.uid).set({name:n,phone:ph,created:Date.now()})}).then(function(){location.reload()},bad);
+      };
+    }
+    draw();document.body.appendChild(w);
+  };
+  function flat(o,p,out){
+    Object.keys(o).forEach(function(k){
+      var v=o[k],key=p?p+'.'+k:k;
+      if(v&&typeof v==='object'&&Object.getPrototypeOf(v)===Object.prototype)flat(v,key,out);else out[key]=v;
+    });
+    return out;
+  }
+  var DR=firebase.firestore.DocumentReference.prototype,upd=DR.update;
+  DR.update=function(d){
+    return (arguments.length===1&&d&&typeof d==='object'&&!Array.isArray(d))?upd.call(this,flat(d,'',{})):upd.apply(this,arguments);
+  };
+  var ready=new Promise(function(res){
+    var first=true;
+    auth.onAuthStateChanged(function(u){
+      me=u;admin=false;
+      if(!u){
+        if(first&&window.REQUIRE_LOGIN){var go=function(){fbAuthUI({required:true})};document.body?go():document.addEventListener('DOMContentLoaded',go)}
+        first=false;res();return;
+      }
+      db.collection('admins').doc(u.uid).get().then(function(d){admin=d.exists},function(){}).then(function(){first=false;res()});
+    });
+  });
+  window.claude={use:function(n){return ready.then(function(){
+    if(n==='db')return db;
+    if(n==='user')return{
+      id:function(){return Promise.resolve(me?me.uid:null)},
+      canEdit:function(){return Promise.resolve(admin)},
+      can:function(){return Promise.resolve(!!me)},
+      isOwner:function(){return admin}
+    };
+    return null;
+  })}};
+})();
+</script></head><body>
 <title>أبو تريكة</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
@@ -27,6 +118,9 @@
   --bad:#F0806E; --ok:#F2F2F2; color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--fg);color:var(--bg)}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.85;direction:rtl;font-weight:400}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
 h1,h2,h3{font-family:var(--f-body);line-height:1.4;margin:0;text-wrap:balance;font-weight:600}
@@ -46,20 +140,26 @@ section{padding-block:clamp(64px,9vw,104px)}
 
 /* header */
 .hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
-.hdr .in{display:flex;align-items:center;gap:24px;min-height:68px}
-.brand{display:flex;flex-direction:column;text-decoration:none;line-height:1.35}
-.brand b{font-weight:600;font-size:1.15rem}
+.hdr .in{display:flex;align-items:center;gap:32px;min-height:72px}
+.brand{display:flex;flex-direction:column;text-decoration:none;line-height:1.3;flex:none}
+.brand b{font-weight:600;font-size:1.2rem}
 .brand span{font-size:.75rem;color:var(--muted)}
-.nav{display:flex;gap:6px;margin-inline-start:auto;overflow-x:auto}
-.nav a{white-space:nowrap;text-decoration:none;padding:8px 10px;font-size:.92rem;color:var(--muted);border-bottom:1px solid transparent}
+.nav{display:flex;align-self:stretch;gap:4px;margin-inline-start:auto;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{display:flex;align-items:center;white-space:nowrap;text-decoration:none;padding:0 12px;font-size:.92rem;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s}
 .nav a:hover{color:var(--fg)}
 .nav a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--fg)}
+.hdr .btn{flex:none;min-height:38px;padding:0 18px;font-size:.88rem}
+.hdr .btn + .btn{margin-inline-start:-20px}
 @media (max-width:820px){
-  .hdr .in{flex-wrap:wrap;gap:0 12px;padding-block:8px}
-  .nav{order:3;width:100%;margin:0}
-  .hdr .btn{margin-inline-start:auto}
+  .hdr .in{flex-wrap:wrap;gap:0 10px;padding-block:12px 0}
+  .brand{margin-inline-end:auto;padding-bottom:12px}
+  .hdr .btn{margin-bottom:12px}
+  .hdr .btn + .btn{margin-inline-start:0}
+  .nav{order:3;width:100%;align-self:auto;margin:0;border-top:1px solid var(--line)}
+  .nav a{padding:12px 12px;margin-bottom:0}
 }
-.hdr .btn{margin-inline-start:8px}
+@media (max-width:480px){.hdr .btn{padding:0 12px}.brand span{display:none}.brand{padding-bottom:12px}}
 
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 24px;border:1px solid transparent;border-radius:2px;font:500 .95rem var(--f-body);cursor:pointer;text-decoration:none}
@@ -214,6 +314,7 @@ footer b{color:var(--fg);font-weight:600}
       <a href="#book" data-nav="book">احجز أونلاين</a>
       <a href="#contact" data-nav="contact">تواصل معنا</a>
       <a href="#admin" data-nav="admin" id="navAdmin" hidden>الحجوزات</a>
+      <a href="admin.html" id="navManage" hidden>لوحة الإدارة</a>
     </nav>
     <a class="btn btn-line btn-sm acct-btn" href="#account" id="acctBtn">تسجيل الدخول</a>
     <button type="button" class="btn btn-primary btn-sm" data-go="book" data-res="pitch">احجز الملعب</button>
@@ -281,9 +382,9 @@ footer b{color:var(--fg);font-weight:600}
             <table>
               <thead><tr><th>الفترة</th><th>الساعات</th><th>سعر الساعة</th></tr></thead>
               <tbody>
-                <tr><td><span class="band-dot bA"></span><strong>نهارًا</strong></td><td>06:00 – 16:00</td><td><strong>250 جنيه</strong></td></tr>
-                <tr><td><span class="band-dot bB"></span><strong>مساءً</strong></td><td>16:00 – 23:00</td><td><strong>400 جنيه</strong></td></tr>
-                <tr><td><span class="band-dot bC"></span><strong>ليلًا</strong></td><td>23:00 – 06:00</td><td><strong>350 جنيه</strong></td></tr>
+                <tr><td><span class="band-dot bA"></span><strong>نهارًا</strong></td><td>06:00 – 16:00</td><td><strong><span data-price="pitchA">250</span> جنيه</strong></td></tr>
+                <tr><td><span class="band-dot bB"></span><strong>مساءً</strong></td><td>16:00 – 23:00</td><td><strong><span data-price="pitchB">400</span> جنيه</strong></td></tr>
+                <tr><td><span class="band-dot bC"></span><strong>ليلًا</strong></td><td>23:00 – 06:00</td><td><strong><span data-price="pitchC">350</span> جنيه</strong></td></tr>
               </tbody>
             </table>
           </div>
@@ -386,11 +487,11 @@ footer b{color:var(--fg);font-weight:600}
         <table>
           <thead><tr><th>الجهاز</th><th>مناسب لـ</th><th>المتاح</th><th>سعر الساعة</th></tr></thead>
           <tbody>
-            <tr><td><strong>كمبيوتر عادي</strong></td><td>الألعاب اليومية والتصفح والدراسة والعمل المكتبي.</td><td>12 جهازًا</td><td><strong>20 جنيه</strong></td></tr>
-            <tr><td><strong>كمبيوتر مميز</strong></td><td>الألعاب التنافسية والبرامج الثقيلة على جهاز أسرع.</td><td>6 أجهزة</td><td><strong>35 جنيه</strong></td></tr>
-            <tr><td><strong>غرفة PlayStation 5</strong></td><td>مجموعات حتى 4 أشخاص على شاشة كبيرة.</td><td>غرفتان</td><td><strong>60 جنيه</strong></td></tr>
-            <tr><td><strong>طاولة بلياردو</strong></td><td>لاعبان أو فريقان، مع عصي وكرات كاملة.</td><td>طاولتان</td><td><strong>80 جنيه</strong></td></tr>
-            <tr><td><strong>طاولة بينج بونج</strong></td><td>مباراة فردية أو زوجية، مع مضارب وكرات.</td><td>طاولتان</td><td><strong>40 جنيه</strong></td></tr>
+            <tr><td><strong>كمبيوتر عادي</strong></td><td>الألعاب اليومية والتصفح والدراسة والعمل المكتبي.</td><td>12 جهازًا</td><td><strong><span data-price="pc">20</span> جنيه</strong></td></tr>
+            <tr><td><strong>كمبيوتر مميز</strong></td><td>الألعاب التنافسية والبرامج الثقيلة على جهاز أسرع.</td><td>6 أجهزة</td><td><strong><span data-price="vip">35</span> جنيه</strong></td></tr>
+            <tr><td><strong>غرفة PlayStation 5</strong></td><td>مجموعات حتى 4 أشخاص على شاشة كبيرة.</td><td>غرفتان</td><td><strong><span data-price="ps">60</span> جنيه</strong></td></tr>
+            <tr><td><strong>طاولة بلياردو</strong></td><td>لاعبان أو فريقان، مع عصي وكرات كاملة.</td><td>طاولتان</td><td><strong><span data-price="bil">80</span> جنيه</strong></td></tr>
+            <tr><td><strong>طاولة بينج بونج</strong></td><td>مباراة فردية أو زوجية، مع مضارب وكرات.</td><td>طاولتان</td><td><strong><span data-price="tt">40</span> جنيه</strong></td></tr>
           </tbody>
         </table>
       </div>
@@ -419,7 +520,7 @@ footer b{color:var(--fg);font-weight:600}
 <circle cx="110" cy="110" r="8" fill="#FFFFFF"/></g>
 <line x1="22" y1="182" x2="98" y2="117" stroke="#D9B382" stroke-width="4" stroke-linecap="round"/>
 </svg>
-          <figcaption><h3>طاولة بلياردو</h3><p>طاولة بكلوث أخضر وستة جيوب، مع عصي وكرات كاملة وطباشير.</p><p class="price">80 جنيه للساعة</p></figcaption>
+          <figcaption><h3>طاولة بلياردو</h3><p>طاولة بكلوث أخضر وستة جيوب، مع عصي وكرات كاملة وطباشير.</p><p class="price"><span data-price="bil">80</span> جنيه للساعة</p></figcaption>
         </figure>
         <figure class="game"><svg viewBox="0 0 400 220" role="img" aria-label="رسم لطاولة بينج بونج">
 <rect x="2" y="2" width="396" height="216" rx="2" fill="#E9ECEF" fill-opacity=".0"/>
@@ -433,7 +534,7 @@ footer b{color:var(--fg);font-weight:600}
 <g transform="rotate(-25 330 120)"><circle cx="330" cy="100" r="22" fill="#C0322B"/><rect x="325" y="120" width="10" height="26" rx="3" fill="#C99A5B"/></g>
 <rect x="38" y="190" width="14" height="22" rx="2" fill="#333333" fill-opacity=".0"/>
 </svg>
-          <figcaption><h3>طاولة بينج بونج</h3><p>طاولة بشبكة قياسية، مع مضارب وكرات لمباراة فردية أو زوجية.</p><p class="price">40 جنيه للساعة</p></figcaption>
+          <figcaption><h3>طاولة بينج بونج</h3><p>طاولة بشبكة قياسية، مع مضارب وكرات لمباراة فردية أو زوجية.</p><p class="price"><span data-price="tt">40</span> جنيه للساعة</p></figcaption>
         </figure>
       </div>
       <div class="cta"><button type="button" class="btn btn-primary" data-go="book" data-res="bil">احجز بلياردو</button><button type="button" class="btn btn-line" data-go="book" data-res="tt">احجز بينج بونج</button></div>
@@ -746,7 +847,7 @@ function cancelled(b){
 }
 function renderAdmin(){
   if(!S.isAdmin)return;
-  $('#navAdmin').hidden=false;
+  $('#navAdmin').hidden=false;$('#navManage').hidden=false;
   var list=S.bookings.filter(function(b){return b.date>=TODAY}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:(a.start-b.start)});
   var n=list.filter(function(b){return b.date===TODAY&&!cancelled(b)}).length;
   $('#adminLead').textContent='الحجوزات القادمة مرتبة حسب التاريخ. حجوزات تبدأ اليوم: '+n+'.';
@@ -836,6 +937,7 @@ function updateAcctBtn(){
   var a=$('#acctBtn');
   if(!a)return;
   a.textContent=S.uid?(S.profile&&S.profile.name?S.profile.name.split(' ')[0]:'حسابي'):'تسجيل الدخول';
+  a.setAttribute('href','#account');a.onclick=S.uid?null:function(e){e.preventDefault();fbAuthUI({signup:true})};
 }
 function fillForm(){
   if(!S.profile)return;
@@ -858,9 +960,9 @@ function renderAccount(){
   if(!S.ready){t.textContent='حسابي';l.textContent='جارٍ تحميل بياناتك...';b.innerHTML='';return}
   if(!S.uid){
     t.textContent='تسجيل الدخول';
-    l.textContent='الحساب مرتبط بتسجيل دخولك على المنصة. بعد الدخول تستطيع إنشاء حسابك وحجز الملعب مباشرة ومتابعة حجوزاتك.';
-    b.innerHTML='<div class="card" style="margin-top:36px;max-width:560px"><h3>الدخول مطلوب</h3><p>افتح هذه الصفحة وأنت مسجّل دخولك بحسابك ثم ارجع إلى هنا. حتى ذلك الحين يمكنك استخدام «تجهيز طلب الحجز» وإرساله على واتساب.</p>'+
-      '<div class="cta"><button type="button" class="btn btn-primary" data-go="book" data-res="pitch">تجهيز طلب حجز</button></div></div>';
+    l.textContent='سجّل دخولك أو أنشئ حسابًا لتحجز الملعب مباشرة وتتابع حجوزاتك.';
+    b.innerHTML='<div class="card" style="margin-top:36px;max-width:560px"><h3>الدخول مطلوب</h3><p>أنشئ حسابًا مرة واحدة، وبعدها تحجز وتتابع حجوزاتك من أي جهاز. ويمكنك أيضًا استخدام «تجهيز طلب الحجز» بدون حساب.</p>'+
+      '<div class="cta"><a class="btn btn-primary" href="#" onclick="fbAuthUI({signup:true});return false">تسجيل الدخول</a><button type="button" class="btn btn-line" data-go="book" data-res="pitch">تجهيز طلب حجز</button></div></div>';
     return;
   }
   if(!S.pLoaded){t.textContent='حسابي';l.textContent='جارٍ تحميل بياناتك...';b.innerHTML='';return}
@@ -882,7 +984,7 @@ function renderAccount(){
     return '<li><div><strong>'+esc(RES[x.res]?RES[x.res].name:x.res)+(x.qty>1?' × '+x.qty:'')+'</strong><small class="num">'+esc(dateLabel(x.date))+' · '+range(x.start,x.dur)+'</small><small>الكود <span class="ltr num">'+esc(x.bid)+'</span> · '+esc(x.total)+' جنيه</small></div><div>'+st+btn+'</div></li>';
   }).join('')+'</ul><p class="fine">الإلغاء بدون رسوم قبل الموعد بـ 6 ساعات على الأقل. بعدها تواصل معنا هاتفيًا.</p>'
   :'<p class="empty">لا توجد حجوزات بعد.</p>';
-  b.innerHTML='<div class="acct"><div class="card"><h3>بياناتي</h3>'+acctForm(S.profile)+'</div><div><h3 style="margin-bottom:16px">حجوزاتي</h3>'+rows+'</div></div>';
+  b.innerHTML='<div class="acct"><div class="card"><h3>بياناتي</h3>'+acctForm(S.profile)+'</div><div><h3 style="margin-bottom:16px">حجوزاتي</h3>'+rows+'</div></div><p style="margin-top:32px"><button type="button" class="btn btn-line btn-sm" onclick="fbSignOut()">تسجيل الخروج</button></p>';
 }
 async function saveProfile(ev){
   ev.preventDefault();
@@ -906,11 +1008,11 @@ async function cancelMine(bid){
 }
 
 /* ---------- routing ---------- */
-var VIEWS=['home','cafe','book','contact','account','admin'];
+var VIEWS=['home','cafe','book','contact','account','admin','manage'];
 function route(scroll){
   var v=location.hash.replace('#','')||'home';
   if(VIEWS.indexOf(v)<0)v='home';
-  if(v==='admin'&&!S.isAdmin)v='home';
+  if((v==='admin'||v==='manage')&&!S.isAdmin)v='home';
   $$('.view').forEach(function(el){el.hidden=el.dataset.view!==v});
   $$('[data-nav]').forEach(function(a){if(a.dataset.nav===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
   if(scroll)window.scrollTo(0,0);
@@ -967,6 +1069,20 @@ $('#gateForm').addEventListener('submit',function(e){
   }else{$('#gateErr').textContent='كلمة المرور غير صحيحة.'}
 });
 
+
+/* ---------- settings from the admin panel ---------- */
+function applySettings(o){
+  if(!o)return;
+  var n=function(v){v=+v;return v>0?v:null};
+  ['A','B','C'].forEach(function(k){var v=n(o['pitch'+k]);if(v)BAND_RATE[k]=v});
+  ['pc','vip','ps','bil','tt'].forEach(function(k){var v=n(o[k]);if(v)RES[k].rate=v});
+  if(o.phone1)CONFIG.phones[0]=String(o.phone1);
+  if(o.phone2)CONFIG.phones[1]=String(o.phone2);
+  $$('[data-price]').forEach(function(e){var k=e.dataset.price;e.textContent=k.indexOf('pitch')===0?BAND_RATE[k.slice(5)]:RES[k].rate});
+  $$('[data-phone]').forEach(function(e){e.textContent=CONFIG.phones[+e.dataset.phone||0]});
+  renderAll();
+}
+
 /* ---------- init ---------- */
 renderAll();route(false);
 (async function(){
@@ -976,6 +1092,7 @@ renderAll();route(false);
   try{db=await c.use('db');user=await c.use('user')}catch(e){}
   if(!db){S.ready=true;renderAccount();return}
   S.db=db;
+  try{db.collection('settings').doc('main').onSnapshot(function(sn){if(sn.exists)applySettings(sn.data())},function(){})}catch(e){}
   if(user){
     try{S.uid=await user.id()}catch(e){}
     try{S.isAdmin=await user.canEdit()}catch(e){}

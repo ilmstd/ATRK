@@ -1,0 +1,1063 @@
+<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
+/* ===== إعدادات Firebase: الصقها هنا (نفس الإعدادات في الملفات الثلاثة) ===== */
+window.FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDERNheJlGJdUojoiBfktg5OyJAU-wxZJU",
+  authDomain: "abotrekamgmt.firebaseapp.com",
+  projectId: "abotrekamgmt",
+  storageBucket: "abotrekamgmt.firebasestorage.app",
+  messagingSenderId: "1044419679462",
+  appId: "1:1044419679462:web:c78116fd483aa1108e1727",
+  measurementId: "G-Q5PS65G4SQ"
+};
+/* ===== نهاية الإعدادات ===== */
+</script><script>window.REQUIRE_LOGIN=1</script><script>
+/* يربط الصفحة بـ Firebase ويعرض نافذة الدخول. لا تعدّل هنا. */
+(function(){
+  var cfg=window.FIREBASE_CONFIG;
+  window.fbSignOut=function(){
+    if(window.firebase&&firebase.apps.length)return firebase.auth().signOut().then(function(){location.href='index.html'});
+  };
+  if(!window.firebase||!cfg||!cfg.apiKey||/YOUR_/.test(cfg.apiKey)){
+    console.warn('Firebase غير مهيّأ. عدّل إعدادات Firebase في أعلى الملف');return;
+  }
+  firebase.initializeApp(cfg);
+  var auth=firebase.auth(),db=firebase.firestore(),me=null,admin=false;
+  var ERR={'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة.','auth/wrong-password':'البريد أو كلمة المرور غير صحيحة.','auth/user-not-found':'لا يوجد حساب بهذا البريد.','auth/invalid-email':'البريد الإلكتروني غير صحيح.','auth/email-already-in-use':'هذا البريد مسجّل بالفعل. سجّل الدخول.','auth/weak-password':'كلمة المرور 6 أحرف على الأقل.','auth/too-many-requests':'محاولات كثيرة. انتظر قليلًا.','auth/network-request-failed':'تعذر الاتصال بالإنترنت.'};
+  window.fbAuthUI=function(o){
+    o=o||{};if(document.getElementById('fbAuth'))return;
+    var up=false,w=document.createElement('div');w.id='fbAuth';
+    w.style.cssText='position:fixed;inset:0;z-index:1000;background:var(--bg);color:var(--fg);display:grid;place-items:center;padding:24px;overflow:auto;direction:rtl;font-family:inherit;line-height:1.8';
+    var F='width:100%;min-height:46px;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:transparent;color:inherit;font:inherit;margin:4px 0 14px;box-sizing:border-box;direction:ltr;text-align:right';
+    var B='background:none;border:0;padding:0;color:var(--muted);font:inherit;font-size:.88rem;text-decoration:underline;cursor:pointer;margin-top:14px;display:block';
+    function draw(){
+      w.innerHTML='<div style="width:100%;max-width:400px"><h2 style="margin:0 0 24px;font-size:1.5rem">'+(up?'إنشاء حساب':'تسجيل الدخول')+'</h2>'+
+        (up?'<label>الاسم الكامل</label><input id="fbN" style="'+F+';direction:rtl" autocomplete="name"><label>رقم الموبايل</label><input id="fbPh" inputmode="numeric" placeholder="01XXXXXXXXX" style="'+F+'" autocomplete="tel">':'')+
+        '<label>البريد الإلكتروني</label><input id="fbE" type="email" style="'+F+'" autocomplete="email">'+
+        '<label>كلمة المرور</label><input id="fbP" type="password" style="'+F+'" autocomplete="'+(up?'new-password':'current-password')+'">'+
+        '<button id="fbGo" style="width:100%;min-height:48px;border:0;border-radius:2px;background:var(--fg);color:var(--bg);font:inherit;font-weight:500;cursor:pointer">'+(up?'إنشاء الحساب':'دخول')+'</button>'+
+        '<div id="fbM" role="alert" style="min-height:1.6em;margin-top:12px;font-size:.92rem;color:var(--bad,#b3321f)"></div>'+
+        (o.signup?'<button id="fbT" style="'+B+'">'+(up?'عندي حساب. تسجيل الدخول':'ليس لدي حساب. إنشاء حساب')+'</button>':'')+
+        (up?'':'<button id="fbR" style="'+B+'">نسيت كلمة المرور</button>')+
+        (o.required?'':'<button id="fbX" style="'+B+'">إغلاق</button>')+'</div>';
+      var $=function(i){return w.querySelector(i)},say=function(t){$('#fbM').textContent=t},bad=function(e){say(ERR[e&&e.code]||'حدث خطأ. حاول مرة أخرى.');$('#fbGo').disabled=false};
+      if($('#fbT'))$('#fbT').onclick=function(){up=!up;draw()};
+      if($('#fbX'))$('#fbX').onclick=function(){w.remove()};
+      if($('#fbR'))$('#fbR').onclick=function(){var e=$('#fbE').value.trim();if(!e)return say('اكتب بريدك أولًا.');auth.sendPasswordResetEmail(e).then(function(){say('أرسلنا رابط إعادة تعيين كلمة المرور لبريدك.')},bad)};
+      $('#fbGo').onclick=function(){
+        var e=$('#fbE').value.trim(),p=$('#fbP').value;
+        if(!e||!p)return say('اكتب البريد وكلمة المرور.');
+        if(!up){$('#fbGo').disabled=true;return auth.signInWithEmailAndPassword(e,p).then(function(){location.reload()},bad)}
+        var n=$('#fbN').value.trim(),ph=$('#fbPh').value.replace(/[\s-]/g,'');
+        if(n.length<2)return say('اكتب اسمك.');
+        if(!/^01[0125]\d{8}$/.test(ph))return say('أدخل رقم موبايل من 11 رقمًا يبدأ بـ 01.');
+        $('#fbGo').disabled=true;
+        auth.createUserWithEmailAndPassword(e,p).then(function(c){return db.collection('profiles').doc(c.user.uid).set({name:n,phone:ph,created:Date.now()})}).then(function(){location.reload()},bad);
+      };
+    }
+    draw();document.body.appendChild(w);
+  };
+  function flat(o,p,out){
+    Object.keys(o).forEach(function(k){
+      var v=o[k],key=p?p+'.'+k:k;
+      if(v&&typeof v==='object'&&Object.getPrototypeOf(v)===Object.prototype)flat(v,key,out);else out[key]=v;
+    });
+    return out;
+  }
+  var DR=firebase.firestore.DocumentReference.prototype,upd=DR.update;
+  DR.update=function(d){
+    return (arguments.length===1&&d&&typeof d==='object'&&!Array.isArray(d))?upd.call(this,flat(d,'',{})):upd.apply(this,arguments);
+  };
+  var ready=new Promise(function(res){
+    var first=true;
+    auth.onAuthStateChanged(function(u){
+      me=u;admin=false;
+      if(!u){
+        if(first&&window.REQUIRE_LOGIN){var go=function(){fbAuthUI({required:true})};document.body?go():document.addEventListener('DOMContentLoaded',go)}
+        first=false;res();return;
+      }
+      db.collection('admins').doc(u.uid).get().then(function(d){admin=d.exists},function(){}).then(function(){first=false;res()});
+    });
+  });
+  window.claude={use:function(n){return ready.then(function(){
+    if(n==='db')return db;
+    if(n==='user')return{
+      id:function(){return Promise.resolve(me?me.uid:null)},
+      canEdit:function(){return Promise.resolve(admin)},
+      can:function(){return Promise.resolve(!!me)},
+      isOwner:function(){return admin}
+    };
+    return null;
+  })}};
+})();
+</script></head><body>
+<title>إدارة أبو تريكة</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+<style>
+/* Layout concept: the same Arabic minimalism as the public site, turned into an operations desk. White page, hairline rules, one typeface, black as the only accent, state shown by weight and rule not colour. */
+:root{
+  --bg:#FFFFFF; --fg:#111111; --muted:#6B6B6B; --line:#E6E6E6; --soft:#F6F6F6;
+  --accent:#111111; --accent-ink:#FFFFFF;
+  --bar-a:#111111; --bar-b:#BDBDBD;
+  --bad:#B3321F; --ok:#1E6B43;
+  --f-body:'IBM Plex Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C0C0C; --fg:#F2F2F2; --muted:#9A9A9A; --line:#262626; --soft:#151515;
+    --accent:#F2F2F2; --accent-ink:#0C0C0C; --bar-a:#F2F2F2; --bar-b:#5A5A5A;
+    --bad:#F0806E; --ok:#6CCB9A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C0C0C; --fg:#F2F2F2; --muted:#9A9A9A; --line:#262626; --soft:#151515;
+  --accent:#F2F2F2; --accent-ink:#0C0C0C; --bar-a:#F2F2F2; --bar-b:#5A5A5A;
+  --bad:#F0806E; --ok:#6CCB9A; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--fg);color:var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.8;direction:rtl;font-weight:400;margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+h1,h2,h3{font-family:var(--f-body);line-height:1.4;margin:0;text-wrap:balance;font-weight:600}
+h2{font-size:clamp(1.5rem,3vw,2rem)}
+h3{font-size:1.02rem}
+p{margin:0}
+.in{max-width:1120px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(40px,6vw,72px)}
+.lead{color:var(--muted);max-width:60ch;margin-top:10px}
+.kicker{font-size:.85rem;color:var(--muted);font-weight:500;margin-bottom:10px}
+.num{font-variant-numeric:tabular-nums}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.muted{color:var(--muted)}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+[hidden]{display:none!important}
+
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.hdr .in{display:flex;align-items:center;gap:32px;min-height:68px}
+.brand{display:flex;flex-direction:column;line-height:1.3;white-space:nowrap;flex:none}
+.brand b{font-weight:600;font-size:1.15rem}
+.brand span{font-size:.75rem;color:var(--muted)}
+.nav{display:flex;align-self:stretch;gap:2px;margin-inline-start:auto;overflow-x:auto;min-width:0;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{display:flex;align-items:center;white-space:nowrap;text-decoration:none;color:var(--muted);padding:0 12px;font-size:.92rem;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s}
+.nav a:hover{color:var(--fg)}
+.nav a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--fg)}
+@media (max-width:760px){
+  .hdr .in{flex-wrap:wrap;gap:0 12px;padding-block:12px 0}
+  .brand{padding-bottom:12px}
+  .nav{order:3;width:100%;align-self:auto;margin:0;border-top:1px solid var(--line)}
+  .nav a{padding:12px;margin-bottom:0}
+}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 22px;border:1px solid transparent;border-radius:2px;font:500 .95rem var(--f-body);cursor:pointer;text-decoration:none;background:var(--accent);color:var(--accent-ink)}
+.btn-line{background:transparent;color:var(--fg);border-color:var(--fg)}
+.btn-sm{min-height:34px;padding:0 14px;font-size:.85rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.link{background:none;border:0;padding:0;color:var(--fg);font:500 .88rem var(--f-body);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.link.bad{color:var(--bad)}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 40px;margin-top:32px}
+.stats div{border-top:1px solid var(--fg);padding:16px 0 20px}
+.stats dt{color:var(--muted);font-size:.88rem}
+.stats dd{margin:4px 0 0;font-size:1.9rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.3}
+.stats dd small{font-size:.9rem;font-weight:400;color:var(--muted)}
+.two{display:grid;gap:56px;margin-top:48px;align-items:start}
+@media (min-width:900px){.two{grid-template-columns:1.3fr 1fr}}
+.two>div{min-width:0}
+.sub{margin-bottom:16px}
+
+.tl{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:6px}
+.tl div{border:1px solid var(--line);border-bottom:3px solid var(--line);padding:6px 0;text-align:center;font-size:.8rem;font-variant-numeric:tabular-nums;line-height:1.4}
+.tl div.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.tl div.now{border-bottom-color:var(--fg)}
+.tl small{display:block;font-size:.68rem;opacity:.8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-inline:3px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 20px;margin-top:12px;font-size:.85rem;color:var(--muted)}
+.dot{display:inline-block;width:9px;height:9px;margin-inline-end:8px}
+.chart{width:100%;height:auto;display:block}
+.chart .lbl{fill:var(--muted);font:400 11px var(--f-body)}
+.chart .val{fill:var(--fg);font:500 11px var(--f-body)}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .ba{fill:var(--bar-a)} .chart .bb{fill:var(--bar-b)}
+
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.list li:first-child{border-top:1px solid var(--line)}
+.list small{display:block;color:var(--muted)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:640px;font-variant-numeric:tabular-nums}
+th,td{padding:14px 0;padding-inline:0 16px;text-align:start;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.85rem;color:var(--muted);font-weight:500;border-bottom:1px solid var(--fg)}
+tr.cx td{opacity:.5}
+.tag{display:inline-block;font-size:.8rem;padding:0 8px;border:1px solid var(--line);line-height:1.7}
+.tag.on{border-color:var(--fg);font-weight:500}
+.tag.bad{color:var(--bad);border-color:var(--bad)}
+.empty{color:var(--muted);padding:24px 0}
+
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-top:28px;padding:24px;border:1px solid var(--line);border-radius:2px;align-items:end}
+.form .wide{grid-column:1/-1}
+label{display:block;font-weight:500;font-size:.88rem;margin-bottom:6px}
+input[type=text],input[type=tel],input[type=number],input[type=date],input[type=month],select,textarea{width:100%;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:transparent;color:var(--fg);font:400 .95rem var(--f-body)}
+textarea{min-height:90px;padding:10px 12px}
+input:focus,select:focus,textarea:focus{border-color:var(--fg)}
+select option{background:var(--bg);color:var(--fg)}
+.chk{display:flex;align-items:center;gap:10px;min-height:44px}
+.chk input{width:18px;height:18px;accent-color:var(--fg)}
+.chk label{margin:0}
+.err{color:var(--bad);font-weight:500;min-height:1.5em;font-size:.9rem}
+.okm{color:var(--ok);font-weight:500;min-height:1.5em;font-size:.9rem}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end;margin:36px 0 8px}
+.toolbar>div{min-width:170px}
+.sum3{display:flex;flex-wrap:wrap;gap:8px 40px;margin:8px 0 20px}
+.sum3 b{font-weight:600;font-size:1.25rem}
+.gate{min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding-block:96px}
+.gate h1{font-size:clamp(1.8rem,5vw,3rem)}
+.gate p{color:var(--muted);margin:14px auto 0;max-width:44ch}
+.note{font-size:.88rem;color:var(--muted);margin-top:14px;max-width:62ch}
+.seg{display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line);margin-top:28px;overflow-x:auto}
+.seg button{background:none;border:0;border-bottom:2px solid transparent;padding:10px 14px;font:500 .92rem var(--f-body);color:var(--muted);cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{color:var(--fg);border-bottom-color:var(--fg)}
+.pos{display:grid;gap:36px;margin-top:28px;align-items:start}
+@media (min-width:900px){.pos{grid-template-columns:1.5fr 1fr}}
+.pos>*{min-width:0}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:14px}
+.pbtn{display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:4px;min-height:84px;padding:10px 12px;background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:2px;font:500 .93rem var(--f-body);cursor:pointer;text-align:start;line-height:1.45}
+.pbtn:hover:not([disabled]){border-color:var(--fg)}
+.pbtn small{font-weight:400;color:var(--muted);font-size:.78rem}
+.pbtn[disabled]{opacity:.4;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chipb{background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:2px;padding:4px 14px;font:500 .85rem var(--f-body);cursor:pointer}
+.chipb[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.cart{border:1px solid var(--line);border-radius:2px;padding:22px}
+.cart ul{list-style:none;margin:0 0 14px;padding:0}
+.cart li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.cart li:first-child{border-top:1px solid var(--line)}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line)}
+.qty button{width:30px;height:30px;border:0;background:transparent;color:var(--fg);font:400 1.1rem var(--f-body);cursor:pointer}
+.qty span{min-width:26px;text-align:center;font-weight:500;font-variant-numeric:tabular-nums}
+.cart .f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.big{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0}
+.big b{font-size:1.7rem;font-weight:600;font-variant-numeric:tabular-nums}
+.bar{height:4px;background:var(--line);margin-top:6px}
+.bar i{display:block;height:4px;background:var(--accent)}
+.rows .r{padding:12px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rows .r>div:first-child{flex:1;min-width:140px}
+.low{color:var(--bad);font-weight:500}
+footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<header class="hdr">
+  <div class="in">
+    <div class="brand"><b>أبو تريكة</b><span>لوحة الإدارة</span></div>
+    <nav class="nav" aria-label="أقسام الإدارة" id="nav">
+      <a href="#overview" data-nav="overview">نظرة عامة</a>
+      <a href="#bookings" data-nav="bookings">الحجوزات</a>
+      <a href="#sales" data-nav="sales">المبيعات</a>
+      <a href="#finance" data-nav="finance">الحسابات</a>
+      <a href="#staff" data-nav="staff">الفريق</a>
+      <a href="#maint" data-nav="maint">الصيانة</a>
+      <a href="#settings" data-nav="settings">الإعدادات</a>
+      <a href="index.html">الموقع</a>
+      <a href="#" onclick="fbSignOut();return false">خروج</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="gate" id="gate"><div class="in"><h1 id="gateT">جارٍ التحميل</h1><p id="gateP">نجهز بيانات الإدارة.</p></div></div>
+
+<div id="app" hidden>
+
+<!-- OVERVIEW -->
+<div class="view" data-view="overview">
+  <section><div class="in">
+    <div class="kicker" id="ovDate"></div>
+    <h2>نظرة عامة على المكان</h2>
+    <p class="lead">ملخص اليوم، وحجز الملعب ساعة بساعة، وآخر سبعة أيام.</p>
+    <dl class="stats" id="ovStats"></dl>
+    <div class="two">
+      <div>
+        <h3 class="sub">الملعب اليوم</h3>
+        <div class="tl" id="ovTl"></div>
+        <div class="legend"><span><i class="dot" style="background:var(--accent)"></i>محجوز</span><span><i class="dot" style="background:var(--line)"></i>متاح</span></div>
+        <h3 class="sub" style="margin-top:44px">إيراد ومصروف آخر 7 أيام</h3>
+        <svg class="chart" id="ovChart" viewBox="0 0 700 230" role="img" aria-label="إيراد ومصروف آخر سبعة أيام"></svg>
+        <div class="legend"><span><i class="dot" style="background:var(--bar-a)"></i>إيراد</span><span><i class="dot" style="background:var(--bar-b)"></i>مصروف</span></div>
+      </div>
+      <div>
+        <h3 class="sub">الحجوزات القادمة</h3>
+        <ul class="list" id="ovNext"></ul>
+        <h3 class="sub" style="margin-top:44px">الصيانة المفتوحة</h3>
+        <ul class="list" id="ovMaint"></ul>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+<!-- BOOKINGS -->
+<div class="view" data-view="bookings" hidden>
+  <section><div class="in">
+    <div class="kicker">الحجوزات</div>
+    <h2>إدارة الحجوزات</h2>
+    <p class="lead">سجّل حجز مكالمة أو حضور مباشر. النظام يمنع الحجز المتعارض ويحسب السعر من قائمة الأسعار.</p>
+    <form class="form" id="bkForm" novalidate>
+      <div><label for="bkRes">الخدمة</label><select id="bkRes"></select></div>
+      <div><label for="bkDate">اليوم</label><input id="bkDate" type="date"></div>
+      <div><label for="bkStart">وقت البداية</label><select id="bkStart"></select></div>
+      <div><label for="bkDur">المدة (ساعات)</label><select id="bkDur"></select></div>
+      <div id="bkQtyBox"><label for="bkQty">العدد</label><input id="bkQty" type="number" min="1" value="1"></div>
+      <div><label for="bkName">اسم العميل</label><input id="bkName" type="text" placeholder="الاسم"></div>
+      <div><label for="bkPhone">الموبايل</label><input id="bkPhone" type="tel" inputmode="numeric" dir="ltr" style="text-align:right" placeholder="01XXXXXXXXX"></div>
+      <div><label for="bkSrc">المصدر</label><select id="bkSrc"><option value="phone">مكالمة</option><option value="walkin">حضور مباشر</option><option value="site">الموقع</option></select></div>
+      <div class="chk"><input id="bkPaid" type="checkbox"><label for="bkPaid">تم الدفع</label></div>
+      <div><label>الإجمالي</label><div class="num" style="font-size:1.4rem;font-weight:600" id="bkTotal">0 جنيه</div></div>
+      <div class="wide" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center"><button class="btn" type="submit">حفظ الحجز</button><span class="err" id="bkErr" role="alert"></span></div>
+    </form>
+    <div class="toolbar">
+      <div><label for="bkFilter">عرض يوم</label><input id="bkFilter" type="date"></div>
+      <div><label for="bkView">النوع</label><select id="bkView"><option value="up">القادمة</option><option value="day">اليوم المحدد</option><option value="all">الكل</option></select></div>
+    </div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>الموعد</th><th>الخدمة</th><th>العميل</th><th>الإجمالي</th><th>الحالة</th><th></th></tr></thead>
+      <tbody id="bkList"></tbody>
+    </table></div>
+    <p class="note">الحجوزات التي تتم من الموقع نفسه تظهر في تبويب «الحجوزات» داخل الموقع. هذه الصفحة لها بياناتها الخاصة بها.</p>
+  </div></section>
+</div>
+
+<!-- SALES -->
+<div class="view" data-view="sales" hidden>
+  <section><div class="in">
+    <div class="kicker">المبيعات</div>
+    <h2>الكاشير والمخزون</h2>
+    <p class="lead">بيع المشروبات والوجبات الخفيفة والطباعة، وتابع المخزون والآجل وتقارير المبيعات وإقفال الوردية.</p>
+    <div class="seg" role="tablist" id="seg">
+      <button type="button" data-stab="cashier" aria-pressed="true">الكاشير</button>
+      <button type="button" data-stab="products" aria-pressed="false">المنتجات والمخزون</button>
+      <button type="button" data-stab="log" aria-pressed="false">سجل المبيعات</button>
+      <button type="button" data-stab="report" aria-pressed="false">التقارير</button>
+      <button type="button" data-stab="debts" aria-pressed="false">الآجل</button>
+      <button type="button" data-stab="close" aria-pressed="false">إقفال الوردية</button>
+    </div>
+
+    <div data-sp="cashier">
+      <div class="pos">
+        <div>
+          <label for="posQ">بحث عن منتج</label>
+          <input id="posQ" type="text" placeholder="اكتب اسم المنتج">
+          <div class="chips" id="posCats"></div>
+          <div class="pgrid" id="posGrid"></div>
+        </div>
+        <aside class="cart" aria-live="polite">
+          <h3 style="margin-bottom:12px">الفاتورة</h3>
+          <ul id="posCart"></ul>
+          <div class="f2">
+            <div><label for="posDisc">خصم (جنيه)</label><input id="posDisc" type="number" min="0" value="0"></div>
+            <div><label for="posMethod">الدفع</label><select id="posMethod"><option value="cash">نقدي</option><option value="wallet">محفظة إلكترونية</option><option value="instapay">إنستاباي</option><option value="credit">آجل</option></select></div>
+          </div>
+          <div><label for="posCust">اسم العميل <span class="muted">(مطلوب للآجل)</span></label><input id="posCust" type="text"></div>
+          <div class="big"><span>الإجمالي</span><b id="posTotal">0 جنيه</b></div>
+          <button type="button" class="btn" style="width:100%" id="posDone">إتمام البيع</button>
+          <div class="err" id="posErr" role="alert" style="margin-top:8px"></div>
+        </aside>
+      </div>
+    </div>
+
+    <div data-sp="products" hidden>
+      <form class="form" id="pdForm" novalidate>
+        <div><label for="pdName">اسم المنتج</label><input id="pdName" type="text"></div>
+        <div><label for="pdCat">التصنيف</label><input id="pdCat" type="text" list="pdCats"><datalist id="pdCats"><option value="مشروبات ساخنة"><option value="مشروبات باردة"><option value="وجبات خفيفة"><option value="خدمات"></datalist></div>
+        <div><label for="pdPrice">سعر البيع</label><input id="pdPrice" type="number" min="0"></div>
+        <div><label for="pdCost">التكلفة</label><input id="pdCost" type="number" min="0" value="0"></div>
+        <div><label for="pdStock">الكمية الحالية</label><input id="pdStock" type="number" min="0" value="0"></div>
+        <div><label for="pdLow">حد التنبيه</label><input id="pdLow" type="number" min="0" value="5"></div>
+        <div class="chk"><input id="pdTrack" type="checkbox" checked><label for="pdTrack">تتبع المخزون</label></div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><button class="btn" type="submit">إضافة منتج</button></div>
+        <div class="wide err" id="pdErr" role="alert"></div>
+      </form>
+      <div class="sum3" id="pdSum" style="margin-top:28px"></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>المنتج</th><th>السعر</th><th>التكلفة</th><th>المخزون</th><th>توريد</th><th></th></tr></thead>
+        <tbody id="pdList"></tbody>
+      </table></div>
+      <div id="pdStarter" hidden style="margin-top:20px"><button type="button" class="btn btn-line" id="pdSeed">إضافة قائمة منتجات جاهزة</button><p class="note">قائمة بأصناف شائعة بأسعار تقريبية، عدّلها بعد الإضافة.</p></div>
+    </div>
+
+    <div data-sp="log" hidden>
+      <div class="toolbar"><div><label for="slDate">اليوم</label><input id="slDate" type="date"></div></div>
+      <div class="sum3" id="slSum"></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>الوقت</th><th>الأصناف</th><th>الدفع</th><th>الإجمالي</th><th></th></tr></thead>
+        <tbody id="slList"></tbody>
+      </table></div>
+    </div>
+
+    <div data-sp="report" hidden>
+      <div class="toolbar">
+        <div><label for="rpMode">الفترة</label><select id="rpMode"><option value="day">يوم</option><option value="month">شهر</option></select></div>
+        <div><label for="rpDate">التاريخ</label><input id="rpDate" type="date"></div>
+      </div>
+      <dl class="stats" id="rpStats"></dl>
+      <div class="two">
+        <div><h3 class="sub">أكثر المنتجات مبيعًا</h3><div class="rows" id="rpTop"></div></div>
+        <div><h3 class="sub">حسب التصنيف</h3><div class="rows" id="rpCat"></div><h3 class="sub" style="margin-top:36px">حسب طريقة الدفع</h3><div class="rows" id="rpMeth"></div></div>
+      </div>
+    </div>
+
+    <div data-sp="debts" hidden>
+      <div class="sum3" id="dbSum" style="margin-top:28px"></div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>العميل</th><th>التاريخ</th><th>الأصناف</th><th>المبلغ</th><th></th></tr></thead>
+        <tbody id="dbList"></tbody>
+      </table></div>
+    </div>
+
+    <div data-sp="close" hidden>
+      <form class="form" id="clForm" novalidate>
+        <div><label for="clDate">اليوم</label><input id="clDate" type="date"></div>
+        <div><label>النقدي المتوقع</label><div class="num" style="font-size:1.4rem;font-weight:600" id="clExp">0 جنيه</div></div>
+        <div><label for="clCount">النقدي الفعلي في الدرج</label><input id="clCount" type="number" min="0"></div>
+        <div><label for="clBy">المسؤول</label><input id="clBy" type="text"></div>
+        <div><label>الفرق</label><div class="num" style="font-size:1.4rem;font-weight:600" id="clDiff">0 جنيه</div></div>
+        <div style="display:flex;gap:12px;align-items:center"><button class="btn" type="submit">حفظ الإقفال</button></div>
+        <div class="wide err" id="clErr" role="alert"></div>
+      </form>
+      <p class="note">المتوقع هو مبيعات اليوم النقدية مضافًا إليها الآجل الذي سُدّد نقدًا في نفس اليوم.</p>
+      <h3 class="sub" style="margin-top:36px">آخر عمليات الإقفال</h3>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>اليوم</th><th>المتوقع</th><th>الفعلي</th><th>الفرق</th><th>المسؤول</th></tr></thead>
+        <tbody id="clList"></tbody>
+      </table></div>
+    </div>
+  </div></section>
+</div>
+
+<!-- FINANCE -->
+<div class="view" data-view="finance" hidden>
+  <section><div class="in">
+    <div class="kicker">الحسابات</div>
+    <h2>الإيرادات والمصروفات</h2>
+    <p class="lead">الحجوزات المدفوعة تُحسب إيرادًا تلقائيًا. أضف هنا باقي الإيرادات والمصروفات.</p>
+    <form class="form" id="fnForm" novalidate>
+      <div><label for="fnType">النوع</label><select id="fnType"><option value="income">إيراد</option><option value="expense">مصروف</option></select></div>
+      <div><label for="fnCat">البند</label><input id="fnCat" type="text" list="fnCats" placeholder="مثال: مشروبات"><datalist id="fnCats"><option value="مشروبات ووجبات"><option value="طباعة"><option value="كهرباء"><option value="إيجار"><option value="مرتبات"><option value="صيانة"><option value="مشتريات"></datalist></div>
+      <div><label for="fnAmt">المبلغ (جنيه)</label><input id="fnAmt" type="number" min="0" step="1" inputmode="numeric"></div>
+      <div><label for="fnDate">التاريخ</label><input id="fnDate" type="date"></div>
+      <div class="wide"><label for="fnNote">ملاحظة</label><input id="fnNote" type="text" placeholder="اختياري"></div>
+      <div class="wide" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center"><button class="btn" type="submit">إضافة</button><span class="err" id="fnErr" role="alert"></span></div>
+    </form>
+    <div class="toolbar"><div><label for="fnMonth">الشهر</label><input id="fnMonth" type="month"></div></div>
+    <div class="sum3" id="fnSum"></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>التاريخ</th><th>النوع</th><th>البند</th><th>المبلغ</th><th>ملاحظة</th><th></th></tr></thead>
+      <tbody id="fnList"></tbody>
+    </table></div>
+  </div></section>
+</div>
+
+<!-- STAFF -->
+<div class="view" data-view="staff" hidden>
+  <section><div class="in">
+    <div class="kicker">الفريق</div>
+    <h2>العاملون والورديات</h2>
+    <p class="lead">المكان يعمل 24 ساعة، فسجّل من يغطي كل وردية.</p>
+    <form class="form" id="stForm" novalidate>
+      <div><label for="stName">الاسم</label><input id="stName" type="text"></div>
+      <div><label for="stRole">الوظيفة</label><select id="stRole"><option>مسؤول الملعب</option><option>مسؤول النت كافيه</option><option>كاشير</option><option>نظافة</option><option>أمن</option></select></div>
+      <div><label for="stShift">الوردية</label><select id="stShift"><option value="m">صباحية 6 ص – 2 م</option><option value="e">مسائية 2 م – 10 م</option><option value="n">ليلية 10 م – 6 ص</option></select></div>
+      <div><label for="stPhone">الموبايل</label><input id="stPhone" type="tel" inputmode="numeric" dir="ltr" style="text-align:right"></div>
+      <div><label for="stPay">الراتب الشهري</label><input id="stPay" type="number" min="0" inputmode="numeric"></div>
+      <div style="display:flex;gap:16px;align-items:center"><button class="btn" type="submit">إضافة</button></div>
+      <div class="wide err" id="stErr" role="alert"></div>
+    </form>
+    <div class="sum3" id="stSum" style="margin-top:28px"></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>الاسم</th><th>الوظيفة</th><th>الوردية</th><th>الموبايل</th><th>الراتب</th><th></th></tr></thead>
+      <tbody id="stList"></tbody>
+    </table></div>
+  </div></section>
+</div>
+
+<!-- MAINTENANCE -->
+<div class="view" data-view="maint" hidden>
+  <section><div class="in">
+    <div class="kicker">الصيانة</div>
+    <h2>الصيانة والمعدات</h2>
+    <p class="lead">سجّل ما يحتاج إصلاحًا أو استبدالًا، وأغلقه عند الانتهاء.</p>
+    <form class="form" id="mtForm" novalidate>
+      <div><label for="mtItem">المطلوب</label><input id="mtItem" type="text" placeholder="مثال: كشاف LED رقم 3"></div>
+      <div><label for="mtArea">المكان</label><select id="mtArea"><option>الملعب</option><option>النت كافيه</option><option>البلياردو</option><option>البينج بونج</option><option>عام</option></select></div>
+      <div><label for="mtPri">الأولوية</label><select id="mtPri"><option value="high">عاجلة</option><option value="mid" selected>عادية</option><option value="low">مؤجلة</option></select></div>
+      <div class="wide"><label for="mtNote">تفاصيل</label><input id="mtNote" type="text" placeholder="اختياري"></div>
+      <div class="wide" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center"><button class="btn" type="submit">إضافة</button><span class="err" id="mtErr" role="alert"></span></div>
+    </form>
+    <div style="margin-top:32px"><ul class="list" id="mtList"></ul></div>
+  </div></section>
+</div>
+
+<!-- SETTINGS -->
+<div class="view" data-view="settings" hidden>
+  <section><div class="in">
+    <div class="kicker">الإعدادات</div>
+    <h2>الأسعار وبيانات المكان</h2>
+    <p class="lead">هذه الأسعار تُستخدم في حساب إجمالي الحجوزات داخل صفحة الإدارة.</p>
+    <form class="form" id="setForm" novalidate>
+      <div class="wide"><h3>الملعب (للساعة)</h3></div>
+      <div><label for="sA">نهارًا 06:00 – 16:00</label><input id="sA" type="number" min="0"></div>
+      <div><label for="sB">مساءً 16:00 – 23:00</label><input id="sB" type="number" min="0"></div>
+      <div><label for="sC">ليلًا 23:00 – 06:00</label><input id="sC" type="number" min="0"></div>
+      <div class="wide"><h3>النت كافيه (للساعة)</h3></div>
+      <div><label for="sPc">كمبيوتر عادي</label><input id="sPc" type="number" min="0"></div>
+      <div><label for="sVip">كمبيوتر مميز</label><input id="sVip" type="number" min="0"></div>
+      <div><label for="sPs">غرفة PlayStation 5</label><input id="sPs" type="number" min="0"></div>
+      <div><label for="sBil">طاولة بلياردو</label><input id="sBil" type="number" min="0"></div>
+      <div><label for="sTt">طاولة بينج بونج</label><input id="sTt" type="number" min="0"></div>
+      <div class="wide"><h3>التواصل</h3></div>
+      <div><label for="sP1">الرقم الأول</label><input id="sP1" type="tel" dir="ltr" style="text-align:right"></div>
+      <div><label for="sP2">الرقم الثاني</label><input id="sP2" type="tel" dir="ltr" style="text-align:right"></div>
+      <div class="wide" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center"><button class="btn" type="submit">حفظ الإعدادات</button><span class="okm" id="setMsg" role="status"></span></div>
+    </form>
+    <p class="note">تغيير الأسعار هنا لا يغيّر الأسعار المعروضة في الموقع العام.</p>
+  </div></section>
+</div>
+
+</div>
+</main>
+<footer><div class="in">أبو تريكة · ملعب خماسي ونت كافيه · شبرا الخيمة</div></footer>
+
+<script>
+(function(){
+'use strict';
+document.documentElement.lang='ar';document.documentElement.dir='rtl';
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var pad=function(n){return String(n).padStart(2,'0')};
+var dkey=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+var DAYN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+var MONN=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+function pd(k){var p=k.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+function dlabel(k){var d=pd(k);return DAYN[d.getDay()]+'، '+d.getDate()+' '+MONN[d.getMonth()]}
+function addDays(k,n){var d=pd(k);d.setDate(d.getDate()+n);return dkey(d)}
+var TODAY=dkey(new Date());
+var hs=function(h){var x=h%24;return (x%12||12)+' '+(x>=12?'م':'ص')};
+var hf=function(h){var x=h%24;return (x%12||12)+':00 '+(x>=12?'م':'ص')};
+var money=function(n){return Number(n||0).toLocaleString('en-US')};
+function rid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+
+var NAMES={pitch:'ملعب كرة القدم',pc:'كمبيوتر عادي',vip:'كمبيوتر مميز',ps:'غرفة PlayStation 5',bil:'طاولة بلياردو',tt:'طاولة بينج بونج'};
+var CAP={pitch:1,pc:12,vip:6,ps:2,bil:2,tt:2};
+var MAXD={pitch:3,pc:5,vip:5,ps:4,bil:4,tt:4};
+var DEF={pitchA:250,pitchB:400,pitchC:350,pc:20,vip:35,ps:60,bil:80,tt:40,phone1:'01008414077',phone2:'01021724291'};
+var SHIFT={m:'صباحية',e:'مسائية',n:'ليلية'};
+var SRC={phone:'مكالمة',walkin:'حضور مباشر',site:'الموقع'};
+
+var S={db:null,ready:false,bookings:[],finance:[],staff:[],maint:[],products:[],sales:[],closes:[],settings:null,armed:null,loaded:{},stab:'cashier',cart:{},pcat:'',cats:[]};
+function cfg(){return Object.assign({},DEF,S.settings||{})}
+function band(h){var x=h%24;return x>=6&&x<16?'A':x>=16&&x<23?'B':'C'}
+function total(res,start,dur,qty){
+  var c=cfg();
+  if(res==='pitch'){var t=0;for(var i=0;i<dur;i++)t+=Number(c['pitch'+band(start+i)]);return t}
+  return Number(c[res])*dur*qty;
+}
+function slotsOf(b){var a=[];for(var i=0;i<b.dur;i++){var h=b.start+i,n=Math.floor(h/24);a.push({date:n?addDays(b.date,n):b.date,hour:h%24})}return a}
+function active(b){return b.status!=='cancelled'}
+function used(res,date,hour,skipId){
+  var c=0;
+  S.bookings.forEach(function(b){
+    if(b.res!==res||!active(b)||b.id===skipId)return;
+    slotsOf(b).forEach(function(s){if(s.date===date&&s.hour===hour)c+=(b.qty||1)});
+  });
+  return c;
+}
+function today(){return dkey(new Date())}
+function salesOn(k){
+  var t=0;
+  S.sales.forEach(function(x){
+    if(x.method!=='credit'){if(x.date===k)t+=Number(x.total||0)}
+    else if(x.settled&&x.settledDate===k)t+=Number(x.total||0);
+  });
+  return t;
+}
+function revenue(k){
+  var t=salesOn(k);
+  S.bookings.forEach(function(b){if(b.date===k&&b.paid&&active(b))t+=Number(b.total||0)});
+  S.finance.forEach(function(f){if(f.date===k&&f.type==='income')t+=Number(f.amount||0)});
+  return t;
+}
+function expense(k){var t=0;S.finance.forEach(function(f){if(f.date===k&&f.type==='expense')t+=Number(f.amount||0)});return t}
+
+/* ---------- routing ---------- */
+var VIEWS=['overview','bookings','sales','finance','staff','maint','settings'];
+function route(){
+  var v=location.hash.replace('#','')||'overview';
+  if(VIEWS.indexOf(v)<0)v='overview';
+  $$('.view').forEach(function(el){el.hidden=el.dataset.view!==v});
+  $$('[data-nav]').forEach(function(a){if(a.dataset.nav===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- renderers ---------- */
+function renderOverview(){
+  var now=new Date();
+  $('#ovDate').textContent=dlabel(TODAY);
+  var todayB=S.bookings.filter(function(b){return b.date===TODAY&&active(b)});
+  var mo=TODAY.slice(0,7),net=0;
+  S.bookings.forEach(function(b){if(b.date.slice(0,7)===mo&&b.paid&&active(b))net+=Number(b.total||0)});
+  S.finance.forEach(function(f){if(f.date.slice(0,7)===mo)net+=(f.type==='income'?1:-1)*Number(f.amount||0)});
+  for(var dd=1;dd<=31;dd++)net+=salesOn(mo+'-'+pad(dd));
+  var lowN=S.products.filter(isLow).length;
+  var unpaid=S.bookings.filter(function(b){return active(b)&&!b.paid&&b.date<=TODAY}).length;
+  $('#ovStats').innerHTML=
+    '<div><dt>حجوزات اليوم</dt><dd>'+todayB.length+'</dd></div>'+
+    '<div><dt>إيراد اليوم</dt><dd>'+money(revenue(TODAY))+' <small>جنيه</small></dd></div>'+
+    '<div><dt>مصروف اليوم</dt><dd>'+money(expense(TODAY))+' <small>جنيه</small></dd></div>'+
+    '<div><dt>صافي الشهر</dt><dd>'+money(net)+' <small>جنيه</small></dd></div>'+
+    '<div><dt>حجوزات غير مدفوعة</dt><dd>'+unpaid+'</dd></div>'+
+    '<div><dt>أصناف ناقصة</dt><dd>'+lowN+'</dd></div>';
+  var tl='';
+  for(var h=0;h<24;h++){
+    var who=null;
+    S.bookings.forEach(function(b){if(b.res==='pitch'&&active(b)&&b.date!==undefined)slotsOf(b).forEach(function(s){if(s.date===TODAY&&s.hour===h)who=b})});
+    tl+='<div class="'+(who?'on':'')+(h===now.getHours()?' now':'')+'" title="'+esc(who?who.name:'متاح')+'">'+hs(h)+(who?'<small>'+esc(who.name)+'</small>':'')+'</div>';
+  }
+  $('#ovTl').innerHTML=tl;
+  drawChart();
+  var up=S.bookings.filter(function(b){return active(b)&&(b.date>TODAY||(b.date===TODAY&&b.start+b.dur>now.getHours()))})
+    .sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:a.start-b.start}).slice(0,5);
+  $('#ovNext').innerHTML=up.length?up.map(function(b){
+    return '<li><div><strong>'+esc(b.name)+'</strong><small class="num">'+esc(dlabel(b.date))+' · '+hf(b.start)+' – '+hf(b.start+b.dur)+'</small></div><div class="muted">'+esc(NAMES[b.res]||b.res)+'</div></li>';
+  }).join(''):'<li class="empty" style="display:block;border:0">لا توجد حجوزات قادمة.</li>';
+  var op=S.maint.filter(function(m){return m.status!=='done'}).sort(function(a,b){return pri(a)-pri(b)}).slice(0,4);
+  $('#ovMaint').innerHTML=op.length?op.map(function(m){
+    return '<li><div><strong>'+esc(m.item)+'</strong><small>'+esc(m.area)+'</small></div><span class="tag'+(m.pri==='high'?' bad':'')+'">'+priLabel(m.pri)+'</span></li>';
+  }).join(''):'<li class="empty" style="display:block;border:0">لا توجد أعمال صيانة مفتوحة.</li>';
+}
+function drawChart(){
+  var W=700,H=230,L=44,B=34,T=18,days=[];
+  for(var i=6;i>=0;i--)days.push(addDays(TODAY,-i));
+  var inc=days.map(revenue),exp=days.map(expense);
+  var mx=Math.max.apply(null,inc.concat(exp).concat([100]));
+  var step=Math.pow(10,Math.floor(Math.log10(mx)));var top=Math.ceil(mx/step)*step;
+  var ph=H-B-T,out='';
+  for(var g=0;g<=4;g++){
+    var gy=T+ph-ph*g/4;
+    out+='<line class="grid" x1="'+L+'" x2="'+(W-6)+'" y1="'+gy+'" y2="'+gy+'"/><text class="lbl" x="'+(L-8)+'" y="'+(gy+4)+'" text-anchor="end">'+money(Math.round(top*g/4))+'</text>';
+  }
+  var colw=(W-L-6)/7;
+  days.forEach(function(k,i){
+    var cx=W-6-colw*(i+0.5),bw=Math.min(22,colw/3);
+    var hi=ph*inc[i]/top,he=ph*exp[i]/top;
+    out+='<rect class="ba" x="'+(cx-bw-1)+'" y="'+(T+ph-hi)+'" width="'+bw+'" height="'+hi+'"/>';
+    out+='<rect class="bb" x="'+(cx+1)+'" y="'+(T+ph-he)+'" width="'+bw+'" height="'+he+'"/>';
+    out+='<text class="lbl" x="'+cx+'" y="'+(H-12)+'" text-anchor="middle">'+DAYN[pd(k).getDay()]+'</text>';
+    if(inc[i]>0)out+='<text class="val" x="'+(cx-bw/2-1)+'" y="'+(T+ph-hi-5)+'" text-anchor="middle">'+money(inc[i])+'</text>';
+  });
+  $('#ovChart').innerHTML=out;
+}
+function pri(m){return m.pri==='high'?0:m.pri==='mid'?1:2}
+function priLabel(p){return p==='high'?'عاجلة':p==='low'?'مؤجلة':'عادية'}
+
+function renderBookings(){
+  var mode=$('#bkView').value,f=$('#bkFilter').value||TODAY;
+  var list=S.bookings.filter(function(b){
+    if(mode==='up')return b.date>=TODAY;
+    if(mode==='day')return b.date===f;
+    return true;
+  }).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:a.start-b.start});
+  if(mode==='all')list.reverse();
+  if(!list.length){$('#bkList').innerHTML='<tr><td colspan="6" class="empty">لا توجد حجوزات في هذا العرض.</td></tr>';return}
+  $('#bkList').innerHTML=list.map(function(b){
+    var cx=!active(b),armed=S.armed==='del|bookings|'+b.id;
+    var st=cx?'<span class="tag bad">ملغي</span>':b.paid?'<span class="tag on">مدفوع</span>':'<span class="tag">غير مدفوع</span>';
+    var acts=[];
+    if(!cx&&!b.paid)acts.push('<button type="button" class="link" data-act="paid" data-id="'+esc(b.id)+'">تسجيل الدفع</button>');
+    if(!cx)acts.push('<button type="button" class="link" data-act="cancel" data-id="'+esc(b.id)+'">إلغاء</button>');
+    acts.push('<button type="button" class="link bad" data-act="del" data-col="bookings" data-id="'+esc(b.id)+'">'+(armed?'اضغط للتأكيد':'حذف')+'</button>');
+    return '<tr'+(cx?' class="cx"':'')+'><td>'+esc(dlabel(b.date))+'<br><span class="muted">'+hf(b.start)+' – '+hf(b.start+b.dur)+'</span></td>'+
+      '<td>'+esc(NAMES[b.res]||b.res)+((b.qty||1)>1?' × '+b.qty:'')+'<br><span class="muted">'+esc(SRC[b.src]||'')+'</span></td>'+
+      '<td>'+esc(b.name)+'<br><span class="ltr muted">'+esc(b.phone||'')+'</span></td>'+
+      '<td>'+money(b.total)+' جنيه</td><td>'+st+'</td><td style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">'+acts.join('')+'</td></tr>';
+  }).join('');
+}
+function renderFinance(){
+  var m=$('#fnMonth').value||TODAY.slice(0,7);
+  var rows=[];
+  S.finance.forEach(function(f){if(f.date.slice(0,7)===m)rows.push({kind:'f',id:f.id,date:f.date,type:f.type,cat:f.cat,amount:f.amount,note:f.note})});
+  S.bookings.forEach(function(b){if(b.paid&&active(b)&&b.date.slice(0,7)===m)rows.push({kind:'b',id:b.id,date:b.date,type:'income',cat:'حجز: '+(NAMES[b.res]||b.res),amount:b.total,note:b.name})});
+  for(var d2=1;d2<=31;d2++){var kk=m+'-'+pad(d2),sv=salesOn(kk);if(sv>0)rows.push({kind:'s',id:kk,date:kk,type:'income',cat:'مبيعات الكاشير',amount:sv,note:''})}
+  rows.sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0});
+  var inc=0,exp=0;rows.forEach(function(r){if(r.type==='income')inc+=Number(r.amount||0);else exp+=Number(r.amount||0)});
+  $('#fnSum').innerHTML='<div><span class="muted">الإيراد</span><br><b class="num">'+money(inc)+'</b> جنيه</div><div><span class="muted">المصروف</span><br><b class="num">'+money(exp)+'</b> جنيه</div><div><span class="muted">الصافي</span><br><b class="num">'+money(inc-exp)+'</b> جنيه</div>';
+  if(!rows.length){$('#fnList').innerHTML='<tr><td colspan="6" class="empty">لا توجد حركات في هذا الشهر.</td></tr>';return}
+  $('#fnList').innerHTML=rows.map(function(r){
+    var armed=S.armed==='del|finance|'+r.id;
+    return '<tr><td>'+esc(dlabel(r.date))+'</td><td><span class="tag'+(r.type==='income'?' on':'')+'">'+(r.type==='income'?'إيراد':'مصروف')+'</span></td><td>'+esc(r.cat)+'</td><td>'+money(r.amount)+' جنيه</td><td class="muted">'+esc(r.note||'')+'</td><td>'+
+      (r.kind==='f'?'<button type="button" class="link bad" data-act="del" data-col="finance" data-id="'+esc(r.id)+'">'+(armed?'اضغط للتأكيد':'حذف')+'</button>':'<span class="muted">'+(r.kind==='s'?'من المبيعات':'من الحجوزات')+'</span>')+'</td></tr>';
+  }).join('');
+}
+function renderStaff(){
+  var pay=0;S.staff.forEach(function(s){pay+=Number(s.pay||0)});
+  $('#stSum').innerHTML='<div><span class="muted">عدد العاملين</span><br><b class="num">'+S.staff.length+'</b></div><div><span class="muted">إجمالي المرتبات الشهرية</span><br><b class="num">'+money(pay)+'</b> جنيه</div>';
+  if(!S.staff.length){$('#stList').innerHTML='<tr><td colspan="6" class="empty">لم يُضف أي عامل بعد.</td></tr>';return}
+  var order={m:0,e:1,n:2};
+  $('#stList').innerHTML=S.staff.slice().sort(function(a,b){return order[a.shift]-order[b.shift]}).map(function(s){
+    var armed=S.armed==='del|staff|'+s.id;
+    return '<tr><td>'+esc(s.name)+'</td><td>'+esc(s.role)+'</td><td>'+esc(SHIFT[s.shift]||'')+'</td><td><span class="ltr">'+esc(s.phone||'')+'</span></td><td>'+(s.pay?money(s.pay)+' جنيه':'')+'</td><td><button type="button" class="link bad" data-act="del" data-col="staff" data-id="'+esc(s.id)+'">'+(armed?'اضغط للتأكيد':'حذف')+'</button></td></tr>';
+  }).join('');
+}
+function renderMaint(){
+  if(!S.maint.length){$('#mtList').innerHTML='<li class="empty" style="display:block;border:0">لا توجد بنود صيانة بعد.</li>';return}
+  var l=S.maint.slice().sort(function(a,b){return (a.status==='done')-(b.status==='done')||pri(a)-pri(b)});
+  $('#mtList').innerHTML=l.map(function(m){
+    var done=m.status==='done',armed=S.armed==='del|maint|'+m.id;
+    return '<li'+(done?' style="opacity:.55"':'')+'><div><strong'+(done?' style="text-decoration:line-through"':'')+'>'+esc(m.item)+'</strong><small>'+esc(m.area)+(m.note?' · '+esc(m.note):'')+'</small></div><div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="tag'+(m.pri==='high'&&!done?' bad':'')+'">'+(done?'تم':priLabel(m.pri))+'</span>'+
+      '<button type="button" class="link" data-act="toggle" data-id="'+esc(m.id)+'">'+(done?'إعادة فتح':'تم الإصلاح')+'</button>'+
+      '<button type="button" class="link bad" data-act="del" data-col="maint" data-id="'+esc(m.id)+'">'+(armed?'اضغط للتأكيد':'حذف')+'</button></div></li>';
+  }).join('');
+}
+function fillSettings(force){
+  var c=cfg(),map={sA:'pitchA',sB:'pitchB',sC:'pitchC',sPc:'pc',sVip:'vip',sPs:'ps',sBil:'bil',sTt:'tt',sP1:'phone1',sP2:'phone2'};
+  Object.keys(map).forEach(function(id){var e=$('#'+id);if(e&&(force||document.activeElement!==e))e.value=c[map[id]]});
+}
+function renderAll(){renderSales();renderOverview();renderBookings();renderFinance();renderStaff();renderMaint();updateBkTotal()}
+
+/* ---------- booking form ---------- */
+function initForms(){
+  $('#bkRes').innerHTML=Object.keys(NAMES).map(function(k){return '<option value="'+k+'">'+NAMES[k]+'</option>'}).join('');
+  var hs_='';for(var h=0;h<24;h++)hs_+='<option value="'+h+'">'+hf(h)+'</option>';
+  $('#bkStart').innerHTML=hs_;$('#bkStart').value=new Date().getHours();
+  $('#slDate').value=TODAY;$('#rpDate').value=TODAY;$('#clDate').value=TODAY;$('#bkDate').value=TODAY;$('#fnDate').value=TODAY;$('#fnMonth').value=TODAY.slice(0,7);$('#bkFilter').value=TODAY;
+  syncDur();
+}
+function syncDur(){
+  var r=$('#bkRes').value,cur=+$('#bkDur').value||1,o='';
+  for(var n=1;n<=MAXD[r];n++)o+='<option value="'+n+'">'+(n===1?'ساعة':n===2?'ساعتان':n+' ساعات')+'</option>';
+  $('#bkDur').innerHTML=o;$('#bkDur').value=Math.min(cur,MAXD[r]);
+  $('#bkQtyBox').hidden=r==='pitch';
+  $('#bkQty').max=CAP[r];
+  updateBkTotal();
+}
+function bkInfo(){
+  var r=$('#bkRes').value;
+  return {res:r,date:$('#bkDate').value,start:+$('#bkStart').value,dur:+$('#bkDur').value||1,qty:r==='pitch'?1:Math.max(1,+$('#bkQty').value||1)};
+}
+function updateBkTotal(){var i=bkInfo();$('#bkTotal').textContent=money(total(i.res,i.start,i.dur,i.qty))+' جنيه'}
+function conflict(i){
+  var tmp={date:i.date,start:i.start,dur:i.dur};
+  var sl=slotsOf(tmp);
+  for(var k=0;k<sl.length;k++){if(used(i.res,sl[k].date,sl[k].hour)+i.qty>CAP[i.res])return sl[k]}
+  return null;
+}
+async function save(col,id,data){await S.db.collection(col).doc(id).set(data)}
+function errOn(id,t){var e=$(id);e.textContent=t;setTimeout(function(){if(e.textContent===t)e.textContent=''},5000)}
+
+async function onBooking(ev){
+  ev.preventDefault();
+  var i=bkInfo(),name=$('#bkName').value.trim(),phone=$('#bkPhone').value.replace(/[\s-]/g,'');
+  if(!i.date)return errOn('#bkErr','اختر اليوم.');
+  if(name.length<2)return errOn('#bkErr','اكتب اسم العميل.');
+  if(phone&&!/^01[0125]\d{8}$/.test(phone))return errOn('#bkErr','رقم الموبايل يجب أن يكون 11 رقمًا يبدأ بـ 01.');
+  if(i.qty>CAP[i.res])return errOn('#bkErr','أقصى عدد لهذه الخدمة '+CAP[i.res]+'.');
+  var c=conflict(i);
+  if(c)return errOn('#bkErr','يوجد حجز متعارض يوم '+dlabel(c.date)+' الساعة '+hf(c.hour)+'.');
+  try{
+    await save('bookings',rid(),{res:i.res,date:i.date,start:i.start,dur:i.dur,qty:i.qty,name:name,phone:phone,src:$('#bkSrc').value,paid:$('#bkPaid').checked,total:total(i.res,i.start,i.dur,i.qty),status:'active',created:Date.now()});
+    $('#bkName').value='';$('#bkPhone').value='';$('#bkPaid').checked=false;
+    errOn('#bkErr','');
+  }catch(e){errOn('#bkErr','تعذر حفظ الحجز. حاول مرة أخرى.')}
+}
+async function onFinance(ev){
+  ev.preventDefault();
+  var cat=$('#fnCat').value.trim(),amt=+$('#fnAmt').value,d=$('#fnDate').value;
+  if(!cat)return errOn('#fnErr','اكتب البند.');
+  if(!(amt>0))return errOn('#fnErr','اكتب مبلغًا أكبر من صفر.');
+  if(!d)return errOn('#fnErr','اختر التاريخ.');
+  try{
+    await save('finance',rid(),{type:$('#fnType').value,cat:cat,amount:amt,date:d,note:$('#fnNote').value.trim(),created:Date.now()});
+    $('#fnCat').value='';$('#fnAmt').value='';$('#fnNote').value='';
+  }catch(e){errOn('#fnErr','تعذر الحفظ. حاول مرة أخرى.')}
+}
+async function onStaff(ev){
+  ev.preventDefault();
+  var n=$('#stName').value.trim(),p=$('#stPhone').value.replace(/[\s-]/g,'');
+  if(n.length<2)return errOn('#stErr','اكتب اسم العامل.');
+  if(p&&!/^01[0125]\d{8}$/.test(p))return errOn('#stErr','رقم الموبايل غير صحيح.');
+  try{
+    await save('staff',rid(),{name:n,role:$('#stRole').value,shift:$('#stShift').value,phone:p,pay:+$('#stPay').value||0,created:Date.now()});
+    $('#stName').value='';$('#stPhone').value='';$('#stPay').value='';
+  }catch(e){errOn('#stErr','تعذر الحفظ.')}
+}
+async function onMaint(ev){
+  ev.preventDefault();
+  var it=$('#mtItem').value.trim();
+  if(!it)return errOn('#mtErr','اكتب المطلوب.');
+  try{
+    await save('maint',rid(),{item:it,area:$('#mtArea').value,pri:$('#mtPri').value,note:$('#mtNote').value.trim(),status:'open',created:Date.now()});
+    $('#mtItem').value='';$('#mtNote').value='';
+  }catch(e){errOn('#mtErr','تعذر الحفظ.')}
+}
+async function onSettings(ev){
+  ev.preventDefault();
+  var o={pitchA:+$('#sA').value,pitchB:+$('#sB').value,pitchC:+$('#sC').value,pc:+$('#sPc').value,vip:+$('#sVip').value,ps:+$('#sPs').value,bil:+$('#sBil').value,tt:+$('#sTt').value,phone1:$('#sP1').value.trim(),phone2:$('#sP2').value.trim()};
+  var m=$('#setMsg');
+  try{await save('settings','main',o);m.className='okm';m.textContent='تم حفظ الإعدادات.'}
+  catch(e){m.className='err';m.textContent='تعذر الحفظ. حاول مرة أخرى.'}
+  setTimeout(function(){m.textContent=''},3000);
+}
+
+/* ---------- actions ---------- */
+document.addEventListener('click',async function(e){
+  var t=e.target.closest('button[data-act]');if(!t)return;
+  var d=t.dataset,id=d.id;
+  try{
+    if(d.act==='del'){
+      var key='del|'+d.col+'|'+id;
+      if(S.armed===key){S.armed=null;await S.db.collection(d.col).doc(id).delete()}
+      else{S.armed=key;renderAll();setTimeout(function(){if(S.armed===key){S.armed=null;renderAll()}},3500)}
+      return;
+    }
+    if(d.act==='paid')await S.db.collection('bookings').doc(id).update({paid:true});
+    if(d.act==='cancel')await S.db.collection('bookings').doc(id).update({status:'cancelled'});
+    if(d.act==='toggle'){var m=S.maint.filter(function(x){return x.id===id})[0];if(m)await S.db.collection('maint').doc(id).update({status:m.status==='done'?'open':'done'})}
+  }catch(err){}
+});
+$('#bkForm').addEventListener('submit',onBooking);
+$('#fnForm').addEventListener('submit',onFinance);
+$('#stForm').addEventListener('submit',onStaff);
+$('#mtForm').addEventListener('submit',onMaint);
+$('#setForm').addEventListener('submit',onSettings);
+$('#bkRes').addEventListener('change',syncDur);
+['bkDate','bkStart','bkDur','bkQty'].forEach(function(id){$('#'+id).addEventListener('change',updateBkTotal);$('#'+id).addEventListener('input',updateBkTotal)});
+['bkFilter','bkView'].forEach(function(id){$('#'+id).addEventListener('change',renderBookings)});
+$('#fnMonth').addEventListener('change',renderFinance);
+
+/* ---------- sales ---------- */
+var METH={cash:'نقدي',wallet:'محفظة',instapay:'إنستاباي',credit:'آجل'};
+var STARTER=[['شاي','مشروبات ساخنة',10,4],['قهوة','مشروبات ساخنة',20,8],['نسكافيه','مشروبات ساخنة',20,8],['مياه معدنية','مشروبات باردة',8,5],['مشروب غازي','مشروبات باردة',15,10],['عصير علبة','مشروبات باردة',15,10],['شيبسي','وجبات خفيفة',10,7],['بسكويت','وجبات خفيفة',7,5],['طباعة ورقة','خدمات',3,1],['تصوير مستند','خدمات',2,1]];
+function prod(id){for(var i=0;i<S.products.length;i++)if(S.products[i].id===id)return S.products[i];return null}
+function isLow(p){return p.track&&Number(p.stock)<=Number(p.low||0)}
+function tfmt(ts){var d=new Date(ts),h=d.getHours();return (h%12||12)+':'+pad(d.getMinutes())+' '+(h>=12?'م':'ص')}
+function itemsText(x){return (x.items||[]).map(function(i){return esc(i.name)+(i.qty>1?' × '+i.qty:'')}).join('، ')}
+function cartTotals(){
+  var sub=0;Object.keys(S.cart).forEach(function(id){var p=prod(id);if(p)sub+=Number(p.price)*S.cart[id]});
+  var disc=Math.max(0,+$('#posDisc').value||0);
+  return {sub:sub,disc:disc,total:Math.max(0,sub-disc)};
+}
+function showStab(){
+  $$('[data-sp]').forEach(function(el){el.hidden=el.dataset.sp!==S.stab});
+  $$('[data-stab]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.stab===S.stab))});
+}
+function renderPos(){
+  var cats=[];S.products.forEach(function(p){if(p.cat&&cats.indexOf(p.cat)<0)cats.push(p.cat)});
+  $('#posCats').innerHTML=cats.length?['<button type="button" class="chipb" data-pcat="" aria-pressed="'+(S.pcat==='')+'">الكل</button>'].concat(cats.map(function(c){return '<button type="button" class="chipb" data-pcat="'+esc(c)+'" aria-pressed="'+(S.pcat===c)+'">'+esc(c)+'</button>'})).join(''):'';
+  var q=$('#posQ').value.trim();
+  var list=S.products.filter(function(p){return (!S.pcat||p.cat===S.pcat)&&(!q||p.name.indexOf(q)>=0)}).sort(function(a,b){return a.name<b.name?-1:1});
+  $('#posGrid').innerHTML=list.length?list.map(function(p){
+    var out=p.track&&Number(p.stock)<=0;
+    return '<button type="button" class="pbtn" data-act="addcart" data-id="'+esc(p.id)+'"'+(out?' disabled':'')+'><span>'+esc(p.name)+'</span><small class="num">'+money(p.price)+' جنيه'+(p.track?' · '+(out?'نفد':'متبقي '+p.stock):'')+'</small></button>';
+  }).join(''):'<p class="empty" style="grid-column:1/-1">'+(S.products.length?'لا توجد منتجات مطابقة.':'لا توجد منتجات بعد. أضفها من تبويب «المنتجات والمخزون».')+'</p>';
+  var ids=Object.keys(S.cart).filter(function(id){return S.cart[id]>0&&prod(id)});
+  $('#posCart').innerHTML=ids.length?ids.map(function(id){
+    var p=prod(id),n=S.cart[id];
+    return '<li><div style="min-width:0"><div>'+esc(p.name)+'</div><small class="muted num">'+money(p.price*n)+' جنيه</small></div><div class="qty"><button type="button" data-act="cqm" data-id="'+esc(id)+'" aria-label="أقل">−</button><span>'+n+'</span><button type="button" data-act="cqp" data-id="'+esc(id)+'" aria-label="أكثر">+</button></div></li>';
+  }).join(''):'<li class="muted" style="display:block;border:0">اختر منتجات لإضافتها.</li>';
+  $('#posTotal').textContent=money(cartTotals().total)+' جنيه';
+}
+function renderProducts(){
+  var ae=document.activeElement;
+  if(ae&&ae.tagName==='INPUT'&&$('#pdList').contains(ae))return;
+  var low=S.products.filter(isLow).length,val=0;
+  S.products.forEach(function(p){if(p.track)val+=Number(p.stock||0)*Number(p.cost||0)});
+  $('#pdSum').innerHTML='<div><span class="muted">عدد المنتجات</span><br><b class="num">'+S.products.length+'</b></div><div><span class="muted">أصناف ناقصة</span><br><b class="num">'+low+'</b></div><div><span class="muted">قيمة المخزون بالتكلفة</span><br><b class="num">'+money(val)+'</b> جنيه</div>';
+  $('#pdStarter').hidden=S.products.length>0;
+  if(!S.products.length){$('#pdList').innerHTML='<tr><td colspan="6" class="empty">لم تُضف منتجات بعد.</td></tr>';return}
+  $('#pdList').innerHTML=S.products.slice().sort(function(a,b){return (a.cat||'')<(b.cat||'')?-1:(a.cat||'')>(b.cat||'')?1:a.name<b.name?-1:1}).map(function(p){
+    var armed=S.armed==='del|products|'+p.id;
+    return '<tr><td>'+esc(p.name)+'<br><span class="muted">'+esc(p.cat||'')+'</span></td><td>'+money(p.price)+'</td><td>'+money(p.cost)+'</td>'+
+      '<td'+(isLow(p)?' class="low"':'')+'>'+(p.track?p.stock+(isLow(p)?' (ناقص)':''):'غير محدود')+'</td>'+
+      '<td>'+(p.track?'<div style="display:flex;gap:6px"><input type="number" min="1" id="rs_'+esc(p.id)+'" style="width:76px;min-height:34px" aria-label="كمية التوريد"><button type="button" class="btn btn-line btn-sm" data-act="restock" data-id="'+esc(p.id)+'">إضافة</button></div>':'')+'</td>'+
+      '<td><button type="button" class="link bad" data-act="del" data-col="products" data-id="'+esc(p.id)+'">'+(armed?'اضغط للتأكيد':'حذف')+'</button></td></tr>';
+  }).join('');
+}
+function renderSalesLog(){
+  var k=$('#slDate').value||today();
+  var list=S.sales.filter(function(x){return x.date===k}).sort(function(a,b){return b.ts-a.ts});
+  var tot=0,cnt=list.length;list.forEach(function(x){tot+=Number(x.total||0)});
+  $('#slSum').innerHTML='<div><span class="muted">عدد الفواتير</span><br><b class="num">'+cnt+'</b></div><div><span class="muted">إجمالي المبيعات</span><br><b class="num">'+money(tot)+'</b> جنيه</div>';
+  if(!list.length){$('#slList').innerHTML='<tr><td colspan="5" class="empty">لا توجد مبيعات في هذا اليوم.</td></tr>';return}
+  $('#slList').innerHTML=list.map(function(x){
+    var armed=S.armed==='refund|'+x.id;
+    return '<tr><td class="num">'+tfmt(x.ts)+'</td><td>'+itemsText(x)+(x.cust?'<br><span class="muted">'+esc(x.cust)+'</span>':'')+'</td><td><span class="tag'+(x.method==='credit'&&!x.settled?' bad':'')+'">'+METH[x.method]+(x.method==='credit'&&x.settled?' (سُدّد)':'')+'</span></td><td>'+money(x.total)+' جنيه'+(x.discount?'<br><span class="muted">خصم '+money(x.discount)+'</span>':'')+'</td>'+
+      '<td><button type="button" class="link bad" data-act="refund" data-id="'+esc(x.id)+'">'+(armed?'اضغط للتأكيد':'استرجاع')+'</button></td></tr>';
+  }).join('');
+}
+function bars(map,fmt){
+  var keys=Object.keys(map).sort(function(a,b){return map[b]-map[a]});
+  if(!keys.length)return '<p class="empty">لا توجد بيانات.</p>';
+  var mx=map[keys[0]]||1;
+  return keys.map(function(k){return '<div class="r"><div>'+esc(fmt?fmt(k):k)+'<div class="bar"><i style="width:'+Math.round(map[k]/mx*100)+'%"></i></div></div><div class="num">'+money(map[k])+'</div></div>'}).join('');
+}
+function renderReport(){
+  var mode=$('#rpMode').value,d=$('#rpDate').value||today();
+  var list=S.sales.filter(function(x){return mode==='day'?x.date===d:x.date.slice(0,7)===d.slice(0,7)});
+  var rev=0,disc=0,cost=0,credit=0,byM={},byC={},byP={};
+  list.forEach(function(x){
+    var t=Number(x.total||0);disc+=Number(x.discount||0);cost+=Number(x.cost||0);
+    if(x.method==='credit'&&!x.settled)credit+=t;else rev+=t;
+    byM[METH[x.method]]=(byM[METH[x.method]]||0)+t;
+    (x.items||[]).forEach(function(i){byC[i.cat||'بدون تصنيف']=(byC[i.cat||'بدون تصنيف']||0)+i.price*i.qty;byP[i.name]=(byP[i.name]||0)+i.qty});
+  });
+  var top={};Object.keys(byP).sort(function(a,b){return byP[b]-byP[a]}).slice(0,6).forEach(function(k){top[k]=byP[k]});
+  $('#rpStats').innerHTML='<div><dt>عدد الفواتير</dt><dd>'+list.length+'</dd></div><div><dt>المبيعات المحصّلة</dt><dd>'+money(rev)+' <small>جنيه</small></dd></div><div><dt>الربح التقريبي</dt><dd>'+money(rev+credit-cost)+' <small>جنيه</small></dd></div><div><dt>متوسط الفاتورة</dt><dd>'+money(list.length?Math.round((rev+credit)/list.length):0)+' <small>جنيه</small></dd></div><div><dt>آجل غير مسدد</dt><dd>'+money(credit)+' <small>جنيه</small></dd></div><div><dt>إجمالي الخصومات</dt><dd>'+money(disc)+' <small>جنيه</small></dd></div>';
+  $('#rpTop').innerHTML=bars(top,function(k){return k});
+  $('#rpCat').innerHTML=bars(byC);
+  $('#rpMeth').innerHTML=bars(byM);
+}
+function renderDebts(){
+  var list=S.sales.filter(function(x){return x.method==='credit'&&!x.settled}).sort(function(a,b){return a.ts-b.ts});
+  var tot=0;list.forEach(function(x){tot+=Number(x.total||0)});
+  $('#dbSum').innerHTML='<div><span class="muted">إجمالي الآجل</span><br><b class="num">'+money(tot)+'</b> جنيه</div><div><span class="muted">عدد الفواتير</span><br><b class="num">'+list.length+'</b></div>';
+  if(!list.length){$('#dbList').innerHTML='<tr><td colspan="5" class="empty">لا يوجد آجل مستحق.</td></tr>';return}
+  $('#dbList').innerHTML=list.map(function(x){
+    return '<tr><td>'+esc(x.cust)+'</td><td>'+esc(dlabel(x.date))+'</td><td>'+itemsText(x)+'</td><td>'+money(x.total)+' جنيه</td><td><button type="button" class="link" data-act="settle" data-id="'+esc(x.id)+'">تسجيل السداد</button></td></tr>';
+  }).join('');
+}
+function expectedCash(k){
+  var t=0;
+  S.sales.forEach(function(x){
+    if(x.method==='cash'&&x.date===k)t+=Number(x.total||0);
+    else if(x.method==='credit'&&x.settled&&x.settledDate===k&&x.settledMethod==='cash')t+=Number(x.total||0);
+  });
+  return t;
+}
+function updateClose(){
+  var k=$('#clDate').value||today(),e=expectedCash(k),c=$('#clCount').value;
+  $('#clExp').textContent=money(e)+' جنيه';
+  $('#clDiff').textContent=c===''?'—':money(Number(c)-e)+' جنيه';
+}
+function renderClose(){
+  updateClose();
+  var l=S.closes.slice().sort(function(a,b){return a.date<b.date?1:-1}).slice(0,15);
+  $('#clList').innerHTML=l.length?l.map(function(c){var df=c.counted-c.expected;return '<tr><td>'+esc(dlabel(c.date))+'</td><td>'+money(c.expected)+'</td><td>'+money(c.counted)+'</td><td'+(df<0?' class="low"':'')+'>'+money(df)+'</td><td>'+esc(c.by||'')+'</td></tr>'}).join(''):'<tr><td colspan="5" class="empty">لا توجد عمليات إقفال بعد.</td></tr>';
+}
+function renderSales(){renderPos();renderProducts();renderSalesLog();renderReport();renderDebts();renderClose()}
+
+async function completeSale(){
+  var ids=Object.keys(S.cart).filter(function(id){return S.cart[id]>0&&prod(id)});
+  if(!ids.length)return errOn('#posErr','الفاتورة فارغة.');
+  var t=cartTotals(),method=$('#posMethod').value,cust=$('#posCust').value.trim();
+  var items=[],cost=0;
+  for(var i=0;i<ids.length;i++){
+    var p=prod(ids[i]),q=S.cart[ids[i]];
+    if(p.track&&Number(p.stock)<q)return errOn('#posErr','المخزون لا يكفي: '+p.name);
+    items.push({pid:p.id,name:p.name,cat:p.cat||'',price:Number(p.price),cost:Number(p.cost||0),qty:q});
+    cost+=Number(p.cost||0)*q;
+  }
+  if(t.disc>t.sub)return errOn('#posErr','الخصم أكبر من الإجمالي.');
+  if(method==='credit'&&cust.length<2)return errOn('#posErr','اكتب اسم العميل للبيع الآجل.');
+  $('#posDone').disabled=true;
+  try{
+    await save('sales',rid(),{items:items,subtotal:t.sub,discount:t.disc,total:t.total,cost:cost,method:method,cust:cust,date:today(),ts:Date.now(),settled:method!=='credit'});
+    for(var j=0;j<items.length;j++){var pp=prod(items[j].pid);if(pp&&pp.track)await S.db.collection('products').doc(pp.id).update({stock:Number(pp.stock)-items[j].qty})}
+    S.cart={};$('#posDisc').value=0;$('#posCust').value='';
+    renderPos();errOn('#posErr','');
+  }catch(e){errOn('#posErr','تعذر حفظ البيع. حاول مرة أخرى.')}
+  $('#posDone').disabled=false;
+}
+async function onProduct(ev){
+  ev.preventDefault();
+  var n=$('#pdName').value.trim(),pr=+$('#pdPrice').value;
+  if(!n)return errOn('#pdErr','اكتب اسم المنتج.');
+  if(!(pr>=0)||$('#pdPrice').value==='')return errOn('#pdErr','اكتب سعر البيع.');
+  try{
+    await save('products',rid(),{name:n,cat:$('#pdCat').value.trim(),price:pr,cost:+$('#pdCost').value||0,stock:+$('#pdStock').value||0,low:+$('#pdLow').value||0,track:$('#pdTrack').checked,created:Date.now()});
+    $('#pdName').value='';$('#pdPrice').value='';$('#pdCost').value=0;$('#pdStock').value=0;
+  }catch(e){errOn('#pdErr','تعذر الحفظ.')}
+}
+async function onClose(ev){
+  ev.preventDefault();
+  var k=$('#clDate').value||today(),c=$('#clCount').value;
+  if(c==='')return errOn('#clErr','اكتب النقدي الفعلي في الدرج.');
+  try{await save('closes',k,{date:k,expected:expectedCash(k),counted:+c,by:$('#clBy').value.trim(),ts:Date.now()});$('#clCount').value='';errOn('#clErr','');}
+  catch(e){errOn('#clErr','تعذر الحفظ.')}
+}
+document.addEventListener('click',async function(e){
+  var sb=e.target.closest('[data-stab]');
+  if(sb){S.stab=sb.dataset.stab;showStab();return}
+  var pc=e.target.closest('[data-pcat]');
+  if(pc){S.pcat=pc.dataset.pcat;renderPos();return}
+  var t=e.target.closest('button[data-act]');if(!t)return;
+  var a=t.dataset.act,id=t.dataset.id;
+  try{
+    if(a==='addcart'){var p=prod(id);if(!p)return;var n=(S.cart[id]||0)+1;if(p.track&&n>Number(p.stock))return;S.cart[id]=n;renderPos()}
+    else if(a==='cqp'){var p2=prod(id);if(p2&&(!p2.track||S.cart[id]<Number(p2.stock))){S.cart[id]++;renderPos()}}
+    else if(a==='cqm'){S.cart[id]=Math.max(0,(S.cart[id]||0)-1);if(!S.cart[id])delete S.cart[id];renderPos()}
+    else if(a==='restock'){var inp=$('#rs_'+id),q=+(inp&&inp.value);var p3=prod(id);if(p3&&q>0){await S.db.collection('products').doc(id).update({stock:Number(p3.stock||0)+q});inp.value=''}}
+    else if(a==='settle'){await S.db.collection('sales').doc(id).update({settled:true,settledDate:today(),settledMethod:'cash'})}
+    else if(a==='refund'){
+      var key='refund|'+id;
+      if(S.armed===key){
+        S.armed=null;
+        var x=S.sales.filter(function(v){return v.id===id})[0];
+        if(x){
+          for(var i=0;i<(x.items||[]).length;i++){var it=x.items[i],pp=prod(it.pid);if(pp&&pp.track)await S.db.collection('products').doc(pp.id).update({stock:Number(pp.stock||0)+it.qty})}
+          await S.db.collection('sales').doc(id).delete();
+        }
+      }else{S.armed=key;renderSalesLog();setTimeout(function(){if(S.armed===key){S.armed=null;renderSalesLog()}},3500)}
+    }
+  }catch(err){}
+});
+$('#posDone').addEventListener('click',completeSale);
+$('#pdForm').addEventListener('submit',onProduct);
+$('#clForm').addEventListener('submit',onClose);
+$('#posQ').addEventListener('input',renderPos);
+$('#posDisc').addEventListener('input',function(){$('#posTotal').textContent=money(cartTotals().total)+' جنيه'});
+$('#slDate').addEventListener('change',renderSalesLog);
+$('#rpMode').addEventListener('change',renderReport);
+$('#rpDate').addEventListener('change',renderReport);
+$('#clDate').addEventListener('change',updateClose);
+$('#clCount').addEventListener('input',updateClose);
+$('#pdSeed').addEventListener('click',async function(){
+  this.disabled=true;
+  try{for(var i=0;i<STARTER.length;i++){var r=STARTER[i];var trk=r[1]!=='خدمات';await save('products',rid(),{name:r[0],cat:r[1],price:r[2],cost:r[3],stock:trk?20:0,low:5,track:trk,created:Date.now()})}}catch(e){}
+  this.disabled=false;
+});
+
+/* ---------- init ---------- */
+initForms();route();
+function gate(t,p){$('#gateT').textContent=t;$('#gateP').textContent=p;$('#gate').hidden=false;$('#app').hidden=true}
+(async function(){
+  var c=window.claude;
+  if(!c||!c.use){gate('تعذر فتح الإدارة','افتح هذه الصفحة من حسابك على المنصة.');return}
+  var db=null,user=null;
+  try{db=await c.use('db');user=await c.use('user')}catch(e){}
+  if(!db){gate('الدخول مطلوب','سجّل دخولك بحساب الإدارة ثم افتح هذه الصفحة مرة أخرى.');return}
+  var can=false;
+  try{can=user?await user.canEdit():false}catch(e){}
+  if(!can){gate('للإدارة فقط','هذه الصفحة متاحة لمن لديه صلاحية التعديل.');return}
+  S.db=db;
+  var timer=setTimeout(function(){if(!S.ready)gate('تأخر التحميل','تعذر تحميل البيانات الآن. أعد فتح الصفحة بعد قليل.')},10000);
+  var names=['bookings','finance','staff','maint','products','sales','closes'],pending=names.length+1;
+  function done(){pending--;if(pending<=0&&!S.ready){S.ready=true;clearTimeout(timer);$('#gate').hidden=true;$('#app').hidden=false;fillSettings(true);route();showStab();renderAll()}}
+  names.forEach(function(n){
+    var first=true;
+    db.collection(n).onSnapshot(function(snap){
+      S[n]=snap.docs.map(function(d){return Object.assign({id:d.id},d.data())});
+      if(first){first=false;done()}else if(S.ready)renderAll();
+    },function(){if(first){first=false;done()}});
+  });
+  var f2=true;
+  db.collection('settings').doc('main').onSnapshot(function(sn){
+    S.settings=(sn.exists&&sn.data())||null;
+    if(f2){f2=false;done()}else if(S.ready){fillSettings(false);renderAll()}
+  },function(){if(f2){f2=false;done()}});
+})();
+})();
+</script>
+
+</body></html>
