@@ -1,4 +1,5 @@
-<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
+<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.trc{border:1px solid var(--line);padding:20px;margin-bottom:16px;border-radius:2px}.trc h3{margin:0 0 6px}.trc ul{margin:10px 0 0;padding-inline-start:20px}.trc .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+</style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
 /* ===== إعدادات Firebase: الصقها هنا (نفس الإعدادات في الملفات الثلاثة) ===== */
 window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyDERNheJlGJdUojoiBfktg5OyJAU-wxZJU",
@@ -259,6 +260,8 @@ footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px soli
       <a href="#finance" data-nav="finance">الحسابات</a>
       <a href="#staff" data-nav="staff">الفريق</a>
       <a href="#maint" data-nav="maint">الصيانة</a>
+      <a href="#players" data-nav="players">اللاعبين</a>
+      <a href="#tourney" data-nav="tourney">البطولات</a>
       <a href="#settings" data-nav="settings">الإعدادات</a>
       <a href="index.html">الموقع</a>
       <a href="#" onclick="fbSignOut();return false">خروج</a>
@@ -498,6 +501,46 @@ footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px soli
   </div></section>
 </div>
 
+<!-- PLAYERS -->
+<div class="view" data-view="players" hidden>
+  <section><div class="in">
+    <div class="kicker">اللاعبين</div>
+    <h2>النقاط وأفضل 10</h2>
+    <p class="lead">سجّل فوزًا للاعب فتُضاف له النقاط ويظهر في قايمة أفضل 10 في الموقع.</p>
+    <form class="form" id="plForm" novalidate>
+      <div><label for="plUser">اللاعب</label><select id="plUser"></select></div>
+      <div><label for="plPts">النقاط</label><input id="plPts" type="number" min="1" value="3" inputmode="numeric"></div>
+      <div><label for="plNote">ملاحظة</label><input id="plNote" type="text" placeholder="مثال: فوز 5-3"></div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit">تسجيل فوز</button><button class="btn btn-line" type="button" id="plMinus">خصم نقاط</button></div>
+      <div class="wide err" id="plErr" role="alert"></div>
+    </form>
+    <div class="tbl-wrap" style="margin-top:28px"><table>
+      <thead><tr><th>#</th><th>اللاعب</th><th>الفوز</th><th>النقاط</th><th></th></tr></thead>
+      <tbody id="plList"></tbody>
+    </table></div>
+  </div></section>
+</div>
+
+<!-- TOURNAMENTS -->
+<div class="view" data-view="tourney" hidden>
+  <section><div class="in">
+    <div class="kicker">البطولات</div>
+    <h2>إدارة البطولات</h2>
+    <p class="lead">أضف بطولة وتظهر في الموقع، والعملاء يسجّلون فرقهم، وأنت تشوف الفرق هنا.</p>
+    <form class="form" id="trForm" novalidate>
+      <div><label for="trName">اسم البطولة</label><input id="trName" type="text"></div>
+      <div><label for="trDate">التاريخ</label><input id="trDate" type="date"></div>
+      <div><label for="trFee">الاشتراك (جنيه)</label><input id="trFee" type="number" min="0" inputmode="numeric"></div>
+      <div><label for="trPrize">الجائزة</label><input id="trPrize" type="text"></div>
+      <div><label for="trMax">عدد الفرق</label><input id="trMax" type="number" min="2" inputmode="numeric"></div>
+      <div class="wide"><label for="trDesc">تفاصيل</label><input id="trDesc" type="text" placeholder="النظام، القواعد، المواعيد"></div>
+      <div style="display:flex;gap:16px;align-items:center"><button class="btn" type="submit">إضافة بطولة</button></div>
+      <div class="wide err" id="trErr" role="alert"></div>
+    </form>
+    <div id="trList" style="margin-top:28px"></div>
+  </div></section>
+</div>
+
 <!-- SETTINGS -->
 <div class="view" data-view="settings" hidden>
   <section><div class="in">
@@ -591,7 +634,7 @@ function revenue(k){
 function expense(k){var t=0;S.finance.forEach(function(f){if(f.date===k&&f.type==='expense')t+=Number(f.amount||0)});return t}
 
 /* ---------- routing ---------- */
-var VIEWS=['overview','bookings','sales','finance','staff','maint','settings'];
+var VIEWS=['overview','bookings','sales','finance','staff','maint','players','tourney','settings'];
 function route(){
   var v=location.hash.replace('#','')||'overview';
   if(VIEWS.indexOf(v)<0)v='overview';
@@ -1060,4 +1103,90 @@ function gate(t,p){$('#gateT').textContent=t;$('#gateP').textContent=p;$('#gate'
 })();
 </script>
 
+<script>
+/* اللاعبين والنقاط + البطولات */
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var h=function(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  var c=window.claude;if(!c||!c.use||!window.firebase)return;
+  var db=null,P=[],PT=[],T=[],E={},watching={},noop=function(){};
+  function err(id,t){var e=$(id);e.textContent=t;setTimeout(function(){if(e.textContent===t)e.textContent=''},5000)}
+  function fmtD(d){try{var p=d.split('-');return new Date(+p[0],+p[1]-1,+p[2]).toLocaleDateString('ar-EG',{day:'numeric',month:'long',year:'numeric'})}catch(e){return d||''}}
+  function renderPl(){
+    var sel=$('#plUser'),v=sel.value;
+    sel.innerHTML='<option value="">اختر اللاعب</option>'+P.slice().sort(function(a,b){return String(a.name).localeCompare(String(b.name),'ar')}).map(function(p){
+      return '<option value="'+h(p.id)+'">'+h(p.name)+(p.phone?' — '+h(p.phone):'')+'</option>';
+    }).join('');
+    sel.value=v;
+    var rows=PT.slice().sort(function(a,b){return (b.pts||0)-(a.pts||0)});
+    $('#plList').innerHTML=rows.length?rows.map(function(p,i){
+      return '<tr><td>'+(i+1)+'</td><td>'+h(p.name)+'</td><td>'+(p.wins||0)+'</td><td><b>'+(p.pts||0)+'</b></td><td><button type="button" class="btn btn-line btn-sm" data-pdel="'+h(p.id)+'">حذف</button></td></tr>';
+    }).join(''):'<tr><td colspan="5" class="empty">لم تُسجَّل نقاط بعد.</td></tr>';
+  }
+  async function award(sign){
+    var id=$('#plUser').value,n=Math.round(+$('#plPts').value);
+    if(!id)return err('#plErr','اختر اللاعب.');
+    if(!n||n<1)return err('#plErr','اكتب عدد النقاط.');
+    var p=P.filter(function(x){return x.id===id})[0]||{},inc=firebase.firestore.FieldValue.increment;
+    var d={name:p.name||'لاعب',updated:Date.now(),pts:inc(sign*n)};
+    if(p.photo)d.photo=p.photo;
+    if(sign>0)d.wins=inc(1);
+    try{
+      await db.collection('points').doc(id).set(d,{merge:true});
+      await db.collection('matches').add({uid:id,name:p.name||'',pts:sign*n,note:$('#plNote').value.trim(),at:Date.now()});
+      $('#plNote').value='';err('#plErr',sign>0?'تم تسجيل الفوز.':'تم خصم النقاط.');
+    }catch(e){err('#plErr','تعذر الحفظ. تأكد من القواعد وصلاحيات الأدمن.')}
+  }
+  function renderTr(){
+    var box=$('#trList');
+    if(!T.length){box.innerHTML='<p class="empty">لم تُضف أي بطولة بعد.</p>';return}
+    box.innerHTML=T.slice().sort(function(a,b){return String(b.date).localeCompare(String(a.date))}).map(function(t){
+      var en=E[t.id]||[],open=t.status!=='closed';
+      return '<div class="trc"><h3>'+h(t.name)+'</h3><div class="muted">'+h(fmtD(t.date))+' · الاشتراك '+(+t.fee?h(t.fee)+' جنيه':'مجانًا')+(t.prize?' · الجائزة '+h(t.prize):'')+'</div>'+
+        (t.desc?'<p>'+h(t.desc)+'</p>':'')+
+        '<div style="margin-top:12px"><b>الفرق المسجّلة ('+en.length+(t.max?' / '+h(t.max):'')+')</b></div>'+
+        (en.length?'<ul>'+en.map(function(e){return '<li>'+h(e.team)+' — '+h(e.name)+' <span dir="ltr">'+h(e.phone)+'</span></li>'}).join('')+'</ul>':'<div class="muted">لا توجد فرق بعد.</div>')+
+        '<div class="row"><button type="button" class="btn btn-sm" data-tog="'+h(t.id)+'">'+(open?'إغلاق التسجيل':'فتح التسجيل')+'</button><button type="button" class="btn btn-line btn-sm" data-tdel="'+h(t.id)+'">حذف</button></div></div>';
+    }).join('');
+  }
+  function watch(){
+    T.forEach(function(t){
+      if(watching[t.id])return;watching[t.id]=1;
+      db.collection('tournaments').doc(t.id).collection('entries').onSnapshot(function(sn){
+        E[t.id]=sn.docs.map(function(d){return Object.assign({id:d.id},d.data())});renderTr();
+      },noop);
+    });
+  }
+  $('#plForm').addEventListener('submit',function(e){e.preventDefault();award(1)});
+  $('#plMinus').addEventListener('click',function(){award(-1)});
+  $('#trForm').addEventListener('submit',async function(e){
+    e.preventDefault();
+    var name=$('#trName').value.trim(),date=$('#trDate').value;
+    if(name.length<2)return err('#trErr','اكتب اسم البطولة.');
+    if(!date)return err('#trErr','اختر التاريخ.');
+    try{
+      await db.collection('tournaments').add({name:name,date:date,fee:+$('#trFee').value||0,prize:$('#trPrize').value.trim(),max:+$('#trMax').value||0,desc:$('#trDesc').value.trim(),status:'open',created:Date.now()});
+      $('#trForm').reset();
+    }catch(x){err('#trErr','تعذر الإضافة. تأكد من القواعد وصلاحيات الأدمن.')}
+  });
+  document.addEventListener('click',async function(e){
+    var d=e.target.closest('[data-pdel]'),tg=e.target.closest('[data-tog]'),td=e.target.closest('[data-tdel]');
+    try{
+      if(d&&confirm('حذف اللاعب من الترتيب؟'))await db.collection('points').doc(d.dataset.pdel).delete();
+      if(tg){var t=T.filter(function(x){return x.id===tg.dataset.tog})[0];if(t)await db.collection('tournaments').doc(t.id).update({status:t.status==='closed'?'open':'closed'})}
+      if(td&&confirm('حذف البطولة وكل الفرق المسجّلة فيها؟')){
+        var id=td.dataset.tdel;
+        await Promise.all((E[id]||[]).map(function(x){return db.collection('tournaments').doc(id).collection('entries').doc(x.id).delete()}));
+        await db.collection('tournaments').doc(id).delete();
+      }
+    }catch(x){alert('تعذر تنفيذ العملية.')}
+  });
+  c.use('db').then(function(d){
+    db=d;if(!d)return;
+    d.collection('profiles').onSnapshot(function(sn){P=sn.docs.map(function(x){return Object.assign({id:x.id},x.data())});renderPl()},noop);
+    d.collection('points').onSnapshot(function(sn){PT=sn.docs.map(function(x){return Object.assign({id:x.id},x.data())});renderPl()},noop);
+    d.collection('tournaments').onSnapshot(function(sn){T=sn.docs.map(function(x){return Object.assign({id:x.id},x.data())});watch();renderTr()},noop);
+  });
+})();
+</script>
 </body></html>
