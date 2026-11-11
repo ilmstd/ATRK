@@ -1,0 +1,1018 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>أبو تريكة</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+<style>
+/* Layout concept: minimalism in Arabic (RTL). White page, one typeface, hairline rules, generous space, black as the only accent. */
+:root{
+  --bg:#FFFFFF; --surface:#FFFFFF; --fg:#111111; --muted:#6B6B6B; --line:#E6E6E6; --soft:#F6F6F6;
+  --accent:#111111; --accent-ink:#FFFFFF; --accent-soft:#F3F3F3;
+  --band-a:#D4D4D4; --band-b:#8C8C8C; --band-c:#111111;
+  --bad:#B3321F; --ok:#111111;
+  --f-body:'IBM Plex Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C0C0C; --surface:#0C0C0C; --fg:#F2F2F2; --muted:#9A9A9A; --line:#262626; --soft:#151515;
+    --accent:#F2F2F2; --accent-ink:#0C0C0C; --accent-soft:#1A1A1A;
+    --band-a:#4A4A4A; --band-b:#8C8C8C; --band-c:#F2F2F2;
+    --bad:#F0806E; --ok:#F2F2F2; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C0C0C; --surface:#0C0C0C; --fg:#F2F2F2; --muted:#9A9A9A; --line:#262626; --soft:#151515;
+  --accent:#F2F2F2; --accent-ink:#0C0C0C; --accent-soft:#1A1A1A;
+  --band-a:#4A4A4A; --band-b:#8C8C8C; --band-c:#F2F2F2;
+  --bad:#F0806E; --ok:#F2F2F2; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.85;direction:rtl;font-weight:400}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+h1,h2,h3{font-family:var(--f-body);line-height:1.4;margin:0;text-wrap:balance;font-weight:600}
+h2{font-size:clamp(1.6rem,3vw,2.1rem)}
+h3{font-size:1.02rem}
+p{margin:0}
+a{color:inherit}
+.in{max-width:1040px;margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.view[hidden]{display:none!important}
+section{padding-block:clamp(64px,9vw,104px)}
+.alt{border-block:1px solid var(--line)}
+.lead{color:var(--muted);max-width:56ch;margin-top:14px;font-size:1.05rem}
+.kicker{font-size:.85rem;color:var(--muted);font-weight:500;margin-bottom:14px}
+.num{font-variant-numeric:tabular-nums}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+
+/* header */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.hdr .in{display:flex;align-items:center;gap:24px;min-height:68px}
+.brand{display:flex;flex-direction:column;text-decoration:none;line-height:1.35}
+.brand b{font-weight:600;font-size:1.15rem}
+.brand span{font-size:.75rem;color:var(--muted)}
+.nav{display:flex;gap:6px;margin-inline-start:auto;overflow-x:auto}
+.nav a{white-space:nowrap;text-decoration:none;padding:8px 10px;font-size:.92rem;color:var(--muted);border-bottom:1px solid transparent}
+.nav a:hover{color:var(--fg)}
+.nav a[aria-current="page"]{color:var(--fg);border-bottom-color:var(--fg)}
+@media (max-width:820px){
+  .hdr .in{flex-wrap:wrap;gap:0 12px;padding-block:8px}
+  .nav{order:3;width:100%;margin:0}
+  .hdr .btn{margin-inline-start:auto}
+}
+.hdr .btn{margin-inline-start:8px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 24px;border:1px solid transparent;border-radius:2px;font:500 .95rem var(--f-body);cursor:pointer;text-decoration:none}
+.btn-primary,.btn-light{background:var(--accent);color:var(--accent-ink)}
+.btn-line{background:transparent;color:inherit;border-color:var(--fg)}
+.btn-sm{min-height:36px;padding:0 16px;font-size:.85rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* page banner */
+.banner{padding-block:clamp(64px,10vw,120px) clamp(56px,8vw,96px);border-bottom:1px solid var(--line)}
+.banner .in{display:grid;gap:56px;align-items:end}
+@media (min-width:900px){.banner .in.two{grid-template-columns:1.4fr 1fr}}
+.banner h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.3}
+.banner .sub{margin-top:22px;color:var(--muted);font-size:1.1rem;max-width:50ch}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.glance{min-width:0}
+.glance dl{margin:0}
+.glance .r{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.glance .r:last-child{border-bottom:1px solid var(--line)}
+.glance dt{color:var(--muted);font-size:.92rem}
+.glance dd{margin:0;font-weight:500;text-align:end}
+.nextfree{margin-top:22px;font-size:.95rem;color:var(--muted);min-height:1.6em}
+.nextfree button{background:none;border:0;padding:0;color:var(--fg);font:500 .95rem var(--f-body);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+
+/* content blocks */
+.cols3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:40px;margin-top:48px}
+.cols3 div{border-top:1px solid var(--fg);padding-top:18px;min-width:0}
+.cols3 p{color:var(--muted);margin-top:10px;font-size:.97rem}
+.split{display:grid;gap:64px;margin-top:40px;align-items:start}
+@media (min-width:900px){.split{grid-template-columns:1fr 1fr}}
+.list{list-style:none;margin:0;padding:0}
+.list li{padding:16px 0;border-bottom:1px solid var(--line);display:flex;gap:16px}
+.list li:first-child{border-top:1px solid var(--line)}
+.list li::before{content:"";flex:none;width:12px;height:1px;margin-top:1.05em;background:var(--fg)}
+.list b{font-weight:500}
+.list span{color:var(--muted)}
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:460px;font-variant-numeric:tabular-nums}
+th,td{padding-block:16px;padding-inline:0 16px;text-align:start;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.85rem;color:var(--muted);font-weight:500;border-bottom:1px solid var(--fg)}
+td strong{font-weight:500}
+.band-dot{display:inline-block;width:8px;height:8px;margin-inline-end:12px;vertical-align:baseline}
+.bA{background:var(--band-a)} .bB{background:var(--band-b)} .bC{background:var(--band-c)}
+.fine{font-size:.88rem;color:var(--muted);margin-top:14px}
+.steps{list-style:none;margin:48px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:40px;counter-reset:s}
+.steps li{counter-increment:s;border-top:1px solid var(--fg);padding-top:18px;min-width:0}
+.steps li::before{content:counter(s,decimal-leading-zero);display:block;color:var(--muted);font-weight:500;font-size:.85rem;margin-bottom:12px}
+.steps p{color:var(--muted);margin-top:8px;font-size:.95rem}
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{cursor:pointer;padding:18px 0;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.2rem;line-height:1.5;font-weight:300}
+details[open] summary::after{content:"\2212"}
+details p{color:var(--muted);padding-bottom:18px;max-width:64ch}
+.cta-band{border-top:1px solid var(--line)}
+.cta-band .in{display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center;justify-content:space-between}
+.cta-band p{color:var(--muted);margin-top:8px}
+
+/* booking */
+.bf{display:grid;gap:48px;margin-top:44px}
+@media (min-width:900px){.bf{grid-template-columns:1.6fr 1fr;align-items:start}}
+.step{margin-bottom:36px}
+.step h3{margin-bottom:14px;display:flex;align-items:baseline;gap:10px}
+.step h3 small{font-weight:400;color:var(--muted);font-size:.85rem}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-height:56px;padding:8px 18px;background:transparent;color:var(--fg);border:1px solid var(--line);border-radius:2px;font:500 .95rem var(--f-body);cursor:pointer;line-height:1.5;text-align:start}
+.chip span{font-weight:400;font-size:.82rem;color:var(--muted)}
+.chip:hover{border-color:var(--fg)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed="true"] span{color:inherit;opacity:.75}
+.hours{display:grid;grid-template-columns:repeat(auto-fill,minmax(68px,1fr));gap:8px}
+.hr{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50px;background:transparent;color:var(--fg);border:1px solid var(--line);border-bottom:3px solid var(--line);border-radius:2px;font:500 .9rem var(--f-body);cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.4}
+.hr small{font-weight:400;font-size:.7rem;color:var(--muted)}
+.hr.bA{border-bottom-color:var(--band-a)} .hr.bB{border-bottom-color:var(--band-b)} .hr.bC{border-bottom-color:var(--band-c)}
+.hr:hover:not([disabled]){border-color:var(--fg)}
+.hr[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.hr[aria-pressed="true"] small{color:inherit}
+.hr[disabled]{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.legend{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:14px;font-size:.85rem;color:var(--muted)}
+.legend .band-dot{margin-inline-end:8px}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:2px}
+.stepper button{width:44px;height:44px;border:0;background:transparent;color:var(--fg);font:400 1.25rem var(--f-body);cursor:pointer}
+.stepper output{min-width:40px;text-align:center;font-weight:500}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+label{display:block;font-weight:500;font-size:.9rem;margin-bottom:8px}
+input[type=text],input[type=tel]{width:100%;min-height:48px;padding:0 14px;border:1px solid var(--line);border-radius:2px;background:transparent;color:var(--fg);font:400 1rem var(--f-body)}
+input[type=text]:focus,input[type=tel]:focus,textarea:focus{border-color:var(--fg)}
+textarea{width:100%;min-height:170px;padding:12px 14px;border:1px solid var(--line);border-radius:2px;background:transparent;color:var(--fg);font:400 .95rem/1.8 var(--f-body);resize:vertical}
+.sum{border:1px solid var(--line);border-radius:2px;padding:28px}
+@media (min-width:900px){.sum{position:sticky;top:calc(env(safe-area-inset-top,0px) + 92px)}}
+.sum h3{margin-bottom:14px}
+.sum dl{margin:0}
+.sum dl div{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.sum dt{color:var(--muted)}
+.sum dd{margin:0;font-weight:500;text-align:end}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0}
+.total b{font-size:1.6rem;font-weight:600;font-variant-numeric:tabular-nums}
+.empty{color:var(--muted)}
+.note{font-size:.88rem;color:var(--muted);margin-top:14px}
+.err{color:var(--bad);font-weight:500;min-height:1.6em;margin-top:10px;font-size:.92rem}
+.ok-mark{font-weight:600;font-size:1.25rem;margin-bottom:12px}
+.code{font-size:1.5rem;letter-spacing:.16em;font-weight:600;direction:ltr;unicode-bidi:isolate;display:inline-block}
+.sync{color:var(--muted);font-size:.88rem;margin-top:12px;min-height:1.4em}
+.st-x{color:var(--bad);font-weight:500} .st-ok{font-weight:500}
+tr.cx td{opacity:.5}
+
+/* contact */
+.info{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 40px;margin-top:44px}
+.info div{padding:18px 0;border-top:1px solid var(--fg);min-width:0}
+.info dt{color:var(--muted);font-size:.85rem;font-weight:500}
+.info dd{margin:8px 0 0;font-size:1.05rem}
+.phone-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.phone-row .num{font-weight:600;font-size:1.35rem;user-select:all;direction:ltr;unicode-bidi:isolate}
+footer{color:var(--muted);padding-block:44px;font-size:.92rem;border-top:1px solid var(--line)}
+footer .in{display:flex;flex-wrap:wrap;gap:16px 48px;justify-content:space-between}
+footer b{color:var(--fg);font-weight:600}
+
+/* account, lock, games */
+.acct-btn{display:inline-flex;align-items:center;gap:8px}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;margin-top:40px}
+.game{margin:0;min-width:0}
+.game svg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:2px}
+.game figcaption{padding-top:16px}
+.game h3{margin-bottom:6px}
+.game p{color:var(--muted);font-size:.95rem}
+.game .price{margin-top:10px;font-weight:500;color:var(--fg)}
+.soon,.gate{min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding-block:96px}
+.soon h1,.gate h1{font-size:clamp(2.2rem,6vw,4rem);line-height:1.2}
+.soon p,.gate p{color:var(--muted);margin-top:18px;max-width:44ch;margin-inline:auto}
+.gate form{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.gate input{width:220px;min-height:46px;padding:0 14px;border:1px solid var(--line);border-radius:2px;background:transparent;color:var(--fg);font:400 1rem var(--f-body);direction:ltr;text-align:center}
+.acct{display:grid;gap:48px;margin-top:40px}
+@media (min-width:900px){.acct{grid-template-columns:1fr 1.2fr;align-items:start}}
+.card{border:1px solid var(--line);border-radius:2px;padding:28px}
+.card h3{margin-bottom:16px}
+.card .fields{margin-bottom:18px}
+.ok-t{color:var(--fg);font-weight:500;min-height:1.6em;margin-top:10px;font-size:.92rem}
+.bk{list-style:none;margin:0;padding:0}
+.bk li{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.bk li:first-child{border-top:1px solid var(--line)}
+.bk small{display:block;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<header class="hdr">
+  <div class="in">
+    <a class="brand" href="#home" aria-label="أبو تريكة، الصفحة الرئيسية"><b>أبو تريكة</b><span>ملعب خماسي ونت كافيه</span></a>
+    <nav class="nav" aria-label="القائمة الرئيسية">
+      <a href="#home" data-nav="home">الملعب</a>
+      <a href="#cafe" data-nav="cafe">النت كافيه</a>
+      <a href="#book" data-nav="book">احجز أونلاين</a>
+      <a href="#contact" data-nav="contact">تواصل معنا</a>
+      <a href="#admin" data-nav="admin" id="navAdmin" hidden>الحجوزات</a>
+    </nav>
+    <a class="btn btn-line btn-sm acct-btn" href="#account" id="acctBtn">تسجيل الدخول</a>
+    <button type="button" class="btn btn-primary btn-sm" data-go="book" data-res="pitch">احجز الملعب</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= PITCH (home) ================= -->
+<div class="view" data-view="home">
+  <div class="banner">
+    <div class="in two">
+      <div>
+        <div class="kicker">شبرا الخيمة · يعمل 24 ساعة</div>
+        <h1>كرة قدم خماسية، متاحة على مدار الساعة.</h1>
+        <p class="sub">أبو تريكة ملعب نجيلة صناعية مضاء بكشافات LED، وبجواره نت كافيه. اختر الموعد، احجز أونلاين، وتعالَ جاهزًا للعب.</p>
+        <div class="cta">
+          <button type="button" class="btn btn-light" data-go="book" data-res="pitch">احجز الملعب</button>
+          <button type="button" class="btn btn-line" data-scroll="rates">شاهد الأسعار</button>
+        </div>
+        <div class="nextfree" id="nextfree"></div>
+      </div>
+      <div class="glance">
+        <dl>
+          <div class="r"><dt>مواعيد العمل</dt><dd>24 ساعة، 7 أيام</dd></div>
+          <div class="r"><dt>النظام</dt><dd>خماسي (5 ضد 5)</dd></div>
+          <div class="r"><dt>الأرضية</dt><dd>نجيلة صناعية</dd></div>
+          <div class="r"><dt>الإضاءة</dt><dd>كشافات LED</dd></div>
+          <div class="r"><dt>الموقع</dt><dd>شبرا الخيمة</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="in">
+      <div class="kicker">لماذا أبو تريكة</div>
+      <h2>ملعب جاهز في أي وقت يكون فريقك جاهزًا فيه.</h2>
+      <div class="cols3">
+        <div><h3>يعمل 24 ساعة</h3><p>تدريب صباحي، دوري مسائي، أو مباراة بعد منتصف الليل. الملعب متاح كل ساعة في كل يوم.</p></div>
+        <div><h3>ظروف لعب ثابتة</h3><p>أرضية نجيلة صناعية وإضاءة LED تحافظان على جودة اللعب في أي طقس وأي ساعة.</p></div>
+        <div><h3>حجز بلا مكالمات</h3><p>اطّلع على الساعات المتاحة، اختر موعدك، واحصل على كود تأكيد في أقل من دقيقة.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="in">
+      <div class="split">
+        <div>
+          <div class="kicker">المرافق</div>
+          <h2>كل ما تحتاجه في مكان واحد.</h2>
+          <ul class="list" style="margin-top:26px">
+            <li><div><b>ملعب نجيلة صناعية</b><br><span>مجهز لمباريات وتدريبات الخماسي.</span></div></li>
+            <li><div><b>إضاءة LED</b><br><span>إضاءة موزعة بالتساوي للعب نهارًا وليلًا.</span></div></li>
+            <li><div><b>كرة وصدريات</b><br><span>متوفرة مع كل حجز دون رسوم إضافية.</span></div></li>
+            <li><div><b>غرف تبديل ملابس ومياه شرب</b><br><span>لتنتعش قبل المباراة وبعدها.</span></div></li>
+            <li><div><b>نت كافيه في الموقع</b><br><span>أكمل يومك بعد المباراة. <a href="#cafe">تعرّف على النت كافيه</a>.</span></div></li>
+          </ul>
+        </div>
+        <div id="rates">
+          <div class="kicker">أسعار الملعب</div>
+          <h2>تسعير بسيط بالساعة.</h2>
+          <div class="tbl-wrap" style="margin-top:26px">
+            <table>
+              <thead><tr><th>الفترة</th><th>الساعات</th><th>سعر الساعة</th></tr></thead>
+              <tbody>
+                <tr><td><span class="band-dot bA"></span><strong>نهارًا</strong></td><td>06:00 – 16:00</td><td><strong>250 جنيه</strong></td></tr>
+                <tr><td><span class="band-dot bB"></span><strong>مساءً</strong></td><td>16:00 – 23:00</td><td><strong>400 جنيه</strong></td></tr>
+                <tr><td><span class="band-dot bC"></span><strong>ليلًا</strong></td><td>23:00 – 06:00</td><td><strong>350 جنيه</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="fine">السعر لكامل الملعب في الساعة، وليس للفرد. الأسعار بالجنيه المصري.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="in">
+      <div class="kicker">طريقة الحجز</div>
+      <h2>احجز موعدك في أربع خطوات.</h2>
+      <ol class="steps">
+        <li><h3>اختر اليوم</h3><p>أي يوم خلال الأسبوع القادم.</p></li>
+        <li><h3>اختر الساعات</h3><p>الساعات المتاحة واضحة، والمحجوزة معتمة.</p></li>
+        <li><h3>أدخل بياناتك</h3><p>اسمك ورقم موبايل نستطيع الوصول إليك عليه.</p></li>
+        <li><h3>احصل على الكود</h3><p>ستحصل على كود حجز، أبرزه عند الوصول.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="in">
+      <div class="split">
+        <div>
+          <div class="kicker">قواعد الملعب</div>
+          <h2>إرشادات لكل حجز.</h2>
+          <ul class="list" style="margin-top:26px">
+            <li><div><b>احضر قبل الموعد بـ 10 دقائق.</b> <span>يبدأ وقت حجزك مع بداية الساعة، فاستعد قبلها.</span></div></li>
+            <li><div><b>ارتدِ حذاءً مناسبًا.</b> <span>أحذية النجيلة أو المطاط فقط، دون مسامير معدنية.</span></div></li>
+            <li><div><b>ألغِ قبل 6 ساعات على الأقل.</b> <span>الإلغاء المبكر بدون أي رسوم.</span></div></li>
+            <li><div><b>التأخر لا يمد وقت الحجز.</b> <span>تنتهي الحصة في الموعد المحدد.</span></div></li>
+            <li><div><b>حافظ على نظافة المكان وسلامته.</b> <span>ممنوع التدخين داخل الملعب، وللإدارة حق منع الدخول عند السلوك غير الآمن.</span></div></li>
+          </ul>
+        </div>
+        <div>
+          <div class="kicker">أسئلة شائعة</div>
+          <h2>أسئلة متكررة.</h2>
+          <div style="margin-top:26px">
+            <details><summary>ما هي مواعيد العمل؟</summary><p>الملعب يعمل 24 ساعة يوميًا، 7 أيام في الأسبوع، بما في ذلك الإجازات.</p></details>
+            <details><summary>كم ساعة يمكنني الحجز؟</summary><p>يمكنك حجز من ساعة إلى 3 ساعات متتالية أونلاين. للمدد الأطول تواصل معنا مباشرة.</p></details>
+            <details><summary>كم لاعبًا في كل فريق؟</summary><p>خماسي. ويمكن للبدلاء الجلوس على جانب الملعب.</p></details>
+            <details><summary>هل أحتاج إلى الدفع أونلاين؟</summary><p>لا يلزم الدفع أونلاين. نؤكد حجزك ونرتب أي عربون هاتفيًا.</p></details>
+            <details><summary>هل يمكنني تعديل الحجز أو إلغاؤه؟</summary><p>نعم. تواصل معنا قبل موعدك بـ 6 ساعات على الأقل للتعديل أو الإلغاء دون رسوم.</p></details>
+            <details><summary>هل يوجد نت كافيه قريب؟</summary><p>نعم، النت كافيه في نفس الموقع ويعمل 24 ساعة أيضًا.</p></details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <div class="in" style="padding-block:56px">
+      <div><h2>جاهز للعب؟</h2><p>تحقق من المواعيد المتاحة واحجز ساعتك أونلاين.</p></div>
+      <button type="button" class="btn btn-light" data-go="book" data-res="pitch">احجز الملعب</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= INTERNET CAFE ================= -->
+<div class="view" data-view="cafe" hidden>
+  <div class="soon" id="cafeSoon" hidden>
+    <div class="in"><div class="kicker">النت كافيه</div><h1>قريبًا</h1><p>نجهز النت كافيه بشكله الجديد مع البلياردو والبينج بونج. ترقب الافتتاح.</p></div>
+  </div>
+  <div class="gate" id="cafeGate" hidden>
+    <div class="in"><div class="kicker">النت كافيه</div><h1>الصفحة مغلقة</h1><p>أدخل كلمة المرور لعرض الصفحة.</p>
+      <form id="gateForm"><input id="gatePw" type="password" autocomplete="off" aria-label="كلمة المرور" placeholder="كلمة المرور"><button class="btn btn-primary" type="submit">دخول</button></form>
+      <div class="err" id="gateErr" role="alert"></div></div>
+  </div>
+  <div id="cafeBody">
+  <div class="banner">
+    <div class="in two">
+      <div>
+        <div class="kicker">النت كافيه · 24 ساعة</div>
+        <h1>إنترنت سريع ومقاعد مريحة بجوار الملعب.</h1>
+        <p class="sub">ألعاب، بلياردو، بينج بونج، عمل، دراسة أو طباعة. النت كافيه يعمل على مدار الساعة ويمكنك حجز جهازك مسبقًا.</p>
+        <div class="cta">
+          <button type="button" class="btn btn-light" data-go="book" data-res="pc">احجز جهازًا</button>
+          <button type="button" class="btn btn-line" data-scroll="stations">شاهد الأجهزة</button>
+        </div>
+      </div>
+      <div class="glance">
+        <dl>
+          <div class="r"><dt>مواعيد العمل</dt><dd>24 ساعة، 7 أيام</dd></div>
+          <div class="r"><dt>الأجهزة</dt><dd>كمبيوتر وPlayStation 5</dd></div>
+          <div class="r"><dt>الألعاب</dt><dd>بلياردو وبينج بونج</dd></div>
+          <div class="r"><dt>الخدمات</dt><dd>ألعاب، عمل، طباعة</dd></div>
+          <div class="r"><dt>الموقع</dt><dd>نفس موقع الملعب</dd></div>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <section id="stations">
+    <div class="in">
+      <div class="kicker">الأجهزة والأسعار</div>
+      <h2>اختر الجهاز المناسب لجلستك.</h2>
+      <div class="tbl-wrap" style="margin-top:32px">
+        <table>
+          <thead><tr><th>الجهاز</th><th>مناسب لـ</th><th>المتاح</th><th>سعر الساعة</th></tr></thead>
+          <tbody>
+            <tr><td><strong>كمبيوتر عادي</strong></td><td>الألعاب اليومية والتصفح والدراسة والعمل المكتبي.</td><td>12 جهازًا</td><td><strong>20 جنيه</strong></td></tr>
+            <tr><td><strong>كمبيوتر مميز</strong></td><td>الألعاب التنافسية والبرامج الثقيلة على جهاز أسرع.</td><td>6 أجهزة</td><td><strong>35 جنيه</strong></td></tr>
+            <tr><td><strong>غرفة PlayStation 5</strong></td><td>مجموعات حتى 4 أشخاص على شاشة كبيرة.</td><td>غرفتان</td><td><strong>60 جنيه</strong></td></tr>
+            <tr><td><strong>طاولة بلياردو</strong></td><td>لاعبان أو فريقان، مع عصي وكرات كاملة.</td><td>طاولتان</td><td><strong>80 جنيه</strong></td></tr>
+            <tr><td><strong>طاولة بينج بونج</strong></td><td>مباراة فردية أو زوجية، مع مضارب وكرات.</td><td>طاولتان</td><td><strong>40 جنيه</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fine">السعر للجهاز في الساعة. الأسعار بالجنيه المصري.</p>
+    </div>
+  </section>
+
+
+  <section class="alt">
+    <div class="in">
+      <div class="kicker">الألعاب</div>
+      <h2>بلياردو وبينج بونج.</h2>
+      <p class="lead">طاولات للعب مع الأصدقاء بعد المباراة أو في أي وقت، ويمكن حجزها بالساعة.</p>
+      <div class="games">
+        <figure class="game"><svg viewBox="0 0 400 220" role="img" aria-label="رسم لطاولة بلياردو">
+<rect x="2" y="2" width="396" height="216" rx="14" fill="#5B3A24"/>
+<rect x="16" y="16" width="368" height="188" rx="6" fill="#2F6B4F"/>
+<line x1="120" y1="16" x2="120" y2="204" stroke="#FFFFFF" stroke-opacity=".28" stroke-width="1.5"/>
+<g fill="#111111"><circle cx="18" cy="18" r="12"/><circle cx="382" cy="18" r="12"/><circle cx="18" cy="202" r="12"/><circle cx="382" cy="202" r="12"/><circle cx="200" cy="15" r="11"/><circle cx="200" cy="205" r="11"/></g>
+<g stroke="#000000" stroke-opacity=".25" stroke-width="1">
+<circle cx="270" cy="110" r="8" fill="#E0B100"/>
+<circle cx="287" cy="101" r="8" fill="#2255B8"/><circle cx="287" cy="119" r="8" fill="#C0322B"/>
+<circle cx="304" cy="92" r="8" fill="#6B2FA0"/><circle cx="304" cy="110" r="8" fill="#111111"/><circle cx="304" cy="128" r="8" fill="#E0701A"/>
+<circle cx="321" cy="83" r="8" fill="#1E8A4C"/><circle cx="321" cy="101" r="8" fill="#8B1E2D"/><circle cx="321" cy="119" r="8" fill="#E0B100"/><circle cx="321" cy="137" r="8" fill="#2255B8"/>
+<circle cx="338" cy="74" r="8" fill="#C0322B"/><circle cx="338" cy="92" r="8" fill="#6B2FA0"/><circle cx="338" cy="110" r="8" fill="#E0701A"/><circle cx="338" cy="128" r="8" fill="#1E8A4C"/><circle cx="338" cy="146" r="8" fill="#8B1E2D"/>
+<circle cx="110" cy="110" r="8" fill="#FFFFFF"/></g>
+<line x1="22" y1="182" x2="98" y2="117" stroke="#D9B382" stroke-width="4" stroke-linecap="round"/>
+</svg>
+          <figcaption><h3>طاولة بلياردو</h3><p>طاولة بكلوث أخضر وستة جيوب، مع عصي وكرات كاملة وطباشير.</p><p class="price">80 جنيه للساعة</p></figcaption>
+        </figure>
+        <figure class="game"><svg viewBox="0 0 400 220" role="img" aria-label="رسم لطاولة بينج بونج">
+<rect x="2" y="2" width="396" height="216" rx="2" fill="#E9ECEF" fill-opacity=".0"/>
+<rect x="30" y="40" width="340" height="140" rx="3" fill="#1F4E8C"/>
+<rect x="36" y="46" width="328" height="128" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+<line x1="36" y1="110" x2="364" y2="110" stroke="#FFFFFF" stroke-width="1.5"/>
+<line x1="200" y1="28" x2="200" y2="192" stroke="#F2F2F2" stroke-width="5"/>
+<line x1="200" y1="28" x2="200" y2="192" stroke="#111111" stroke-opacity=".45" stroke-width="1" stroke-dasharray="3 3"/>
+<circle cx="200" cy="28" r="4" fill="#444444"/><circle cx="200" cy="192" r="4" fill="#444444"/>
+<g><circle cx="88" cy="110" r="7" fill="#F28C28"/></g>
+<g transform="rotate(-25 330 120)"><circle cx="330" cy="100" r="22" fill="#C0322B"/><rect x="325" y="120" width="10" height="26" rx="3" fill="#C99A5B"/></g>
+<rect x="38" y="190" width="14" height="22" rx="2" fill="#333333" fill-opacity=".0"/>
+</svg>
+          <figcaption><h3>طاولة بينج بونج</h3><p>طاولة بشبكة قياسية، مع مضارب وكرات لمباراة فردية أو زوجية.</p><p class="price">40 جنيه للساعة</p></figcaption>
+        </figure>
+      </div>
+      <div class="cta"><button type="button" class="btn btn-primary" data-go="book" data-res="bil">احجز بلياردو</button><button type="button" class="btn btn-line" data-go="book" data-res="tt">احجز بينج بونج</button></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="in">
+      <div class="split">
+        <div>
+          <div class="kicker">الخدمات</div>
+          <h2>أكثر من مجرد غرفة ألعاب.</h2>
+          <ul class="list" style="margin-top:26px">
+            <li><div><b>إنترنت عالي السرعة</b><br><span>اتصال فايبر مستقر على كل جهاز.</span></div></li>
+            <li><div><b>ألعاب</b><br><span>ألعاب أونلاين وأوفلاين شهيرة مثبتة وجاهزة.</span></div></li>
+            <li><div><b>عمل ودراسة</b><br><span>ركن هادئ للواجبات والعمل عن بُعد والبحث.</span></div></li>
+            <li><div><b>بلياردو وبينج بونج</b><br><span>طاولات بمعداتها الكاملة، تُحجز بالساعة.</span></div></li>
+            <li><div><b>طباعة وتصوير مستندات</b><br><span>متاحة عند الكاونتر خلال ساعات العمل.</span></div></li>
+            <li><div><b>مشروبات ووجبات خفيفة</b><br><span>من الكاونتر داخل المكان.</span></div></li>
+          </ul>
+        </div>
+        <div>
+          <div class="kicker">قواعد المكان</div>
+          <h2>للحفاظ على راحة الجميع.</h2>
+          <ul class="list" style="margin-top:26px">
+            <li><div><b>حافظ على الهدوء.</b> <span>الآخرون يعملون أو يذاكرون.</span></div></li>
+            <li><div><b>الأكل والشرب من الكاونتر فقط.</b> <span>للحفاظ على نظافة الأجهزة.</span></div></li>
+            <li><div><b>نحتفظ بالجلسة المحجوزة 15 دقيقة.</b> <span>بعدها قد يُتاح الجهاز لغيرك.</span></div></li>
+            <li><div><b>تعامل مع الأجهزة بعناية.</b> <span>العميل مسؤول عن أي ضرر يتسبب فيه.</span></div></li>
+          </ul>
+          <div class="cta"><button type="button" class="btn btn-primary" data-go="book" data-res="pc">احجز جهازًا</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+</div>
+
+<!-- ================= BOOKING ================= -->
+<div class="view" data-view="book" hidden>
+  <section>
+    <div class="in">
+      <div class="kicker">احجز أونلاين</div>
+      <h2>احجز الملعب أو جهازًا في النت كافيه.</h2>
+      <p class="lead">اختر الخدمة واليوم ووقت البداية. الساعات المحجوزة تظهر معتمة.</p>
+      <form id="bf" class="bf" novalidate>
+        <div>
+          <div class="step"><h3>1. الخدمة</h3><div class="row" id="resRow"></div></div>
+          <div class="step"><h3>2. اليوم</h3><div class="row" id="days"></div></div>
+          <div class="step">
+            <h3>3. وقت البداية <small>يعمل 24 ساعة</small></h3>
+            <div class="hours" id="hours"></div>
+            <div class="legend" id="legend"></div>
+            <div class="sync" id="sync" role="status"></div>
+          </div>
+          <div class="step"><h3>4. المدة</h3><div class="row" id="durRow"></div></div>
+          <div class="step" id="qtyStep" hidden><h3>عدد الأجهزة</h3>
+            <div class="stepper"><button type="button" id="qMinus" aria-label="أقل">&minus;</button><output id="qOut" class="num">1</output><button type="button" id="qPlus" aria-label="أكثر">+</button></div>
+          </div>
+          <div class="step">
+            <h3>5. بياناتك</h3>
+            <div class="fields">
+              <div><label for="name">الاسم الكامل</label><input id="name" type="text" autocomplete="name" placeholder="اسمك"></div>
+              <div><label for="phone">رقم الموبايل</label><input id="phone" type="tel" inputmode="numeric" autocomplete="tel" dir="ltr" style="text-align:right" placeholder="01XXXXXXXXX"></div>
+            </div>
+          </div>
+        </div>
+        <aside class="sum" id="sum" aria-live="polite"></aside>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ================= CONTACT ================= -->
+<div class="view" data-view="contact" hidden>
+  <section>
+    <div class="in">
+      <div class="kicker">تواصل معنا</div>
+      <h2>زرنا أو تواصل معنا.</h2>
+      <p class="lead">نعمل كل ساعة من كل يوم. اتصل بنا أو راسلنا للحجوزات الجماعية والاشتراكات أو أي طلبات خاصة.</p>
+      <dl class="info">
+        <div><dt>العنوان</dt><dd>الشارع الجديد (الشعراوي القديم)، أمام شارع بهتيم، شبرا الخيمة</dd>
+          <p style="margin-top:14px"><a class="btn btn-line btn-sm" href="https://www.google.com/maps/search/?api=1&amp;query=Bahtim+Street+Shubra+El-Kheima" target="_blank" rel="noopener">افتح في خرائط جوجل</a></p></div>
+        <div><dt>مواعيد العمل</dt><dd>24 ساعة يوميًا، 7 أيام في الأسبوع</dd></div>
+        <div><dt>الهاتف وواتساب</dt><dd>
+          <div class="phone-row"><span class="num" data-phone="0"></span><button type="button" class="btn btn-primary btn-sm" data-copy-phone="0">انسخ الرقم</button></div>
+          <div class="phone-row" style="margin-top:12px"><span class="num" data-phone="1"></span><button type="button" class="btn btn-primary btn-sm" data-copy-phone="1">انسخ الرقم</button></div></dd></div>
+      </dl>
+    </div>
+  </section>
+  <div class="cta-band">
+    <div class="in" style="padding-block:56px">
+      <div><h2>تفضّل الحجز أونلاين؟</h2><p>احجز الملعب أو جهازًا في أقل من دقيقة.</p></div>
+      <button type="button" class="btn btn-light" data-go="book" data-res="pitch">احجز أونلاين</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ACCOUNT ================= -->
+<div class="view" data-view="account" hidden>
+  <section>
+    <div class="in">
+      <div class="kicker">حسابي</div>
+      <h2 id="acTitle">حسابي</h2>
+      <p class="lead" id="acLead"></p>
+      <div id="acBody"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ================= ADMIN ================= -->
+<div class="view" data-view="admin" hidden>
+  <section>
+    <div class="in">
+      <div class="kicker">الإدارة</div>
+      <h2>الحجوزات القادمة</h2>
+      <p class="lead" id="adminLead">الحجوزات القادمة مرتبة حسب التاريخ.</p>
+      <div class="tbl-wrap" style="margin-top:30px"><table>
+        <thead><tr><th>الموعد</th><th>الخدمة</th><th>الاسم</th><th>الموبايل</th><th>الإجمالي</th><th>الحالة</th></tr></thead>
+        <tbody id="adminRows"></tbody>
+      </table></div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="in">
+    <div><b>أبو تريكة</b><br>ملعب خماسي ونت كافيه</div>
+    <div>الشارع الجديد (الشعراوي القديم)، أمام شارع بهتيم<br>شبرا الخيمة</div>
+    <div>مفتوح 24 ساعة، 7 أيام في الأسبوع<br><span data-phone="0" class="num ltr"></span> &nbsp;·&nbsp; <span data-phone="1" class="num ltr"></span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+document.documentElement.lang='ar';document.documentElement.dir='rtl';
+var CONFIG={phones:['01008414077','01021724291'],
+  /* قفل صفحة النت كافيه: mode = 'open' (مفتوحة) أو 'soon' (قريبًا) أو 'password' (كلمة مرور). التفاصيل تظل في الصفحة وتُخفى فقط. */
+  cafe:{mode:'soon',password:'change-me'}};
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+$$('[data-phone]').forEach(function(e){e.textContent=CONFIG.phones[+e.dataset.phone||0]});
+
+var RES={
+  pitch:{name:'ملعب كرة القدم',cap:1,max:3},
+  pc:{name:'كمبيوتر عادي',cap:12,max:5,rate:20},
+  vip:{name:'كمبيوتر مميز',cap:6,max:5,rate:35},
+  ps:{name:'غرفة PlayStation 5',cap:2,max:4,rate:60},
+  bil:{name:'طاولة بلياردو',cap:2,max:4,rate:80},
+  tt:{name:'طاولة بينج بونج',cap:2,max:4,rate:40}
+};
+var BAND_RATE={A:250,B:400,C:350};
+var HOURS=[];for(var hh=0;hh<24;hh++)HOURS.push(hh);
+function band(h){var x=h%24;return x>=6&&x<16?'A':x>=16&&x<23?'B':'C'}
+var pitchRate=function(h){return BAND_RATE[band(h)]};
+var hs=function(h){var x=h%24;return (x%12||12)+' '+(x>=12?'م':'ص')};
+var hf=function(h){var x=h%24;return (x%12||12)+':00 '+(x>=12?'م':'ص')};
+var pad=function(n){return String(n).padStart(2,'0')};
+var dkey=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+var cafeUnlocked=false;
+try{cafeUnlocked=sessionStorage.getItem('cafeOk')==='1'}catch(e){}
+function cafeOpen(){var m=CONFIG.cafe.mode;return m==='open'||(m==='password'&&cafeUnlocked)}
+function applyCafe(){
+  var m=CONFIG.cafe.mode,open=cafeOpen();
+  $('#cafeBody').hidden=!open;
+  $('#cafeSoon').hidden=!(m==='soon');
+  $('#cafeGate').hidden=!(m==='password'&&!open);
+  if(!open&&RES[S.res]&&S.res!=='pitch'){S.res='pitch';S.dur=Math.min(S.dur,RES.pitch.max)}
+}
+var DAYN=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+var MONN=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+var DL=(function(){var a=[],t=new Date();t.setHours(0,0,0,0);for(var i=0;i<7;i++){var d=new Date(t);d.setDate(t.getDate()+i);var nm=i===0?'اليوم':i===1?'غدًا':DAYN[d.getDay()];a.push({key:dkey(d),dow:nm,full:nm,num:d.getDate(),mon:MONN[d.getMonth()]})}return a})();
+var TODAY=DL[0].key;
+var dateLabel=function(k){for(var i=0;i<DL.length;i++)if(DL[i].key===k)return DL[i].full+'، '+DL[i].num+' '+DL[i].mon;return k};
+function addDays(k,n){var p=k.split('-');return dkey(new Date(+p[0],+p[1]-1,+p[2]+n))}
+function norm(date,h){var n=Math.floor(h/24);return {date:n?addDays(date,n):date,hour:h%24}}
+
+var S={res:'pitch',date:TODAY,start:null,dur:1,qty:1,mode:'request',db:null,uid:null,isAdmin:false,
+  slots:new Map(),idx:new Map(),loaded:false,done:null,bookings:[],busy:false,armed:null,
+  profile:null,pLoaded:false,mine:[],ready:false,acMsg:'',myArmed:null};
+
+function index(){
+  S.idx=new Map();
+  S.slots.forEach(function(v){
+    if(!v||!v.bid)return;
+    var k=v.res+'|'+v.date+'|'+v.hour;S.idx.set(k,(S.idx.get(k)||0)+1);
+  });
+}
+var rem=function(res,date,h){return RES[res].cap-(S.idx.get(res+'|'+date+'|'+h)||0)};
+function isPast(n){return n.date<TODAY||(n.date===TODAY&&n.hour<=new Date().getHours())}
+function canStart(res,date,h,dur,qty){
+  for(var i=0;i<dur;i++){
+    var n=norm(date,h+i);
+    if(isPast(n)||rem(res,n.date,n.hour)<qty)return false;
+  }
+  return true;
+}
+function total(res,start,dur,qty){
+  if(res==='pitch'){var t=0;for(var i=0;i<dur;i++)t+=pitchRate(start+i);return t}
+  return RES[res].rate*dur*qty;
+}
+function rid(){return Math.random().toString(36).slice(2,8).toUpperCase()}
+var range=function(start,dur){return hf(start)+' – '+hf(start+dur)};
+var durLabel=function(n){return n===1?'ساعة':n===2?'ساعتان':n+' ساعات'};
+
+/* ---------- booking controls ---------- */
+function renderRes(){
+  $('#resRow').innerHTML=Object.keys(RES).filter(function(k){return k==='pitch'||cafeOpen()}).map(function(k){
+    var sub=k==='pitch'?'ابتداءً من '+Math.min(BAND_RATE.A,BAND_RATE.B,BAND_RATE.C)+' جنيه / ساعة':RES[k].rate+' جنيه / ساعة';
+    return '<button type="button" class="chip" data-pick="'+k+'" aria-pressed="'+(k===S.res)+'">'+RES[k].name+'<span class="num">'+sub+'</span></button>';
+  }).join('');
+}
+function renderDays(){
+  $('#days').innerHTML=DL.map(function(d){
+    return '<button type="button" class="chip" data-date="'+d.key+'" aria-pressed="'+(d.key===S.date)+'">'+d.dow+'<span class="num">'+d.num+' '+d.mon+'</span></button>';
+  }).join('');
+}
+function renderDur(){
+  var m=RES[S.res].max,a=[];
+  for(var n=1;n<=m;n++)a.push('<button type="button" class="chip" data-dur="'+n+'" aria-pressed="'+(n===S.dur)+'">'+durLabel(n)+'</button>');
+  $('#durRow').innerHTML=a.join('');
+  $('#qtyStep').hidden=S.res==='pitch';
+  $('#qOut').textContent=S.qty;
+}
+function renderHours(){
+  var cafe=S.res!=='pitch';
+  $('#hours').innerHTML=HOURS.map(function(h){
+    var ok=canStart(S.res,S.date,h,S.dur,S.qty);
+    var r=rem(S.res,S.date,h);
+    var cls='hr'+(cafe?'':' b'+band(h));
+    var small=cafe&&r>0&&!isPast({date:S.date,hour:h})?'<small>متاح '+r+'</small>':'';
+    return '<button type="button" class="'+cls+'" data-h="'+h+'" aria-pressed="'+(S.start===h)+'"'+(ok?'':' disabled')+'>'+hs(h)+small+'</button>';
+  }).join('');
+  $('#legend').innerHTML=cafe?'':'<span><i class="band-dot bA"></i>نهارًا '+BAND_RATE.A+' جنيه</span><span><i class="band-dot bB"></i>مساءً '+BAND_RATE.B+' جنيه</span><span><i class="band-dot bC"></i>ليلًا '+BAND_RATE.C+' جنيه</span>';
+}
+function info(){
+  return {res:S.res,date:S.date,start:S.start,dur:S.dur,qty:S.res==='pitch'?1:S.qty,total:total(S.res,S.start==null?0:S.start,S.dur,S.qty)};
+}
+function renderSummary(){
+  var box=$('#sum');
+  if(S.done){box.innerHTML=doneHtml();return}
+  var rows='';
+  if(S.start!=null){
+    var i=info();
+    rows='<dl><div><dt>الخدمة</dt><dd>'+RES[S.res].name+'</dd></div>'+
+      '<div><dt>اليوم</dt><dd>'+dateLabel(S.date)+'</dd></div>'+
+      '<div><dt>الوقت</dt><dd class="num">'+range(S.start,S.dur)+'</dd></div>'+
+      (S.res!=='pitch'?'<div><dt>الأجهزة</dt><dd class="num">'+S.qty+'</dd></div>':'')+'</dl>'+
+      '<div class="total"><span>الإجمالي</span><b>'+i.total+' جنيه</b></div>';
+  }else{
+    rows='<p class="empty">اختر الخدمة واليوم ووقت البداية لتظهر لك التكلفة.</p><div class="total"><span>الإجمالي</span><b>0 جنيه</b></div>';
+  }
+  var label=S.mode==='live'?'تأكيد الحجز':'تجهيز طلب الحجز';
+  var note=S.mode==='live'
+    ?'يُحجز موعدك فورًا ويُغلق أمام باقي العملاء.'
+    :'سنجهز بياناتك في رسالة. أرسلها إلى رقمنا ونؤكد لك الموعد.';
+  box.innerHTML='<h3>ملخص الحجز</h3>'+rows+
+    '<button class="btn btn-primary" type="submit" style="width:100%"'+(S.busy?' disabled':'')+'>'+label+'</button>'+
+    '<div class="err" id="err" role="alert"></div><p class="note">'+note+'</p>';
+}
+function message(i,name,phone){
+  return ['طلب حجز جديد - أبو تريكة','الخدمة: '+RES[i.res].name+(i.res!=='pitch'?' × '+i.qty:''),'اليوم: '+dateLabel(i.date),
+    'الوقت: '+range(i.start,i.dur),'الاسم: '+name,'الموبايل: '+phone,'الإجمالي: '+i.total+' جنيه'].join('\n');
+}
+function doneHtml(){
+  var d=S.done,i=d.info;
+  var lines='<dl><div><dt>الخدمة</dt><dd>'+RES[i.res].name+(i.res!=='pitch'?' × '+i.qty:'')+'</dd></div>'+
+    '<div><dt>اليوم</dt><dd>'+dateLabel(i.date)+'</dd></div>'+
+    '<div><dt>الوقت</dt><dd class="num">'+range(i.start,i.dur)+'</dd></div>'+
+    '<div><dt>الإجمالي</dt><dd class="num">'+i.total+' جنيه</dd></div></dl>';
+  if(d.type==='live'){
+    return '<div class="ok-mark">تم تأكيد الحجز</div>'+
+      '<p>كود حجزك <span class="code">'+esc(d.bid)+'</span></p>'+lines+
+      '<p class="note">سنتصل بك على <span class="ltr">'+esc(d.phone)+'</span> لتأكيد أي عربون. يرجى إبراز هذا الكود عند الوصول.</p>'+
+      '<button type="button" class="btn btn-line" style="width:100%;margin-top:16px" data-again>حجز آخر</button>';
+  }
+  return '<h3>طلبك جاهز</h3>'+lines+
+    '<label for="msgbox" style="margin-top:18px">الرسالة</label>'+
+    '<textarea id="msgbox" readonly>'+esc(d.text)+'</textarea>'+
+    '<div class="row" style="margin-top:12px"><button type="button" class="btn btn-primary" data-copy-msg>انسخ الرسالة</button>'+
+    '<button type="button" class="btn btn-line" data-again>طلب جديد</button></div>'+
+    '<p class="note">أرسلها على واتساب أو اتصل على <span class="num ltr" style="user-select:all">'+esc(CONFIG.phones[0])+'</span> أو <span class="num ltr" style="user-select:all">'+esc(CONFIG.phones[1])+'</span> ونؤكد لك الموعد.</p>';
+}
+
+/* ---------- next free slot ---------- */
+function renderNextFree(){
+  var el=$('#nextfree');
+  for(var di=0;di<DL.length;di++){
+    for(var k=0;k<HOURS.length;k++){
+      var h=HOURS[k];
+      if(canStart('pitch',DL[di].key,h,1,1)){
+        el.innerHTML='أقرب ساعة متاحة: <button type="button" data-next="'+DL[di].key+'|'+h+'">'+DL[di].dow+'، '+hs(h)+'</button>';
+        return;
+      }
+    }
+  }
+  el.innerHTML='';
+}
+
+/* ---------- admin ---------- */
+function cancelled(b){
+  if(b.status==='cancelled')return true;
+  if(!S.loaded)return false;
+  return !(b.slots||[]).every(function(id){return S.slots.has(id)});
+}
+function renderAdmin(){
+  if(!S.isAdmin)return;
+  $('#navAdmin').hidden=false;
+  var list=S.bookings.filter(function(b){return b.date>=TODAY}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:(a.start-b.start)});
+  var n=list.filter(function(b){return b.date===TODAY&&!cancelled(b)}).length;
+  $('#adminLead').textContent='الحجوزات القادمة مرتبة حسب التاريخ. حجوزات تبدأ اليوم: '+n+'.';
+  if(!list.length){$('#adminRows').innerHTML='<tr><td colspan="6" class="empty">لا توجد حجوزات قادمة حتى الآن.</td></tr>';return}
+  $('#adminRows').innerHTML=list.map(function(b){
+    var cx=cancelled(b),armed=S.armed===b.bid;
+    var st=cx?'<span class="st-x">ملغي</span>':'<span class="st-ok">مؤكد</span> <button type="button" class="btn btn-line btn-sm" data-cancel="'+esc(b.uid)+'|'+esc(b.bid)+'">'+(armed?'اضغط مرة أخرى للتأكيد':'إلغاء')+'</button>';
+    return '<tr'+(cx?' class="cx"':'')+'><td class="num">'+esc(dateLabel(b.date))+'<br>'+range(b.start,b.dur)+'</td>'+
+      '<td>'+esc(RES[b.res]?RES[b.res].name:b.res)+(b.qty>1?' × '+b.qty:'')+'</td>'+
+      '<td>'+esc(b.name||'')+'</td><td class="num"><span class="ltr">'+esc(b.phone||'')+'</span></td>'+
+      '<td class="num">'+esc(b.total)+' جنيه</td><td>'+st+'</td></tr>';
+  }).join('');
+}
+async function cancelBooking(uid,bid){
+  var b=S.bookings.concat(S.mine).filter(function(x){return x.bid===bid&&x.uid===uid})[0];
+  if(!b||!S.db)return;
+  await Promise.all((b.slots||[]).map(function(id){return S.db.collection('slots').doc(id).delete().catch(function(){})}));
+  try{var o={};o[bid]={status:'cancelled'};await S.db.collection('bookings').doc(uid).update({items:o})}catch(e){}
+}
+
+/* ---------- submit ---------- */
+function setErr(t){var e=$('#err');if(e)e.textContent=t}
+async function claim(res,date,start,dur,qty,bid){
+  var ids=[];
+  try{
+    for(var a=0;a<dur;a++){
+      var n=norm(date,start+a);
+      for(var q=0;q<qty;q++){
+        var id=res==='pitch'?'p_'+n.date+'_'+n.hour:res+'_'+n.date+'_'+n.hour+'_'+bid+q;
+        var ref=S.db.collection('slots').doc(id);
+        if(res==='pitch'){
+          var l=await ref.acquire({holder:bid,ttlMs:5000});
+          if(!l.acquired)throw {taken:true};
+          var cur=await ref.get();
+          if(cur.exists&&cur.data()&&cur.data().bid)throw {taken:true};
+        }else if(rem(res,n.date,n.hour)<1){
+          throw {taken:true};
+        }
+        await ref.set({res:res,date:n.date,hour:n.hour,bid:bid});
+        ids.push(id);
+      }
+    }
+    return ids;
+  }catch(e){
+    await Promise.all(ids.map(function(id){return S.db.collection('slots').doc(id).delete().catch(function(){})}));
+    throw e;
+  }
+}
+async function submit(ev){
+  ev.preventDefault();
+  if(S.busy)return;
+  var name=$('#name').value.trim(),phone=$('#phone').value.replace(/[\s-]/g,'');
+  if(S.start==null){setErr('من فضلك اختر وقت البداية.');return}
+  if(name.length<2){setErr('من فضلك اكتب اسمك.');$('#name').focus();return}
+  if(!/^01[0125]\d{8}$/.test(phone)){setErr('أدخل رقم موبايل مصري من 11 رقمًا يبدأ بـ 01.');$('#phone').focus();return}
+  var i=info();
+  if(S.mode==='request'){S.done={type:'request',info:i,text:message(i,name,phone)};renderSummary();return}
+  S.busy=true;renderSummary();
+  var ids=[],bid=rid();
+  try{
+    ids=await claim(i.res,i.date,i.start,i.dur,i.qty,bid);
+    try{
+      var ref=S.db.collection('bookings').doc(S.uid);
+      var cur=await ref.get();
+      var items=(cur.exists&&cur.data()&&cur.data().items)||{};
+      items[bid]={res:i.res,date:i.date,start:i.start,dur:i.dur,qty:i.qty,total:i.total,name:name,phone:phone,slots:ids,status:'active',created:Date.now()};
+      await ref.set({items:items});
+    }catch(e2){
+      await Promise.all(ids.map(function(id){return S.db.collection('slots').doc(id).delete().catch(function(){})}));
+      throw e2;
+    }
+    S.done={type:'live',bid:bid,phone:phone,info:i};
+    S.start=null;
+  }catch(e){
+    S.busy=false;
+    if(e&&e.taken){S.start=null;renderHours();renderSummary();setErr('هذا الموعد حُجز للتو. من فضلك اختر موعدًا آخر.');return}
+    if(e&&e.code==='invalid_argument'){S.mode='request';renderSummary();setErr('الحجز الأونلاين غير متاح لهذا الحساب. استخدم «تجهيز طلب الحجز» بدلًا منه.');return}
+    renderSummary();setErr('حدثت مشكلة أثناء حفظ الحجز. حاول مرة أخرى.');return;
+  }
+  S.busy=false;renderHours();renderSummary();
+}
+
+/* ---------- account ---------- */
+var PHONE_RE=/^01[0125]\d{8}$/;
+function startMs(b){var p=b.date.split('-');return new Date(+p[0],+p[1]-1,+p[2],b.start).getTime()}
+function updateAcctBtn(){
+  var a=$('#acctBtn');
+  if(!a)return;
+  a.textContent=S.uid?(S.profile&&S.profile.name?S.profile.name.split(' ')[0]:'حسابي'):'تسجيل الدخول';
+}
+function fillForm(){
+  if(!S.profile)return;
+  var n=$('#name'),ph=$('#phone');
+  if(n&&!n.value)n.value=S.profile.name||'';
+  if(ph&&!ph.value)ph.value=S.profile.phone||'';
+}
+function acctForm(p){
+  return '<form id="acForm" novalidate><div class="fields">'+
+    '<div><label for="acName">الاسم الكامل</label><input id="acName" type="text" autocomplete="name" placeholder="اسمك" value="'+esc(p?p.name:'')+'"></div>'+
+    '<div><label for="acPhone">رقم الموبايل</label><input id="acPhone" type="tel" inputmode="numeric" autocomplete="tel" dir="ltr" style="text-align:right" placeholder="01XXXXXXXXX" value="'+esc(p?p.phone:'')+'"></div></div>'+
+    '<button class="btn btn-primary" type="submit">'+(p?'حفظ التعديلات':'إنشاء الحساب')+'</button>'+
+    '<div class="ok-t" id="acMsg" role="status">'+esc(S.acMsg)+'</div></form>';
+}
+function renderAccount(){
+  var t=$('#acTitle'),l=$('#acLead'),b=$('#acBody');
+  if(!b)return;
+  var ae=document.activeElement;
+  if(ae&&ae.tagName==='INPUT'&&b.contains(ae))return;
+  if(!S.ready){t.textContent='حسابي';l.textContent='جارٍ تحميل بياناتك...';b.innerHTML='';return}
+  if(!S.uid){
+    t.textContent='تسجيل الدخول';
+    l.textContent='الحساب مرتبط بتسجيل دخولك على المنصة. بعد الدخول تستطيع إنشاء حسابك وحجز الملعب مباشرة ومتابعة حجوزاتك.';
+    b.innerHTML='<div class="card" style="margin-top:36px;max-width:560px"><h3>الدخول مطلوب</h3><p>افتح هذه الصفحة وأنت مسجّل دخولك بحسابك ثم ارجع إلى هنا. حتى ذلك الحين يمكنك استخدام «تجهيز طلب الحجز» وإرساله على واتساب.</p>'+
+      '<div class="cta"><button type="button" class="btn btn-primary" data-go="book" data-res="pitch">تجهيز طلب حجز</button></div></div>';
+    return;
+  }
+  if(!S.pLoaded){t.textContent='حسابي';l.textContent='جارٍ تحميل بياناتك...';b.innerHTML='';return}
+  if(!S.profile){
+    t.textContent='إنشاء حساب';
+    l.textContent='اكتب اسمك ورقم موبايلك مرة واحدة، ونعبّئهما لك تلقائيًا في كل حجز.';
+    b.innerHTML='<div class="card" style="margin-top:36px;max-width:560px"><h3>بيانات الحساب</h3>'+acctForm(null)+'</div>';
+    return;
+  }
+  t.textContent='أهلًا '+S.profile.name;
+  l.textContent='بياناتك وحجوزاتك في مكان واحد.';
+  var now=Date.now();
+  var list=S.mine.slice().sort(function(a,c){return startMs(c)-startMs(a)});
+  var rows=list.length?'<ul class="bk">'+list.map(function(x){
+    var cx=cancelled(x),past=startMs(x)+x.dur*3600000<now,armed=S.myArmed===x.bid;
+    var canCx=!cx&&startMs(x)-now>=6*3600000;
+    var st=cx?'<span class="st-x">ملغي</span>':past?'<span>منتهي</span>':'<span class="st-ok">مؤكد</span>';
+    var btn=canCx?' <button type="button" class="btn btn-line btn-sm" data-mycancel="'+esc(x.bid)+'">'+(armed?'اضغط مرة أخرى للتأكيد':'إلغاء الحجز')+'</button>':'';
+    return '<li><div><strong>'+esc(RES[x.res]?RES[x.res].name:x.res)+(x.qty>1?' × '+x.qty:'')+'</strong><small class="num">'+esc(dateLabel(x.date))+' · '+range(x.start,x.dur)+'</small><small>الكود <span class="ltr num">'+esc(x.bid)+'</span> · '+esc(x.total)+' جنيه</small></div><div>'+st+btn+'</div></li>';
+  }).join('')+'</ul><p class="fine">الإلغاء بدون رسوم قبل الموعد بـ 6 ساعات على الأقل. بعدها تواصل معنا هاتفيًا.</p>'
+  :'<p class="empty">لا توجد حجوزات بعد.</p>';
+  b.innerHTML='<div class="acct"><div class="card"><h3>بياناتي</h3>'+acctForm(S.profile)+'</div><div><h3 style="margin-bottom:16px">حجوزاتي</h3>'+rows+'</div></div>';
+}
+async function saveProfile(ev){
+  ev.preventDefault();
+  var name=$('#acName').value.trim(),phone=$('#acPhone').value.replace(/[\s-]/g,'');
+  var m=$('#acMsg');
+  if(name.length<2){m.textContent='من فضلك اكتب اسمك.';return}
+  if(!PHONE_RE.test(phone)){m.textContent='أدخل رقم موبايل مصري من 11 رقمًا يبدأ بـ 01.';return}
+  if(!S.db||!S.uid){m.textContent='سجّل دخولك أولًا.';return}
+  try{
+    await S.db.collection('profiles').doc(S.uid).set({name:name,phone:phone,created:(S.profile&&S.profile.created)||Date.now()});
+    S.acMsg='تم حفظ بياناتك.';
+  }catch(e){S.acMsg='تعذر الحفظ. حاول مرة أخرى.'}
+  S.profile=S.profile||{name:name,phone:phone};S.profile.name=name;S.profile.phone=phone;
+  renderAccount();updateAcctBtn();fillForm();
+  setTimeout(function(){S.acMsg='';var e=$('#acMsg');if(e)e.textContent=''},2500);
+}
+async function cancelMine(bid){
+  var x=S.mine.filter(function(b){return b.bid===bid})[0];
+  if(!x||startMs(x)-Date.now()<6*3600000)return;
+  await cancelBooking(S.uid,bid);
+}
+
+/* ---------- routing ---------- */
+var VIEWS=['home','cafe','book','contact','account','admin'];
+function route(scroll){
+  var v=location.hash.replace('#','')||'home';
+  if(VIEWS.indexOf(v)<0)v='home';
+  if(v==='admin'&&!S.isAdmin)v='home';
+  $$('.view').forEach(function(el){el.hidden=el.dataset.view!==v});
+  $$('[data-nav]').forEach(function(a){if(a.dataset.nav===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  if(scroll)window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',function(){route(true)});
+
+/* ---------- events ---------- */
+function flash(btn,t){var o=btn.textContent;btn.textContent=t;setTimeout(function(){btn.textContent=o},1600)}
+async function copyText(text,btn,sel){
+  try{await navigator.clipboard.writeText(text);flash(btn,'تم النسخ')}
+  catch(e){var ta=sel&&$(sel);if(ta){ta.focus();ta.select()}flash(btn,'حدّد النص وانسخه')}
+}
+function fixStart(){if(S.start!=null&&!canStart(S.res,S.date,S.start,S.dur,S.qty))S.start=null}
+function renderAll(){applyCafe();renderRes();renderDays();renderDur();renderHours();if(!S.busy||!$('#sum').innerHTML)renderSummary();renderNextFree();renderAdmin();renderAccount();updateAcctBtn()}
+function goBook(res){
+  if(res&&res!=='pitch'&&!cafeOpen())res='pitch';
+  if(res){S.res=res;S.dur=Math.min(S.dur,RES[res].max);S.qty=Math.min(S.qty,RES[res].cap,6);S.done=null;fixStart();renderAll()}
+  if(location.hash==='#book')route(true);else location.hash='book';
+}
+document.addEventListener('click',function(e){
+  var t=e.target.closest('button');if(!t)return;
+  var d=t.dataset;
+  if(d.go==='book'){goBook(d.res);return}
+  if(d.scroll){var el=document.getElementById(d.scroll);if(el)el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});return}
+  if(d.pick){S.res=d.pick;S.dur=Math.min(S.dur,RES[S.res].max);S.qty=Math.min(S.qty,RES[S.res].cap,6);S.done=null;fixStart();renderAll();return}
+  if(d.date){S.date=d.date;S.done=null;fixStart();renderDays();renderHours();renderSummary();return}
+  if(d.dur){S.dur=+d.dur;S.done=null;fixStart();renderDur();renderHours();renderSummary();return}
+  if(d.h){S.start=+d.h;S.done=null;renderHours();renderSummary();return}
+  if(t.id==='qPlus'){S.qty=Math.min(S.qty+1,Math.min(RES[S.res].cap,6));fixStart();renderDur();renderHours();renderSummary();return}
+  if(t.id==='qMinus'){S.qty=Math.max(1,S.qty-1);fixStart();renderDur();renderHours();renderSummary();return}
+  if(d.again!==undefined){S.done=null;S.start=null;renderHours();renderSummary();return}
+  if(d.copyMsg!==undefined){copyText(S.done.text,t,'#msgbox');return}
+  if(d.copyPhone!==undefined){copyText(CONFIG.phones[+d.copyPhone||0],t);return}
+  if(d.next){var p=d.next.split('|');S.res='pitch';S.dur=1;S.date=p[0];S.start=+p[1];S.done=null;renderAll();goBook();return}
+  if(d.mycancel){
+    var k=d.mycancel;
+    if(S.myArmed===k){S.myArmed=null;cancelMine(k)}
+    else{S.myArmed=k;renderAccount();setTimeout(function(){if(S.myArmed===k){S.myArmed=null;renderAccount()}},3500)}
+    return;
+  }
+  if(d.cancel){
+    var c=d.cancel.split('|'),key=c[1];
+    if(S.armed===key){S.armed=null;cancelBooking(c[0],c[1])}
+    else{S.armed=key;renderAdmin();setTimeout(function(){if(S.armed===key){S.armed=null;renderAdmin()}},3500)}
+  }
+});
+$('#bf').addEventListener('submit',submit);
+document.addEventListener('submit',function(e){if(e.target.id==='acForm')saveProfile(e)});
+$('#gateForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  if($('#gatePw').value===CONFIG.cafe.password){
+    cafeUnlocked=true;try{sessionStorage.setItem('cafeOk','1')}catch(x){}
+    $('#gatePw').value='';$('#gateErr').textContent='';renderAll();
+  }else{$('#gateErr').textContent='كلمة المرور غير صحيحة.'}
+});
+
+/* ---------- init ---------- */
+renderAll();route(false);
+(async function(){
+  var c=window.claude;
+  if(!c||!c.use){S.ready=true;renderAccount();return}
+  var db=null,user=null;
+  try{db=await c.use('db');user=await c.use('user')}catch(e){}
+  if(!db){S.ready=true;renderAccount();return}
+  S.db=db;
+  if(user){
+    try{S.uid=await user.id()}catch(e){}
+    try{S.isAdmin=await user.canEdit()}catch(e){}
+    var w=null;try{w=await user.can('data.write')}catch(e){}
+    S.mode=(S.uid&&w!==false)?'live':'request';
+  }
+  S.ready=true;renderAccount();updateAcctBtn();
+  if(S.uid){
+    try{
+      db.collection('profiles').doc(S.uid).onSnapshot(function(sn){
+        S.profile=(sn.exists&&sn.data())||null;S.pLoaded=true;fillForm();renderAccount();updateAcctBtn();
+      },function(){S.pLoaded=true;renderAccount()});
+      db.collection('bookings').doc(S.uid).onSnapshot(function(sn){
+        var it=(sn.exists&&sn.data()&&sn.data().items)||{};
+        S.mine=Object.keys(it).map(function(k){var o=it[k];o.bid=k;o.uid=S.uid;return o});renderAccount();
+      },function(){});
+    }catch(e){S.pLoaded=true}
+  }
+  var timer=setTimeout(function(){if(!S.loaded)$('#sync').textContent='تعذر تحميل الساعات المحجوزة الآن. قد تكون المواعيد المعروضة غير محدّثة.'},10000);
+  try{
+    db.collection('slots').where('date','>=',TODAY).onSnapshot(function(snap){
+      S.slots=new Map(snap.docs.map(function(d){return [d.id,d.data()]}));
+      index();S.loaded=true;clearTimeout(timer);$('#sync').textContent='';
+      fixStart();renderHours();renderNextFree();if(!S.done&&!S.busy)renderSummary();renderAdmin();
+    },function(){S.mode='request';renderSummary()});
+    if(S.isAdmin){
+      db.collection('bookings').onSnapshot(function(snap){
+        var list=[];
+        snap.docs.forEach(function(d){var it=(d.data()||{}).items||{};Object.keys(it).forEach(function(bid){var o=it[bid];o.uid=d.id;o.bid=bid;list.push(o)})});
+        S.bookings=list;renderAdmin();
+      },function(){});
+    }
+  }catch(e){}
+  if(!S.done&&!S.busy)renderSummary();
+  route(false);
+})();
+})();
+</script>
+
+</body></html>
