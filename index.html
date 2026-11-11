@@ -195,7 +195,9 @@ section{padding-block:clamp(64px,9vw,104px)}
 .list li::before{content:"";flex:none;width:12px;height:1px;margin-top:1.05em;background:var(--fg)}
 .list b{font-weight:500}
 .list span{color:var(--muted)}
-.tbl-wrap{overflow-x:auto}
+.tbl-wrap{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.in>*,.two>*,#rates{min-width:0}
+html{overflow-x:hidden}
 table{border-collapse:collapse;width:100%;min-width:460px;font-variant-numeric:tabular-nums}
 th,td{padding-block:16px;padding-inline:0 16px;text-align:start;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-size:.85rem;color:var(--muted);font-weight:500;border-bottom:1px solid var(--fg)}
