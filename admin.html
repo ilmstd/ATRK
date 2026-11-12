@@ -1,8 +1,7 @@
-<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset=utf8><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231a2f8a'/%3E%3Cstop offset='1' stop-color='%23030614'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-family='Arial,sans-serif' font-weight='800' font-size='38' text-anchor='middle' fill='%23dfe8ff'%3EA%3C/text%3E%3C/svg%3E"><meta name="theme-color" content="#050a1c"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.trc{border:1px solid var(--line);padding:20px;margin-bottom:16px;border-radius:2px}.trc h3{margin:0 0 6px}.trc ul{margin:10px 0 0;padding-inline-start:20px}.trc .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset=utf8><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23303034'/%3E%3Cstop offset='1' stop-color='%23000000'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-family='Arial,sans-serif' font-weight='800' font-size='38' text-anchor='middle' fill='%23e8c36a'%3EA%3C/text%3E%3C/svg%3E"><meta name="theme-color" content="#0a0a0a"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.trc{border:1px solid var(--line);padding:20px;margin-bottom:16px;border-radius:2px}.trc h3{margin:0 0 6px}.trc ul{margin:10px 0 0;padding-inline-start:20px}.trc .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .gm textarea{min-height:90px}
 </style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
 /* ===== إعدادات Firebase: الصقها هنا (نفس الإعدادات في الملفات الثلاثة) ===== */
-window.ATRK_LOGO='<div class="atrk lg" role="img" aria-label="ATRK"><div class="atrk-r"><i style="--i:9" aria-hidden="true">ATRK</i><i style="--i:8" aria-hidden="true">ATRK</i><i style="--i:7" aria-hidden="true">ATRK</i><i style="--i:6" aria-hidden="true">ATRK</i><i style="--i:5" aria-hidden="true">ATRK</i><i style="--i:4" aria-hidden="true">ATRK</i><i style="--i:3" aria-hidden="true">ATRK</i><i style="--i:2" aria-hidden="true">ATRK</i><i style="--i:1" aria-hidden="true">ATRK</i><i class="f" aria-hidden="true">ATRK</i></div></div>';
 window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyDERNheJlGJdUojoiBfktg5OyJAU-wxZJU",
   authDomain: "abotrekamgmt.firebaseapp.com",
@@ -33,7 +32,7 @@ window.FIREBASE_CONFIG = {
     var F='width:100%;min-height:46px;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:transparent;color:inherit;font:inherit;margin:4px 0 14px;box-sizing:border-box;direction:ltr;text-align:right';
     var B='background:none;border:0;padding:0;color:var(--muted);font:inherit;font-size:.88rem;text-decoration:underline;cursor:pointer;margin-top:14px;display:block';
     function draw(){
-      w.innerHTML='<div style="width:100%;max-width:400px"><div style="display:flex;justify-content:center;margin:0 0 26px">'+window.ATRK_LOGO+'</div><h2 style="margin:0 0 24px;font-size:1.5rem">'+(up?'إنشاء حساب':'تسجيل الدخول')+'</h2>'+
+      w.innerHTML='<div style="width:100%;max-width:400px"><h2 style="margin:0 0 24px;font-size:1.5rem">'+(up?'إنشاء حساب':'تسجيل الدخول')+'</h2>'+
         (up?'<label>الاسم الكامل</label><input id="fbN" style="'+F+';direction:rtl" autocomplete="name"><label>رقم الموبايل</label><input id="fbPh" inputmode="numeric" placeholder="01XXXXXXXXX" style="'+F+'" autocomplete="tel">':'')+
         '<label>البريد الإلكتروني</label><input id="fbE" type="email" style="'+F+'" autocomplete="email">'+
         '<label>كلمة المرور</label><input id="fbP" type="password" style="'+F+'" autocomplete="'+(up?'new-password':'current-password')+'">'+
@@ -96,27 +95,7 @@ window.FIREBASE_CONFIG = {
 <title>إدارة أبو تريكة</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
-<style id="atrk-css">
-/* خط قريب من خط أبل: يستخدم خط النظام (SF) على أجهزة أبل، ويرجع لـ Inter وIBM Plex على باقي الأجهزة */
-.atrk{display:inline-block;font-size:1.5rem;line-height:1;perspective:15em;padding:.2em .3em;direction:ltr;vertical-align:middle;filter:drop-shadow(0 .08em .14em rgba(2,6,32,.38))}
-.atrk-r{position:relative;display:block;padding-left:.16em;transform-style:preserve-3d;transform-origin:50% 50% -.22em;transform:rotateX(-10deg) rotateY(-24deg);animation:atrkSpin 11s linear infinite;will-change:transform}
-.atrk-r i{display:block;font-style:normal;font-weight:800;font-size:1em;line-height:1;letter-spacing:.16em;white-space:nowrap;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',system-ui,sans-serif;color:hsl(226 82% calc(14% - var(--i,0)*1.3%))}
-.atrk-r i:not(.f){position:absolute;inset:0 0 0 .16em;transform:translateZ(calc(var(--i)*-.05em))}
-.atrk-r i.f{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.36) 0,rgba(255,255,255,.07) 46%,rgba(255,255,255,0) 50%),linear-gradient(105deg,#050a22 0%,#0a1650 28%,#050a22 42%,#86a6ff 50%,#0b1a5c 58%,#03060f 100%);background-size:100% 100%,320% 100%;background-position:0 0,100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:atrkSheen 4.2s ease-in-out infinite}
-@keyframes atrkSpin{from{transform:rotateX(-10deg) rotateY(0)}to{transform:rotateX(-10deg) rotateY(360deg)}}
-@keyframes atrkSheen{0%,18%{background-position:0 0,100% 0}68%,100%{background-position:0 0,0% 0}}
-.atrk.lg{font-size:2.3rem}
-.brand .atrk{align-self:flex-start;margin-inline-start:-.3em}
-@media (prefers-reduced-motion:reduce){.atrk-r,.atrk-r i.f{animation:none}}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .atrk{filter:drop-shadow(0 0 .4em rgba(70,120,255,.5))}
-  :root:not([data-theme="light"]) .atrk-r i{color:hsl(226 82% calc(30% - var(--i,0)*2%))}
-  :root:not([data-theme="light"]) .atrk-r i.f{-webkit-text-stroke:.03em rgba(140,176,255,.7)}
-}
-:root[data-theme="dark"] .atrk{filter:drop-shadow(0 0 .4em rgba(70,120,255,.5))}
-:root[data-theme="dark"] .atrk-r i{color:hsl(226 82% calc(30% - var(--i,0)*2%))}
-:root[data-theme="dark"] .atrk-r i.f{-webkit-text-stroke:.03em rgba(140,176,255,.7)}
-</style>
+
 <style>
 /* Layout concept: the same Arabic minimalism as the public site, turned into an operations desk. White page, hairline rules, one typeface, black as the only accent, state shown by weight and rule not colour. */
 :root{
@@ -275,7 +254,7 @@ footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px soli
 
 <header class="hdr">
   <div class="in">
-    <div class="brand"><div class="atrk" role="img" aria-label="ATRK"><div class="atrk-r"><i style="--i:9" aria-hidden="true">ATRK</i><i style="--i:8" aria-hidden="true">ATRK</i><i style="--i:7" aria-hidden="true">ATRK</i><i style="--i:6" aria-hidden="true">ATRK</i><i style="--i:5" aria-hidden="true">ATRK</i><i style="--i:4" aria-hidden="true">ATRK</i><i style="--i:3" aria-hidden="true">ATRK</i><i style="--i:2" aria-hidden="true">ATRK</i><i style="--i:1" aria-hidden="true">ATRK</i><i class="f" aria-hidden="true">ATRK</i></div></div><span>لوحة الإدارة</span></div>
+    <div class="brand"><b>أبو تريكة</b><span>لوحة الإدارة</span></div>
     <nav class="nav" aria-label="أقسام الإدارة" id="nav">
       <a href="#overview" data-nav="overview">نظرة عامة</a>
       <a href="#bookings" data-nav="bookings">الحجوزات</a>
