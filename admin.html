@@ -1,7 +1,8 @@
-<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.trc{border:1px solid var(--line);padding:20px;margin-bottom:16px;border-radius:2px}.trc h3{margin:0 0 6px}.trc ul{margin:10px 0 0;padding-inline-start:20px}.trc .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+<!doctype html><html><head><meta name="robots" content="noindex,nofollow"><meta charset=utf8><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231a2f8a'/%3E%3Cstop offset='1' stop-color='%23030614'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-family='Arial,sans-serif' font-weight='800' font-size='38' text-anchor='middle' fill='%23dfe8ff'%3EA%3C/text%3E%3C/svg%3E"><meta name="theme-color" content="#050a1c"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}.trc{border:1px solid var(--line);padding:20px;margin-bottom:16px;border-radius:2px}.trc h3{margin:0 0 6px}.trc ul{margin:10px 0 0;padding-inline-start:20px}.trc .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .gm textarea{min-height:90px}
 </style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
 /* ===== إعدادات Firebase: الصقها هنا (نفس الإعدادات في الملفات الثلاثة) ===== */
+window.ATRK_LOGO='<div class="atrk lg" role="img" aria-label="ATRK"><div class="atrk-r"><i style="--i:9" aria-hidden="true">ATRK</i><i style="--i:8" aria-hidden="true">ATRK</i><i style="--i:7" aria-hidden="true">ATRK</i><i style="--i:6" aria-hidden="true">ATRK</i><i style="--i:5" aria-hidden="true">ATRK</i><i style="--i:4" aria-hidden="true">ATRK</i><i style="--i:3" aria-hidden="true">ATRK</i><i style="--i:2" aria-hidden="true">ATRK</i><i style="--i:1" aria-hidden="true">ATRK</i><i class="f" aria-hidden="true">ATRK</i></div></div>';
 window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyDERNheJlGJdUojoiBfktg5OyJAU-wxZJU",
   authDomain: "abotrekamgmt.firebaseapp.com",
@@ -32,7 +33,7 @@ window.FIREBASE_CONFIG = {
     var F='width:100%;min-height:46px;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:transparent;color:inherit;font:inherit;margin:4px 0 14px;box-sizing:border-box;direction:ltr;text-align:right';
     var B='background:none;border:0;padding:0;color:var(--muted);font:inherit;font-size:.88rem;text-decoration:underline;cursor:pointer;margin-top:14px;display:block';
     function draw(){
-      w.innerHTML='<div style="width:100%;max-width:400px"><h2 style="margin:0 0 24px;font-size:1.5rem">'+(up?'إنشاء حساب':'تسجيل الدخول')+'</h2>'+
+      w.innerHTML='<div style="width:100%;max-width:400px"><div style="display:flex;justify-content:center;margin:0 0 26px">'+window.ATRK_LOGO+'</div><h2 style="margin:0 0 24px;font-size:1.5rem">'+(up?'إنشاء حساب':'تسجيل الدخول')+'</h2>'+
         (up?'<label>الاسم الكامل</label><input id="fbN" style="'+F+';direction:rtl" autocomplete="name"><label>رقم الموبايل</label><input id="fbPh" inputmode="numeric" placeholder="01XXXXXXXXX" style="'+F+'" autocomplete="tel">':'')+
         '<label>البريد الإلكتروني</label><input id="fbE" type="email" style="'+F+'" autocomplete="email">'+
         '<label>كلمة المرور</label><input id="fbP" type="password" style="'+F+'" autocomplete="'+(up?'new-password':'current-password')+'">'+
@@ -94,7 +95,28 @@ window.FIREBASE_CONFIG = {
 </script></head><body>
 <title>إدارة أبو تريكة</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+<style id="atrk-css">
+/* خط قريب من خط أبل: يستخدم خط النظام (SF) على أجهزة أبل، ويرجع لـ Inter وIBM Plex على باقي الأجهزة */
+.atrk{display:inline-block;font-size:1.5rem;line-height:1;perspective:15em;padding:.2em .3em;direction:ltr;vertical-align:middle;filter:drop-shadow(0 .08em .14em rgba(2,6,32,.38))}
+.atrk-r{position:relative;display:block;padding-left:.16em;transform-style:preserve-3d;transform-origin:50% 50% -.22em;transform:rotateX(-10deg) rotateY(-24deg);animation:atrkSpin 11s linear infinite;will-change:transform}
+.atrk-r i{display:block;font-style:normal;font-weight:800;font-size:1em;line-height:1;letter-spacing:.16em;white-space:nowrap;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',system-ui,sans-serif;color:hsl(226 82% calc(14% - var(--i,0)*1.3%))}
+.atrk-r i:not(.f){position:absolute;inset:0 0 0 .16em;transform:translateZ(calc(var(--i)*-.05em))}
+.atrk-r i.f{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.36) 0,rgba(255,255,255,.07) 46%,rgba(255,255,255,0) 50%),linear-gradient(105deg,#050a22 0%,#0a1650 28%,#050a22 42%,#86a6ff 50%,#0b1a5c 58%,#03060f 100%);background-size:100% 100%,320% 100%;background-position:0 0,100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:atrkSheen 4.2s ease-in-out infinite}
+@keyframes atrkSpin{from{transform:rotateX(-10deg) rotateY(0)}to{transform:rotateX(-10deg) rotateY(360deg)}}
+@keyframes atrkSheen{0%,18%{background-position:0 0,100% 0}68%,100%{background-position:0 0,0% 0}}
+.atrk.lg{font-size:2.3rem}
+.brand .atrk{align-self:flex-start;margin-inline-start:-.3em}
+@media (prefers-reduced-motion:reduce){.atrk-r,.atrk-r i.f{animation:none}}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .atrk{filter:drop-shadow(0 0 .4em rgba(70,120,255,.5))}
+  :root:not([data-theme="light"]) .atrk-r i{color:hsl(226 82% calc(30% - var(--i,0)*2%))}
+  :root:not([data-theme="light"]) .atrk-r i.f{-webkit-text-stroke:.03em rgba(140,176,255,.7)}
+}
+:root[data-theme="dark"] .atrk{filter:drop-shadow(0 0 .4em rgba(70,120,255,.5))}
+:root[data-theme="dark"] .atrk-r i{color:hsl(226 82% calc(30% - var(--i,0)*2%))}
+:root[data-theme="dark"] .atrk-r i.f{-webkit-text-stroke:.03em rgba(140,176,255,.7)}
+</style>
 <style>
 /* Layout concept: the same Arabic minimalism as the public site, turned into an operations desk. White page, hairline rules, one typeface, black as the only accent, state shown by weight and rule not colour. */
 :root{
@@ -102,7 +124,7 @@ window.FIREBASE_CONFIG = {
   --accent:#111111; --accent-ink:#FFFFFF;
   --bar-a:#111111; --bar-b:#BDBDBD;
   --bad:#B3321F; --ok:#1E6B43;
-  --f-body:'IBM Plex Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display','SF Arabic','Inter','IBM Plex Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
@@ -253,7 +275,7 @@ footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px soli
 
 <header class="hdr">
   <div class="in">
-    <div class="brand"><b>أبو تريكة</b><span>لوحة الإدارة</span></div>
+    <div class="brand"><div class="atrk" role="img" aria-label="ATRK"><div class="atrk-r"><i style="--i:9" aria-hidden="true">ATRK</i><i style="--i:8" aria-hidden="true">ATRK</i><i style="--i:7" aria-hidden="true">ATRK</i><i style="--i:6" aria-hidden="true">ATRK</i><i style="--i:5" aria-hidden="true">ATRK</i><i style="--i:4" aria-hidden="true">ATRK</i><i style="--i:3" aria-hidden="true">ATRK</i><i style="--i:2" aria-hidden="true">ATRK</i><i style="--i:1" aria-hidden="true">ATRK</i><i class="f" aria-hidden="true">ATRK</i></div></div><span>لوحة الإدارة</span></div>
     <nav class="nav" aria-label="أقسام الإدارة" id="nav">
       <a href="#overview" data-nav="overview">نظرة عامة</a>
       <a href="#bookings" data-nav="bookings">الحجوزات</a>
@@ -263,6 +285,7 @@ footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px soli
       <a href="#maint" data-nav="maint">الصيانة</a>
       <a href="#players" data-nav="players">اللاعبين</a>
       <a href="#tourney" data-nav="tourney">البطولات</a>
+      <a href="#content" data-nav="content">المحتوى</a>
       <a href="#settings" data-nav="settings">الإعدادات</a>
       <a href="index.html">الموقع</a>
       <a href="#" onclick="fbSignOut();return false">خروج</a>
@@ -334,7 +357,7 @@ footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px soli
       <thead><tr><th>الموعد</th><th>الخدمة</th><th>العميل</th><th>الإجمالي</th><th>الحالة</th><th></th></tr></thead>
       <tbody id="bkList"></tbody>
     </table></div>
-    <p class="note">الحجوزات التي تتم من الموقع نفسه تظهر في تبويب «الحجوزات» داخل الموقع. هذه الصفحة لها بياناتها الخاصة بها.</p>
+    <p class="note">حجوزات الموقع تظهر هنا أيضًا بمصدر «الموقع»، ويمكنك تسجيل دفعها أو إلغاؤها أو حذفها من هذه الصفحة.</p>
   </div></section>
 </div>
 
@@ -548,6 +571,22 @@ footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px soli
   </div></section>
 </div>
 
+<!-- CONTENT -->
+<div class="view" data-view="content" hidden>
+  <section><div class="in">
+    <div class="kicker">المحتوى</div>
+    <h2>نصوص الموقع</h2>
+    <p class="lead">عدّل النصوص هنا وتظهر في الموقع فورًا. اترك الحقل فارغًا ليرجع النص الأصلي.</p>
+<h3 class="sub" style="margin-top:36px">جمل الترحيب والإعلان</h3>
+    <p class="note" style="margin-top:0">اضغط + على أي جملة لتظهر في شريط أعلى الموقع، واختيار جملة أخرى يستبدل الحالية تلقائيًا. اضغط − لإزالتها.</p>
+    <div class="note" id="wlNow" style="margin:10px 0 0"></div>
+    <ul class="list" id="wlList" style="margin-top:14px"></ul>
+    <span class="okm" id="wlMsg" role="status"></span>
+    <h3 class="sub" style="margin-top:48px">نصوص الصفحة</h3>
+    <form class="form" id="cmForm" novalidate></form>
+  </div></section>
+</div>
+
 <!-- SETTINGS -->
 <div class="view" data-view="settings" hidden>
   <section><div class="in">
@@ -565,12 +604,15 @@ footer{color:var(--muted);padding-block:36px;font-size:.9rem;border-top:1px soli
       <div><label for="sPs">غرفة PlayStation 5</label><input id="sPs" type="number" min="0"></div>
       <div><label for="sBil">طاولة بلياردو</label><input id="sBil" type="number" min="0"></div>
       <div><label for="sTt">طاولة بينج بونج</label><input id="sTt" type="number" min="0"></div>
+      <div class="wide"><h3>صفحة النت كافيه في الموقع</h3></div>
+      <div><label for="sCafe">الحالة</label><select id="sCafe"><option value="soon">قريبًا</option><option value="password">بكلمة مرور</option><option value="open">مفتوحة للجميع</option></select></div>
+      <div><label for="sCafePw">كلمة المرور (اتركها فارغة بدون تغيير)</label><input id="sCafePw" type="text" autocomplete="off"></div>
       <div class="wide"><h3>التواصل</h3></div>
       <div><label for="sP1">الرقم الأول</label><input id="sP1" type="tel" dir="ltr" style="text-align:right"></div>
       <div><label for="sP2">الرقم الثاني</label><input id="sP2" type="tel" dir="ltr" style="text-align:right"></div>
       <div class="wide" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center"><button class="btn" type="submit">حفظ الإعدادات</button><span class="okm" id="setMsg" role="status"></span></div>
     </form>
-    <p class="note">تغيير الأسعار هنا لا يغيّر الأسعار المعروضة في الموقع العام.</p>
+    <p class="note">الأسعار وأرقام التواصل وحالة النت كافيه تتحدّث في الموقع تلقائيًا. كلمة مرور النت كافيه تُحفظ مشفّرة ولا تظهر نصًا، لكنها حماية خفيفة فقط لأن محتوى الصفحة نفسه موجود داخل الموقع.</p>
   </div></section>
 </div>
 
@@ -597,11 +639,12 @@ var hs=function(h){var x=h%24;return (x%12||12)+' '+(x>=12?'م':'ص')};
 var hf=function(h){var x=h%24;return (x%12||12)+':00 '+(x>=12?'م':'ص')};
 var money=function(n){return Number(n||0).toLocaleString('en-US')};
 function rid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+async function sha(t){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('abotreka:'+t));return Array.prototype.map.call(new Uint8Array(b),function(v){return ('0'+v.toString(16)).slice(-2)}).join('')}
 
 var NAMES={pitch:'ملعب كرة القدم',pc:'كمبيوتر عادي',vip:'كمبيوتر مميز',ps:'غرفة PlayStation 5',bil:'طاولة بلياردو',tt:'طاولة بينج بونج'};
 var CAP={pitch:1,pc:12,vip:6,ps:2,bil:2,tt:2};
 var MAXD={pitch:3,pc:5,vip:5,ps:4,bil:4,tt:4};
-var DEF={pitchA:250,pitchB:400,pitchC:350,pc:20,vip:35,ps:60,bil:80,tt:40,phone1:'01008414077',phone2:'01021724291'};
+var DEF={cafeMode:'soon',pitchA:250,pitchB:400,pitchC:350,pc:20,vip:35,ps:60,bil:80,tt:40,phone1:'01008414077',phone2:'01021724291'};
 var SHIFT={m:'صباحية',e:'مسائية',n:'ليلية'};
 var SRC={phone:'مكالمة',walkin:'حضور مباشر',site:'الموقع'};
 
@@ -615,6 +658,25 @@ function total(res,start,dur,qty){
 }
 function slotsOf(b){var a=[];for(var i=0;i<b.dur;i++){var h=b.start+i,n=Math.floor(h/24);a.push({date:n?addDays(b.date,n):b.date,hour:h%24})}return a}
 function active(b){return b.status!=='cancelled'}
+function flatBookings(docs){
+  var out=[];
+  docs.forEach(function(d){
+    var v=d.data()||{};
+    if(v.items){Object.keys(v.items).forEach(function(bid){out.push(Object.assign({},v.items[bid]||{},{id:bid,_uid:d.id,src:'site'}))})}
+    else out.push(Object.assign({id:d.id},v));
+  });
+  return out;
+}
+function bkPatch(id,obj){
+  var b=S.bookings.filter(function(x){return x.id===id})[0],o={};
+  if(b&&b._uid){Object.keys(obj).forEach(function(k){o['items.'+id+'.'+k]=obj[k]});return S.db.collection('bookings').doc(b._uid).update(o)}
+  return S.db.collection('bookings').doc(id).update(obj);
+}
+function bkRemove(id){
+  var b=S.bookings.filter(function(x){return x.id===id})[0];
+  if(b&&b._uid)return S.db.collection('bookings').doc(b._uid).update('items.'+id,firebase.firestore.FieldValue.delete());
+  return S.db.collection('bookings').doc(id).delete();
+}
 function used(res,date,hour,skipId){
   var c=0;
   S.bookings.forEach(function(b){
@@ -641,7 +703,7 @@ function revenue(k){
 function expense(k){var t=0;S.finance.forEach(function(f){if(f.date===k&&f.type==='expense')t+=Number(f.amount||0)});return t}
 
 /* ---------- routing ---------- */
-var VIEWS=['overview','bookings','sales','finance','staff','maint','players','tourney','settings'];
+var VIEWS=['overview','bookings','sales','finance','staff','maint','players','tourney','content','settings'];
 function route(){
   var v=location.hash.replace('#','')||'overview';
   if(VIEWS.indexOf(v)<0)v='overview';
@@ -771,7 +833,7 @@ function renderMaint(){
   }).join('');
 }
 function fillSettings(force){
-  var c=cfg(),map={sA:'pitchA',sB:'pitchB',sC:'pitchC',sPc:'pc',sVip:'vip',sPs:'ps',sBil:'bil',sTt:'tt',sP1:'phone1',sP2:'phone2'};
+  var c=cfg(),map={sCafe:'cafeMode',sA:'pitchA',sB:'pitchB',sC:'pitchC',sPc:'pc',sVip:'vip',sPs:'ps',sBil:'bil',sTt:'tt',sP1:'phone1',sP2:'phone2'};
   Object.keys(map).forEach(function(id){var e=$('#'+id);if(e&&(force||document.activeElement!==e))e.value=c[map[id]]});
 }
 function renderAll(){renderSales();renderOverview();renderBookings();renderFinance();renderStaff();renderMaint();updateBkTotal()}
@@ -858,7 +920,13 @@ async function onSettings(ev){
   ev.preventDefault();
   var o={pitchA:+$('#sA').value,pitchB:+$('#sB').value,pitchC:+$('#sC').value,pc:+$('#sPc').value,vip:+$('#sVip').value,ps:+$('#sPs').value,bil:+$('#sBil').value,tt:+$('#sTt').value,phone1:$('#sP1').value.trim(),phone2:$('#sP2').value.trim()};
   var m=$('#setMsg');
-  try{await save('settings','main',o);m.className='okm';m.textContent='تم حفظ الإعدادات.'}
+  o.cafeMode=$('#sCafe').value;
+  var pw=$('#sCafePw').value.trim();
+  try{
+    o.cafeHash=pw?await sha(pw):((S.settings&&S.settings.cafeHash)||'');
+    if(o.cafeMode==='password'&&!o.cafeHash){m.className='err';m.textContent='اكتب كلمة مرور للنت كافيه.'}
+    else{await save('settings','main',o);$('#sCafePw').value='';m.className='okm';m.textContent='تم حفظ الإعدادات.'}
+  }
   catch(e){m.className='err';m.textContent='تعذر الحفظ. حاول مرة أخرى.'}
   setTimeout(function(){m.textContent=''},3000);
 }
@@ -870,12 +938,12 @@ document.addEventListener('click',async function(e){
   try{
     if(d.act==='del'){
       var key='del|'+d.col+'|'+id;
-      if(S.armed===key){S.armed=null;if(d.col==='bookings'&&window.bkFree)await window.bkFree(id);await S.db.collection(d.col).doc(id).delete()}
+      if(S.armed===key){S.armed=null;if(d.col==='bookings'){if(window.bkFree)await window.bkFree(id);await bkRemove(id)}else await S.db.collection(d.col).doc(id).delete()}
       else{S.armed=key;renderAll();setTimeout(function(){if(S.armed===key){S.armed=null;renderAll()}},3500)}
       return;
     }
-    if(d.act==='paid')await S.db.collection('bookings').doc(id).update({paid:true});
-    if(d.act==='cancel'){if(window.bkFree)await window.bkFree(id);await S.db.collection('bookings').doc(id).update({status:'cancelled'})}
+    if(d.act==='paid')await bkPatch(id,{paid:true});
+    if(d.act==='cancel'){if(window.bkFree)await window.bkFree(id);await bkPatch(id,{status:'cancelled'})}
     if(d.act==='toggle'){var m=S.maint.filter(function(x){return x.id===id})[0];if(m)await S.db.collection('maint').doc(id).update({status:m.status==='done'?'open':'done'})}
   }catch(err){}
 });
@@ -1100,7 +1168,7 @@ function gate(t,p){$('#gateT').textContent=t;$('#gateP').textContent=p;$('#gate'
   names.forEach(function(n){
     var first=true;
     db.collection(n).onSnapshot(function(snap){
-      S[n]=snap.docs.map(function(d){return Object.assign({id:d.id},d.data())}).filter(function(x){return !(n==='bookings'&&x.items)});
+      S[n]=n==='bookings'?flatBookings(snap.docs):snap.docs.map(function(d){return Object.assign({id:d.id},d.data())});
       if(first){first=false;done()}else if(S.ready)renderAll();
     },function(){if(first){first=false;done()}});
   });
@@ -1236,6 +1304,74 @@ function gate(t,p){$('#gateT').textContent=t;$('#gateP').textContent=p;$('#gate'
     await Promise.all(sn.docs.map(function(d){return d.ref.delete()}));
     await db.collection('games').doc(id).delete().catch(function(){});
   };
+})();
+</script>
+<script>
+/* محتوى الموقع */
+(function(){
+  var c=window.claude;if(!c||!c.use||!window.firebase)return;
+  var F=[{"k": "heroKicker", "l": "سطر صغير فوق العنوان", "g": "الرئيسية: أعلى الصفحة", "t": "t", "d": "شبرا الخيمة · يعمل 24 ساعة"}, {"k": "heroTitle", "l": "العنوان الرئيسي", "g": "الرئيسية: أعلى الصفحة", "t": "t", "d": "كرة قدم خماسية، متاحة على مدار الساعة."}, {"k": "heroSub", "l": "الوصف تحت العنوان", "g": "الرئيسية: أعلى الصفحة", "t": "a", "d": "أبو تريكة ملعب نجيلة صناعية مضاء بكشافات LED، وبجواره نت كافيه. اختر الموعد، احجز أونلاين، وتعالَ جاهزًا للعب."}, {"k": "gHours", "l": "مواعيد العمل", "g": "الرئيسية: لمحة سريعة", "t": "t", "d": "24 ساعة، 7 أيام"}, {"k": "cafeHours", "l": "مواعيد العمل", "g": "النت كافيه", "t": "t", "d": "24 ساعة، 7 أيام"}, {"k": "gSystem", "l": "النظام", "g": "الرئيسية: لمحة سريعة", "t": "t", "d": "خماسي (5 ضد 5)"}, {"k": "gFloor", "l": "الأرضية", "g": "الرئيسية: لمحة سريعة", "t": "t", "d": "نجيلة صناعية"}, {"k": "gLight", "l": "الإضاءة", "g": "الرئيسية: لمحة سريعة", "t": "t", "d": "كشافات LED"}, {"k": "gPlace", "l": "الموقع (مختصر)", "g": "الرئيسية: لمحة سريعة", "t": "t", "d": "شبرا الخيمة"}, {"k": "whyTitle", "l": "عنوان «لماذا أبو تريكة»", "g": "الرئيسية: لماذا أبو تريكة", "t": "t", "d": "ملعب جاهز في أي وقت يكون فريقك جاهزًا فيه."}, {"k": "why1T", "l": "الميزة 1: العنوان", "g": "الرئيسية: لماذا أبو تريكة", "t": "t", "d": "يعمل 24 ساعة"}, {"k": "why1P", "l": "الميزة 1: الوصف", "g": "الرئيسية: لماذا أبو تريكة", "t": "a", "d": "تدريب صباحي، دوري مسائي، أو مباراة بعد منتصف الليل. الملعب متاح كل ساعة في كل يوم."}, {"k": "why2T", "l": "الميزة 2: العنوان", "g": "الرئيسية: لماذا أبو تريكة", "t": "t", "d": "ظروف لعب ثابتة"}, {"k": "why2P", "l": "الميزة 2: الوصف", "g": "الرئيسية: لماذا أبو تريكة", "t": "a", "d": "أرضية نجيلة صناعية وإضاءة LED تحافظان على جودة اللعب في أي طقس وأي ساعة."}, {"k": "why3T", "l": "الميزة 3: العنوان", "g": "الرئيسية: لماذا أبو تريكة", "t": "t", "d": "حجز بلا مكالمات"}, {"k": "why3P", "l": "الميزة 3: الوصف", "g": "الرئيسية: لماذا أبو تريكة", "t": "a", "d": "اطّلع على الساعات المتاحة، اختر موعدك، واحصل على كود تأكيد في أقل من دقيقة."}, {"k": "ctaTitle", "l": "شريط الحجز: العنوان", "g": "الرئيسية: أسفل الصفحة", "t": "t", "d": "جاهز للعب؟"}, {"k": "ctaSub", "l": "شريط الحجز: الوصف", "g": "الرئيسية: أسفل الصفحة", "t": "t", "d": "تحقق من المواعيد المتاحة واحجز ساعتك أونلاين."}, {"k": "cafeTitle", "l": "العنوان الرئيسي", "g": "النت كافيه", "t": "t", "d": "إنترنت سريع ومقاعد مريحة بجوار الملعب."}, {"k": "cafeSub", "l": "الوصف تحت العنوان", "g": "النت كافيه", "t": "a", "d": "ألعاب، بلياردو، بينج بونج، عمل، دراسة أو طباعة. النت كافيه يعمل على مدار الساعة ويمكنك حجز جهازك مسبقًا."}, {"k": "cafeSoonTitle", "l": "عنوان صفحة «قريبًا»", "g": "النت كافيه", "t": "t", "d": "قريبًا"}, {"k": "cafeSoonText", "l": "نص صفحة «قريبًا»", "g": "النت كافيه", "t": "a", "d": "نجهز النت كافيه بشكله الجديد مع البلياردو والبينج بونج. ترقب الافتتاح."}, {"k": "address", "l": "العنوان بالتفصيل", "g": "تواصل معنا", "t": "a", "d": "الشارع الجديد (الشعراوي القديم)، أمام شارع بهتيم، شبرا الخيمة"}, {"k": "notice", "l": "شريط إعلان أعلى الموقع (اتركه فارغًا لإخفائه)", "g": "إعلان", "t": "a", "d": ""}];
+  var $=function(s){return document.querySelector(s)};
+  var h=function(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  var db=null,form=$('#cmForm'),g='',out='';
+  F.forEach(function(f){
+    if(f.g!==g){g=f.g;out+='<div class="wide"><h3>'+h(g)+'</h3></div>'}
+    out+='<div class="wide"><label for="cm_'+f.k+'">'+h(f.l)+'</label>'+
+      (f.t==='a'?'<textarea id="cm_'+f.k+'" rows="3" maxlength="600" placeholder="'+h(f.d)+'"></textarea>':'<input id="cm_'+f.k+'" type="text" maxlength="600" placeholder="'+h(f.d)+'">')+'</div>';
+  });
+  out+='<div class="wide" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center"><button class="btn" type="submit">حفظ المحتوى</button><span class="okm" id="cmMsg" role="status"></span></div>';
+  form.innerHTML=out;
+  function msg(t,bad){var m=$('#cmMsg');m.className=bad?'err':'okm';m.textContent=t;setTimeout(function(){if(m.textContent===t)m.textContent=''},3500)}
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();if(!db)return;
+    var o={};
+    F.forEach(function(f){var v=$('#cm_'+f.k).value.trim();if(v)o[f.k]=v.slice(0,600)});
+    try{await db.collection('settings').doc('content').set(o);msg('تم الحفظ، والموقع يتحدّث الآن.')}
+    catch(x){msg('تعذر الحفظ. تأكد من صلاحيات الأدمن.',true)}
+  });
+  c.use('db').then(function(d){
+    db=d;if(!d)return;
+    d.collection('settings').doc('content').onSnapshot(function(sn){
+      var o=(sn.exists&&sn.data())||{};
+      F.forEach(function(f){var e=$('#cm_'+f.k);if(e&&document.activeElement!==e)e.value=o[f.k]||''});
+    },function(){});
+  });
+})();
+</script>
+<script>
+/* جمل الترحيب: + تعرض الجملة في أعلى الموقع، − تزيلها */
+(function(){
+  var c=window.claude;if(!c||!c.use||!window.firebase)return;
+  var W=["أهلًا بك في أبو تريكة، ملعبك الخماسي على مدار الساعة.", "الملعب مفتوح 24 ساعة، فاختر الموعد الذي يناسب فريقك.", "احجز ملعبك أونلاين في أقل من دقيقة.", "أرضية نجيلة صناعية وإضاءة LED لمباراة بجودة ثابتة نهارًا وليلًا.", "الكرة والصدريات متوفرة مع كل حجز دون رسوم إضافية.", "لاعبون يستحقون ملعبًا بمستواهم، وهذا ما نقدمه.", "اجمع فريقك واحجز ساعتك، والباقي علينا.", "مباراة الليلة تبدأ من هنا.", "كل ساعة على أرضنا فرصة لتحسين أدائك.", "ملعب جاهز في أي وقت يكون فريقك جاهزًا فيه.", "تابع جدول الملعب واختر أقرب ساعة متاحة.", "تدريب الصباح أو مباراة بعد منتصف الليل، الملعب بانتظارك.", "تابع ترتيب أفضل 10 لاعبين ونافس على الصدارة.", "سجّل فريقك في البطولات القادمة وتحدَّ الأفضل.", "بعد المباراة، استرح في النت كافيه بجوار الملعب.", "غرف تبديل ملابس ومياه شرب لتنتعش قبل المباراة وبعدها.", "ألغِ أو عدّل حجزك قبل 6 ساعات دون أي رسوم.", "احضر قبل موعدك بعشر دقائق لتبدأ المباراة في وقتها.", "أحذية النجيلة أو المطاط فقط، حفاظًا على الأرضية وسلامتك.", "نظافة الملعب مسؤولية الجميع، شكرًا لتعاونكم.", "روح رياضية عالية ومتعة لا تنتهي.", "اللعب الجماعي يصنع الفارق، وهنا يبدأ.", "أبو تريكة، حيث تبدأ كل مباراة بحماس.", "ملعبنا لكم، وجودة اللعب هي وعدنا.", "حجزك مؤكد بكود فوري، أبرزه عند الوصول.", "اطّلع على الساعات المتاحة اليوم واحجز قبل أن تكتمل.", "مباراة اليوم أفضل من خطة الغد، احجز الآن.", "ساعة واحدة على الملعب تكفي لتفريغ ضغط يومك.", "ادعُ أصدقاءك وابدأ مباراة لا تُنسى.", "من الخماسي إلى البطولات، أبو تريكة مكانك.", "كل ساعة متاحة هي فرصة، فاحجز موعدك الآن.", "إضاءة LED موزعة بالتساوي لتلعب ليلًا بوضوح كامل.", "نرحب بجميع الفرق، من الهواة إلى المحترفين.", "سلامتك تهمنا، والتزامك بالتعليمات يحفظ متعة الجميع.", "التدخين ممنوع داخل الملعب، شكرًا لتفهمكم.", "تعب الأسبوع ينتهي على أرض الملعب.", "نجهز الملعب، وعليكم الأداء.", "للحجز أو الاستفسار تواصل معنا على أرقام الموقع.", "يوم جديد وفرصة جديدة للفوز، احجز ملعبك.", "أهلًا وسهلًا بكم في أبو تريكة، نتمنى لكم مباراة ممتعة."],cur='',db=null;
+  var $=function(s){return document.querySelector(s)};
+  var h=function(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  function msg(t,bad){var m=$('#wlMsg');m.className=bad?'err':'okm';m.textContent=t;setTimeout(function(){if(m.textContent===t)m.textContent=''},3000)}
+  function draw(){
+    $('#wlNow').innerHTML=cur?'المعروضة الآن: <b>'+h(cur)+'</b>':'لا توجد جملة معروضة الآن.';
+    $('#wlList').innerHTML=W.map(function(s,i){
+      var on=s===cur;
+      return '<li><div style="flex:1;min-width:200px'+(on?';font-weight:600':'')+'">'+h(s)+(on?' <span class="tag on">معروضة</span>':'')+'</div>'+
+        '<div style="display:flex;gap:8px"><button type="button" class="btn btn-sm" data-wp="'+i+'" aria-label="عرض الجملة"'+(on?' disabled':'')+'>+</button>'+
+        '<button type="button" class="btn btn-line btn-sm" data-wm="'+i+'" aria-label="إزالة الجملة"'+(on?'':' disabled')+'>−</button></div></li>';
+    }).join('');
+  }
+  document.addEventListener('click',async function(e){
+    var p=e.target.closest('[data-wp]'),m=e.target.closest('[data-wm]');
+    if(!p&&!m)return;
+    if(!db)return;
+    try{
+      if(p){await db.collection('settings').doc('content').set({notice:W[+p.dataset.wp]},{merge:true});msg('تم عرض الجملة في الموقع.')}
+      else{await db.collection('settings').doc('content').set({notice:firebase.firestore.FieldValue.delete()},{merge:true});msg('تمت إزالة الجملة.')}
+    }catch(x){msg('تعذر الحفظ. تأكد من صلاحيات الأدمن.',true)}
+  });
+  draw();
+  c.use('db').then(function(d){
+    db=d;if(!d)return;
+    d.collection('settings').doc('content').onSnapshot(function(sn){
+      var o=(sn.exists&&sn.data())||{};
+      cur=typeof o.notice==='string'?o.notice:'';draw();
+    },function(){});
+  });
 })();
 </script>
 </body></html>

@@ -1,5 +1,6 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
+<!doctype html><html><head><meta charset=utf8><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%231a2f8a'/%3E%3Cstop offset='1' stop-color='%23030614'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='46' font-family='Arial,sans-serif' font-weight='800' font-size='38' text-anchor='middle' fill='%23dfe8ff'%3EA%3C/text%3E%3C/svg%3E"><meta name="theme-color" content="#050a1c"><meta name="description" content="أبو تريكة: ملعب خماسي ونت كافيه في شبرا الخيمة، يعمل 24 ساعة. احجز ملعبك أونلاين."><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
 /* ===== إعدادات Firebase: الصقها هنا (نفس الإعدادات في الملفات الثلاثة) ===== */
+window.ATRK_LOGO='<div class="atrk lg" role="img" aria-label="ATRK"><div class="atrk-r"><i style="--i:9" aria-hidden="true">ATRK</i><i style="--i:8" aria-hidden="true">ATRK</i><i style="--i:7" aria-hidden="true">ATRK</i><i style="--i:6" aria-hidden="true">ATRK</i><i style="--i:5" aria-hidden="true">ATRK</i><i style="--i:4" aria-hidden="true">ATRK</i><i style="--i:3" aria-hidden="true">ATRK</i><i style="--i:2" aria-hidden="true">ATRK</i><i style="--i:1" aria-hidden="true">ATRK</i><i class="f" aria-hidden="true">ATRK</i></div></div>';
 window.FIREBASE_CONFIG = {
   apiKey: "AIzaSyDERNheJlGJdUojoiBfktg5OyJAU-wxZJU",
   authDomain: "abotrekamgmt.firebaseapp.com",
@@ -30,7 +31,7 @@ window.FIREBASE_CONFIG = {
     var F='width:100%;min-height:46px;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:transparent;color:inherit;font:inherit;margin:4px 0 14px;box-sizing:border-box;direction:ltr;text-align:right';
     var B='background:none;border:0;padding:0;color:var(--muted);font:inherit;font-size:.88rem;text-decoration:underline;cursor:pointer;margin-top:14px;display:block';
     function draw(){
-      w.innerHTML='<div style="width:100%;max-width:400px"><h2 style="margin:0 0 24px;font-size:1.5rem">'+(up?'إنشاء حساب':'تسجيل الدخول')+'</h2>'+
+      w.innerHTML='<div style="width:100%;max-width:400px"><div style="display:flex;justify-content:center;margin:0 0 26px">'+window.ATRK_LOGO+'</div><h2 style="margin:0 0 24px;font-size:1.5rem">'+(up?'إنشاء حساب':'تسجيل الدخول')+'</h2>'+
         (up?'<label>الاسم الكامل</label><input id="fbN" style="'+F+';direction:rtl" autocomplete="name"><label>رقم الموبايل</label><input id="fbPh" inputmode="numeric" placeholder="01XXXXXXXXX" style="'+F+'" autocomplete="tel">':'')+
         '<label>البريد الإلكتروني</label><input id="fbE" type="email" style="'+F+'" autocomplete="email">'+
         '<label>كلمة المرور</label><input id="fbP" type="password" style="'+F+'" autocomplete="'+(up?'new-password':'current-password')+'">'+
@@ -94,7 +95,28 @@ window.FIREBASE_CONFIG = {
 </script></head><body>
 <title>أبو تريكة</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap">
+<style id="atrk-css">
+/* خط قريب من خط أبل: يستخدم خط النظام (SF) على أجهزة أبل، ويرجع لـ Inter وIBM Plex على باقي الأجهزة */
+.atrk{display:inline-block;font-size:1.5rem;line-height:1;perspective:15em;padding:.2em .3em;direction:ltr;vertical-align:middle;filter:drop-shadow(0 .08em .14em rgba(2,6,32,.38))}
+.atrk-r{position:relative;display:block;padding-left:.16em;transform-style:preserve-3d;transform-origin:50% 50% -.22em;transform:rotateX(-10deg) rotateY(-24deg);animation:atrkSpin 11s linear infinite;will-change:transform}
+.atrk-r i{display:block;font-style:normal;font-weight:800;font-size:1em;line-height:1;letter-spacing:.16em;white-space:nowrap;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter','Segoe UI',system-ui,sans-serif;color:hsl(226 82% calc(14% - var(--i,0)*1.3%))}
+.atrk-r i:not(.f){position:absolute;inset:0 0 0 .16em;transform:translateZ(calc(var(--i)*-.05em))}
+.atrk-r i.f{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.36) 0,rgba(255,255,255,.07) 46%,rgba(255,255,255,0) 50%),linear-gradient(105deg,#050a22 0%,#0a1650 28%,#050a22 42%,#86a6ff 50%,#0b1a5c 58%,#03060f 100%);background-size:100% 100%,320% 100%;background-position:0 0,100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:atrkSheen 4.2s ease-in-out infinite}
+@keyframes atrkSpin{from{transform:rotateX(-10deg) rotateY(0)}to{transform:rotateX(-10deg) rotateY(360deg)}}
+@keyframes atrkSheen{0%,18%{background-position:0 0,100% 0}68%,100%{background-position:0 0,0% 0}}
+.atrk.lg{font-size:2.3rem}
+.brand .atrk{align-self:flex-start;margin-inline-start:-.3em}
+@media (prefers-reduced-motion:reduce){.atrk-r,.atrk-r i.f{animation:none}}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .atrk{filter:drop-shadow(0 0 .4em rgba(70,120,255,.5))}
+  :root:not([data-theme="light"]) .atrk-r i{color:hsl(226 82% calc(30% - var(--i,0)*2%))}
+  :root:not([data-theme="light"]) .atrk-r i.f{-webkit-text-stroke:.03em rgba(140,176,255,.7)}
+}
+:root[data-theme="dark"] .atrk{filter:drop-shadow(0 0 .4em rgba(70,120,255,.5))}
+:root[data-theme="dark"] .atrk-r i{color:hsl(226 82% calc(30% - var(--i,0)*2%))}
+:root[data-theme="dark"] .atrk-r i.f{-webkit-text-stroke:.03em rgba(140,176,255,.7)}
+</style>
 <style>
 /* Layout concept: minimalism in Arabic (RTL). White page, one typeface, hairline rules, generous space, black as the only accent. */
 :root{
@@ -102,7 +124,7 @@ window.FIREBASE_CONFIG = {
   --accent:#111111; --accent-ink:#FFFFFF; --accent-soft:#F3F3F3;
   --band-a:#D4D4D4; --band-b:#8C8C8C; --band-c:#111111;
   --bad:#B3321F; --ok:#111111;
-  --f-body:'IBM Plex Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display','SF Arabic','Inter','IBM Plex Sans Arabic','Segoe UI',Tahoma,system-ui,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
@@ -354,9 +376,10 @@ footer b{color:var(--fg);font-weight:600}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 
+<div id="siteNotice" role="status" hidden style="background:var(--fg);color:var(--bg);text-align:center;padding:10px 16px;font-size:.92rem;line-height:1.7"></div>
 <header class="hdr">
   <div class="in">
-    <a class="brand" href="#home" aria-label="أبو تريكة، الصفحة الرئيسية"><b>أبو تريكة</b><span>ملعب خماسي ونت كافيه</span></a>
+    <a class="brand" href="#home" aria-label="أبو تريكة، الصفحة الرئيسية"><div class="atrk" role="img" aria-label="ATRK"><div class="atrk-r"><i style="--i:9" aria-hidden="true">ATRK</i><i style="--i:8" aria-hidden="true">ATRK</i><i style="--i:7" aria-hidden="true">ATRK</i><i style="--i:6" aria-hidden="true">ATRK</i><i style="--i:5" aria-hidden="true">ATRK</i><i style="--i:4" aria-hidden="true">ATRK</i><i style="--i:3" aria-hidden="true">ATRK</i><i style="--i:2" aria-hidden="true">ATRK</i><i style="--i:1" aria-hidden="true">ATRK</i><i class="f" aria-hidden="true">ATRK</i></div></div><span>ملعب خماسي ونت كافيه</span></a>
     <nav class="nav" aria-label="القائمة الرئيسية">
       <a href="#home" data-nav="home">الملعب</a>
       <a href="#cafe" data-nav="cafe">النت كافيه</a>
@@ -381,9 +404,9 @@ footer b{color:var(--fg);font-weight:600}
   <div class="banner">
     <div class="in two">
       <div>
-        <div class="kicker">شبرا الخيمة · يعمل 24 ساعة</div>
-        <h1>كرة قدم خماسية، متاحة على مدار الساعة.</h1>
-        <p class="sub">أبو تريكة ملعب نجيلة صناعية مضاء بكشافات LED، وبجواره نت كافيه. اختر الموعد، احجز أونلاين، وتعالَ جاهزًا للعب.</p>
+        <div class="kicker" data-cms="heroKicker">شبرا الخيمة · يعمل 24 ساعة</div>
+        <h1 data-cms="heroTitle">كرة قدم خماسية، متاحة على مدار الساعة.</h1>
+        <p class="sub" data-cms="heroSub">أبو تريكة ملعب نجيلة صناعية مضاء بكشافات LED، وبجواره نت كافيه. اختر الموعد، احجز أونلاين، وتعالَ جاهزًا للعب.</p>
         <div class="cta">
           <button type="button" class="btn btn-light" data-go="book" data-res="pitch">احجز الملعب</button>
           <button type="button" class="btn btn-line" data-scroll="rates">شاهد الأسعار</button>
@@ -392,11 +415,11 @@ footer b{color:var(--fg);font-weight:600}
       </div>
       <div class="glance">
         <dl>
-          <div class="r"><dt>مواعيد العمل</dt><dd>24 ساعة، 7 أيام</dd></div>
-          <div class="r"><dt>النظام</dt><dd>خماسي (5 ضد 5)</dd></div>
-          <div class="r"><dt>الأرضية</dt><dd>نجيلة صناعية</dd></div>
-          <div class="r"><dt>الإضاءة</dt><dd>كشافات LED</dd></div>
-          <div class="r"><dt>الموقع</dt><dd>شبرا الخيمة</dd></div>
+          <div class="r"><dt>مواعيد العمل</dt><dd data-cms="gHours">24 ساعة، 7 أيام</dd></div>
+          <div class="r"><dt>النظام</dt><dd data-cms="gSystem">خماسي (5 ضد 5)</dd></div>
+          <div class="r"><dt>الأرضية</dt><dd data-cms="gFloor">نجيلة صناعية</dd></div>
+          <div class="r"><dt>الإضاءة</dt><dd data-cms="gLight">كشافات LED</dd></div>
+          <div class="r"><dt>الموقع</dt><dd data-cms="gPlace">شبرا الخيمة</dd></div>
         </dl>
       </div>
     </div>
@@ -405,11 +428,11 @@ footer b{color:var(--fg);font-weight:600}
   <section>
     <div class="in">
       <div class="kicker">لماذا أبو تريكة</div>
-      <h2>ملعب جاهز في أي وقت يكون فريقك جاهزًا فيه.</h2>
+      <h2 data-cms="whyTitle">ملعب جاهز في أي وقت يكون فريقك جاهزًا فيه.</h2>
       <div class="cols3">
-        <div><h3>يعمل 24 ساعة</h3><p>تدريب صباحي، دوري مسائي، أو مباراة بعد منتصف الليل. الملعب متاح كل ساعة في كل يوم.</p></div>
-        <div><h3>ظروف لعب ثابتة</h3><p>أرضية نجيلة صناعية وإضاءة LED تحافظان على جودة اللعب في أي طقس وأي ساعة.</p></div>
-        <div><h3>حجز بلا مكالمات</h3><p>اطّلع على الساعات المتاحة، اختر موعدك، واحصل على كود تأكيد في أقل من دقيقة.</p></div>
+        <div><h3 data-cms="why1T">يعمل 24 ساعة</h3><p data-cms="why1P">تدريب صباحي، دوري مسائي، أو مباراة بعد منتصف الليل. الملعب متاح كل ساعة في كل يوم.</p></div>
+        <div><h3 data-cms="why2T">ظروف لعب ثابتة</h3><p data-cms="why2P">أرضية نجيلة صناعية وإضاءة LED تحافظان على جودة اللعب في أي طقس وأي ساعة.</p></div>
+        <div><h3 data-cms="why3T">حجز بلا مكالمات</h3><p data-cms="why3P">اطّلع على الساعات المتاحة، اختر موعدك، واحصل على كود تأكيد في أقل من دقيقة.</p></div>
       </div>
     </div>
   </section>
@@ -492,7 +515,7 @@ footer b{color:var(--fg);font-weight:600}
 
   <div class="cta-band">
     <div class="in" style="padding-block:56px">
-      <div><h2>جاهز للعب؟</h2><p>تحقق من المواعيد المتاحة واحجز ساعتك أونلاين.</p></div>
+      <div><h2 data-cms="ctaTitle">جاهز للعب؟</h2><p data-cms="ctaSub">تحقق من المواعيد المتاحة واحجز ساعتك أونلاين.</p></div>
       <button type="button" class="btn btn-light" data-go="book" data-res="pitch">احجز الملعب</button>
     </div>
   </div>
@@ -501,7 +524,7 @@ footer b{color:var(--fg);font-weight:600}
 <!-- ================= INTERNET CAFE ================= -->
 <div class="view" data-view="cafe" hidden>
   <div class="soon" id="cafeSoon" hidden>
-    <div class="in"><div class="kicker">النت كافيه</div><h1>قريبًا</h1><p>نجهز النت كافيه بشكله الجديد مع البلياردو والبينج بونج. ترقب الافتتاح.</p></div>
+    <div class="in"><div class="kicker">النت كافيه</div><h1 data-cms="cafeSoonTitle">قريبًا</h1><p data-cms="cafeSoonText">نجهز النت كافيه بشكله الجديد مع البلياردو والبينج بونج. ترقب الافتتاح.</p></div>
   </div>
   <div class="gate" id="cafeGate" hidden>
     <div class="in"><div class="kicker">النت كافيه</div><h1>الصفحة مغلقة</h1><p>أدخل كلمة المرور لعرض الصفحة.</p>
@@ -513,8 +536,8 @@ footer b{color:var(--fg);font-weight:600}
     <div class="in two">
       <div>
         <div class="kicker">النت كافيه · 24 ساعة</div>
-        <h1>إنترنت سريع ومقاعد مريحة بجوار الملعب.</h1>
-        <p class="sub">ألعاب، بلياردو، بينج بونج، عمل، دراسة أو طباعة. النت كافيه يعمل على مدار الساعة ويمكنك حجز جهازك مسبقًا.</p>
+        <h1 data-cms="cafeTitle">إنترنت سريع ومقاعد مريحة بجوار الملعب.</h1>
+        <p class="sub" data-cms="cafeSub">ألعاب، بلياردو، بينج بونج، عمل، دراسة أو طباعة. النت كافيه يعمل على مدار الساعة ويمكنك حجز جهازك مسبقًا.</p>
         <div class="cta">
           <button type="button" class="btn btn-light" data-go="book" data-res="pc">احجز جهازًا</button>
           <button type="button" class="btn btn-line" data-scroll="stations">شاهد الأجهزة</button>
@@ -522,7 +545,7 @@ footer b{color:var(--fg);font-weight:600}
       </div>
       <div class="glance">
         <dl>
-          <div class="r"><dt>مواعيد العمل</dt><dd>24 ساعة، 7 أيام</dd></div>
+          <div class="r"><dt>مواعيد العمل</dt><dd data-cms="cafeHours">24 ساعة، 7 أيام</dd></div>
           <div class="r"><dt>الأجهزة</dt><dd>كمبيوتر وPlayStation 5</dd></div>
           <div class="r"><dt>الألعاب</dt><dd>بلياردو وبينج بونج</dd></div>
           <div class="r"><dt>الخدمات</dt><dd>ألعاب، عمل، طباعة</dd></div>
@@ -709,7 +732,7 @@ footer b{color:var(--fg);font-weight:600}
       <h2>زرنا أو تواصل معنا.</h2>
       <p class="lead">نعمل كل ساعة من كل يوم. اتصل بنا أو راسلنا للحجوزات الجماعية والاشتراكات أو أي طلبات خاصة.</p>
       <dl class="info">
-        <div><dt>العنوان</dt><dd>الشارع الجديد (الشعراوي القديم)، أمام شارع بهتيم، شبرا الخيمة</dd>
+        <div><dt>العنوان</dt><dd data-cms="address">الشارع الجديد (الشعراوي القديم)، أمام شارع بهتيم، شبرا الخيمة</dd>
           <p style="margin-top:14px"><a class="btn btn-line btn-sm" href="https://www.google.com/maps/search/?api=1&amp;query=Bahtim+Street+Shubra+El-Kheima" target="_blank" rel="noopener">افتح في خرائط جوجل</a></p></div>
         <div><dt>مواعيد العمل</dt><dd>24 ساعة يوميًا، 7 أيام في الأسبوع</dd></div>
         <div><dt>الهاتف وواتساب</dt><dd>
@@ -769,7 +792,7 @@ footer b{color:var(--fg);font-weight:600}
 document.documentElement.lang='ar';document.documentElement.dir='rtl';
 var CONFIG={phones:['01008414077','01021724291'],
   /* قفل صفحة النت كافيه: mode = 'open' (مفتوحة) أو 'soon' (قريبًا) أو 'password' (كلمة مرور). التفاصيل تظل في الصفحة وتُخفى فقط. */
-  cafe:{mode:'soon',password:'change-me'}};
+  cafe:{mode:'soon',hash:''}};
 var $=function(s,r){return (r||document).querySelector(s)};
 var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
 var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
@@ -792,9 +815,10 @@ var hs=function(h){var x=h%24;return (x%12||12)+' '+(x>=12?'م':'ص')};
 var hf=function(h){var x=h%24;return (x%12||12)+':00 '+(x>=12?'م':'ص')};
 var pad=function(n){return String(n).padStart(2,'0')};
 var dkey=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
-var cafeUnlocked=false;
-try{cafeUnlocked=sessionStorage.getItem('cafeOk')==='1'}catch(e){}
-function cafeOpen(){var m=CONFIG.cafe.mode;return m==='open'||(m==='password'&&cafeUnlocked)}
+var cafeKey='';
+try{cafeKey=sessionStorage.getItem('cafeOk')||''}catch(e){}
+function cafeOpen(){var m=CONFIG.cafe.mode;return m==='open'||(m==='password'&&!!CONFIG.cafe.hash&&cafeKey===CONFIG.cafe.hash)}
+async function sha(t){var b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('abotreka:'+t));return Array.prototype.map.call(new Uint8Array(b),function(v){return ('0'+v.toString(16)).slice(-2)}).join('')}
 function applyCafe(){
   var m=CONFIG.cafe.mode,open=cafeOpen();
   $('#cafeBody').hidden=!open;
@@ -981,7 +1005,7 @@ async function claim(res,date,start,dur,qty,bid){
         }else if(rem(res,n.date,n.hour)<1){
           throw {taken:true};
         }
-        await ref.set({res:res,date:n.date,hour:n.hour,bid:bid});
+        await ref.set({res:res,date:n.date,hour:n.hour,bid:bid,uid:S.uid});
         ids.push(id);
       }
     }
@@ -1206,15 +1230,27 @@ document.addEventListener('click',function(e){
 });
 $('#bf').addEventListener('submit',submit);
 document.addEventListener('submit',function(e){if(e.target.id==='acForm')saveProfile(e)});
-$('#gateForm').addEventListener('submit',function(e){
+$('#gateForm').addEventListener('submit',async function(e){
   e.preventDefault();
-  if($('#gatePw').value===CONFIG.cafe.password){
-    cafeUnlocked=true;try{sessionStorage.setItem('cafeOk','1')}catch(x){}
+  var h='';try{h=await sha($('#gatePw').value)}catch(x){}
+  if(h&&CONFIG.cafe.hash&&h===CONFIG.cafe.hash){
+    cafeKey=h;try{sessionStorage.setItem('cafeOk',h)}catch(x){}
     $('#gatePw').value='';$('#gateErr').textContent='';renderAll();
   }else{$('#gateErr').textContent='كلمة المرور غير صحيحة.'}
 });
 
 
+/* ---------- site text from the admin panel ---------- */
+function applyContent(o){
+  o=o||{};
+  $$('[data-cms]').forEach(function(e){
+    if(e.dataset.def===undefined)e.dataset.def=e.textContent;
+    var v=o[e.dataset.cms];
+    e.textContent=(typeof v==='string'&&v.trim())?v.trim().slice(0,600):e.dataset.def;
+  });
+  var nb=$('#siteNotice');
+  if(nb){var t=typeof o.notice==='string'?o.notice.trim().slice(0,300):'';nb.textContent=t;nb.hidden=!t}
+}
 /* ---------- settings from the admin panel ---------- */
 function applySettings(o){
   if(!o)return;
@@ -1223,6 +1259,8 @@ function applySettings(o){
   ['pc','vip','ps','bil','tt'].forEach(function(k){var v=n(o[k]);if(v)RES[k].rate=v});
   if(o.phone1)CONFIG.phones[0]=String(o.phone1);
   if(o.phone2)CONFIG.phones[1]=String(o.phone2);
+  if(o.cafeMode==='open'||o.cafeMode==='soon'||o.cafeMode==='password')CONFIG.cafe.mode=o.cafeMode;
+  CONFIG.cafe.hash=String(o.cafeHash||'');
   $$('[data-price]').forEach(function(e){var k=e.dataset.price;e.textContent=k.indexOf('pitch')===0?BAND_RATE[k.slice(5)]:RES[k].rate});
   $$('[data-phone]').forEach(function(e){e.textContent=CONFIG.phones[+e.dataset.phone||0]});
   renderAll();
@@ -1238,6 +1276,7 @@ renderAll();route(false);
   if(!db){S.ready=true;renderAccount();return}
   S.db=db;
   try{db.collection('settings').doc('main').onSnapshot(function(sn){if(sn.exists)applySettings(sn.data())},function(){})}catch(e){}
+  try{db.collection('settings').doc('content').onSnapshot(function(sn){applyContent(sn.exists?sn.data():null)},function(){})}catch(e){}
   if(user){
     try{S.uid=await user.id()}catch(e){}try{S.email=await user.email()}catch(e){}
     try{S.isAdmin=await user.canEdit()}catch(e){}
